@@ -1,0 +1,20 @@
+{
+  "compileOnSave": true,
+  "forceConsistentCasingInFileNames": true,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "watch": true,
+    "target": "es2017",
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": false,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["es2017", "esnext"]
+  }
+}

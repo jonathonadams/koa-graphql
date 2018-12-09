@@ -1,0 +1,44 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  username: String!
+  emailAddress: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input NewUserInput {
+  firstName: String!
+  lastName: String!
+  username: String!
+  emailAddress: String!
+}
+
+input UpdatedUserInput {
+  id: ID!
+  firstName: String
+  lastName: String
+  username: String
+  emailAddress: String
+}
+
+type AuthPayload {
+  token: String
+}
+
+type Query {
+  User(id: ID!): User!
+  allUsers: [User]!
+}
+
+type Mutation {
+  login(username: String!, password: String!): AuthPayload!
+  newUser(input: NewUserInput!): User!
+  updateUser(input: UpdatedUserInput!): User!
+  removeUser(id: ID!): User!
+}
+
+type Subscription {
+  User: User
+}

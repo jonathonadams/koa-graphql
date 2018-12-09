@@ -1,0 +1,9 @@
+# Ignore all files and directories in the root directory by default
+**
+
+# Exclude what is required for the build container to run
+!package.json
+!package-lock.json
+!tsconfig.json
+!gulpfile.js
+!src/

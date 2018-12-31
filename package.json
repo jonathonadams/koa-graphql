@@ -48,7 +48,7 @@
     ]
   },
   "dependencies": {
-    "apollo-server-koa": "^2.2.6",
+    "apollo-server-koa": "^2.3.1",
     "bcryptjs": "^2.4.3",
     "dataloader": "^1.4.0",
     "graphql": "^14.0.2",
@@ -65,10 +65,9 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "pg": "^7.7.1",
-    "sequelize": "^5.0.0-beta.14"
+    "sequelize": "^5.0.0-beta.15"
   },
   "devDependencies": {
-    "@playlyfe/gql": "^2.6.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/graphql": "^14.0.3",
     "@types/jest": "^23.3.10",
@@ -81,7 +80,7 @@
     "dotenv": "^6.2.0",
     "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
-    "husky": "^1.2.0",
+    "husky": "^1.2.1",
     "jest": "^23.6.0",
     "jest-extended": "^0.11.0",
     "lint-staged": "^8.1.0",

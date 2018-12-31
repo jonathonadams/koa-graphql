@@ -47,7 +47,8 @@ export const apolloServer = new ApolloServer({
   },
   playground: config.docs,
   tracing: config.docs,
-  debug: config.docs
+  debug: config.docs,
+  uploads: false
 });
 
 // A function that applies the middlware to the app.

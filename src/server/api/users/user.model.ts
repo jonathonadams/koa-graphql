@@ -6,10 +6,11 @@ const Op = (Sequelize as any).Op;
 
 export class User extends Model {
   id: string;
+  username: string;
   firstName: string;
   lastName: string;
-  username: string;
   emailAddress: string;
+  dateOfBirth: Date;
   hashedPassword: string;
   createdAt: Date;
   updatedAt: Date;
@@ -35,6 +36,7 @@ User.init(
     lastName: DataTypes.STRING,
     username: DataTypes.STRING,
     emailAddress: DataTypes.STRING,
+    dateOfBirth: DataTypes.DATE,
     hashedPassword: DataTypes.STRING
   },
   {

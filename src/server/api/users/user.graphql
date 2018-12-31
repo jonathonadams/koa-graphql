@@ -4,8 +4,7 @@ type User {
   lastName: String!
   username: String!
   emailAddress: String!
-  createdAt: Date!
-  updatedAt: Date!
+  dateOfBirth: Date!
 }
 
 input NewUserInput {
@@ -13,6 +12,7 @@ input NewUserInput {
   lastName: String!
   username: String!
   emailAddress: String!
+  dateOfBirth: Date!
 }
 
 input UpdatedUserInput {
@@ -21,6 +21,7 @@ input UpdatedUserInput {
   lastName: String
   username: String
   emailAddress: String
+  dateOfBirth: Date
 }
 
 type AuthPayload {

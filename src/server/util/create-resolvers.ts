@@ -1,5 +1,6 @@
 import { createControllers } from './create-controllers';
 import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
+import { Model } from 'sequelize';
 
 // const resolver = async (rootValue, args, context, info) => {
 //   -> place logic here
@@ -9,30 +10,30 @@ import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
 //   -> place logic here
 // }
 
-export function generateResolvers<T>(model) {
+export function generateResolvers<T extends Model>(model) {
   const controllers = createControllers<T>(model);
 
   return {
-    getAll: async <T>(root, args, ctx, info) => {
+    getAll: async (root, args, ctx, info) => {
       return await controllers.getAll();
     },
-    getOne: async <T>(root, { id }, ctx, info) => {
+    getOne: async (root, { id }, ctx, info) => {
       return await controllers.getOne(id as string);
     },
-    createOne: async <T>(root, { input }, ctx, info) => {
+    createOne: async (root, { input }, ctx, info) => {
       return await controllers.createOne(input);
     },
-    updateOne: async <T>(root, { input }, ctx, info) => {
+    updateOne: async (root, { input }, ctx, info) => {
       const { id, ...values } = input;
       return await controllers.updateOne(id, values);
     },
-    removeOne: async <T>(root, { id }, ctx, info) => {
+    removeOne: async (root, { id }, ctx, info) => {
       return await controllers.removeOne(id);
     }
   };
 }
 
-export function createTypeResolver<T>(model: T, name: string) {
+export function createTypeResolver<T extends Model>(model: T, name: string) {
   const resolvers = generateResolvers<T>(model);
 
   const typeResolver = {

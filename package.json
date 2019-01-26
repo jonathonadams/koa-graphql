@@ -39,7 +39,7 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "npm run test:staged",
+        "npm run test",
         "git add"
       ]
     },

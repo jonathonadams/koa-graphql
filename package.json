@@ -40,7 +40,7 @@
     "linters": {
       "*.ts": [
         "git add",
-        "npm run test"
+        "test"
       ]
     },
     "ignore": [

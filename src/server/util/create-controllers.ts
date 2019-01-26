@@ -1,19 +1,20 @@
 import * as merge from 'lodash.merge';
 import { escapeObjectProperties } from './helper-functions';
+import { Model } from 'sequelize/types';
 
-export function createControllers<T>(model) {
+export function createControllers<T extends Model>(model) {
   return {
     // Get All
-    getAll: async <T>() => {
+    getAll: async () => {
       return await (model.findAll() as T);
     },
 
     // Get an individual resource
-    getOne: async <T>(id: string) => {
+    getOne: async (id: string) => {
       const resource = await (model.findByPk(id) as T);
 
       if (!resource) {
-        let error = new Error(`Cannot find a resource with that id.`);
+        const error = new Error(`Cannot find a resource with that id.`);
         error.name = '404';
         throw error;
       }
@@ -22,17 +23,17 @@ export function createControllers<T>(model) {
     },
 
     // Create a Resource
-    createOne: async <T>(values: any) => {
+    createOne: async (values: any) => {
       // Escaoe the input values before create
       escapeObjectProperties(values);
       return await (model.create(values) as T);
     },
 
     // Update a resource
-    updateOne: async <T>(id: string, values: any) => {
+    updateOne: async (id: string, values: any) => {
       const resource = await model.findByPk(id);
       if (!resource) {
-        let error = new Error(`Cannot find a resource with that id.`);
+        const error = new Error(`Cannot find a resource with that id.`);
         error.name = '404';
         throw error;
       }
@@ -44,11 +45,11 @@ export function createControllers<T>(model) {
     },
 
     // Remove one
-    removeOne: async <T>(id) => {
+    removeOne: async id => {
       const resource = await model.findByPk(id);
 
       if (!resource) {
-        let error = new Error(`Cannot find a resource with that id.`);
+        const error = new Error(`Cannot find a resource with that id.`);
         error.name = '404';
         throw error;
       }

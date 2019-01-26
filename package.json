@@ -13,12 +13,10 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon -r dotenv/config dist/index.js",
-    "test": "run-s test:unit test:integration",
+    "test": "run-s test:unit test:e2e",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec.tsx?'",
-    "test:integration": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --testPathPattern='\\w+\\.ispec.tsx?'",
-    "test:staged": "run-s test:staged:unit test:staged:integration",
-    "test:staged:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --findRelatedTests --testPathPattern='\\w+\\.spec.tsx?'",
-    "test:staged:integration": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --findRelatedTests --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --runInBand --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
     "build": "cross-env NODE_ENV=build gulp build",
@@ -39,9 +37,9 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "lint:fix",
-        "npm run test",
-        "git add"
+        "npm run lint:fix",
+        "git add",
+        "npm run test:staged"
       ]
     },
     "ignore": [

@@ -32,7 +32,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s format:fix lint:staged",
+      "pre-commit": "run-s format:fix lint:staged test",
       "pre-push": "npm run test:push"
     }
   },
@@ -40,7 +40,6 @@
     "linters": {
       "*.ts": [
         "npm run lint:fix",
-        "npm test",
         "git add"
       ]
     },

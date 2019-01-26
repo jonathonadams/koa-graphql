@@ -42,7 +42,7 @@ const checkToken: AuthMiddlware = (parent, args, context, info) => {
 const checkUser: AuthMiddlware = async (parent, args, context, info) => {
   try {
     const id = context.user.sub;
-    const user = await User.findById(id);
+    const user = await User.findByPk(id);
     if (!user) {
       throw new Error('[401]: Unauthorized');
     } else {

@@ -28,7 +28,7 @@ export const verifyUser = async (ctx, next) => {
     // This middlware will only be called on a route that is after the verify token
     // middleware has already been called. Hence you can guarantee that ctx.request.token
     // will contain the decoded token, and hence the 'sub' property will be the id
-    const user = await User.findById(ctx.request.token.sub);
+    const user = await User.findByPk(ctx.request.token.sub);
     if (!user) {
       throw new Error('Unauthorized');
     }

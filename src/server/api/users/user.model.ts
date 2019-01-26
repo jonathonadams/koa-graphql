@@ -4,7 +4,7 @@ import { sequelize } from '../../db/sequelize';
 // Sequelize Operation symbols
 const Op = (Sequelize as any).Op;
 
-export class User extends Model {
+export class User extends Model<User> {
   id: string;
   username: string;
   firstName: string;

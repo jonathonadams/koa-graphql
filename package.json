@@ -39,8 +39,8 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "npm run test",
-        "git add"
+        "git add",
+        "npm run test"
       ]
     },
     "ignore": [

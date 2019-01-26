@@ -40,7 +40,7 @@
     "linters": {
       "*.ts": [
         "npm run lint:fix",
-        "npm run test:staged",
+        "npm run test",
         "git add"
       ]
     },

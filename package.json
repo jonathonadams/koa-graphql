@@ -26,19 +26,19 @@
     "format:fix": "pretty-quick --staged",
     "lint": "tslint --project tsconfig.json --config tslint.json",
     "lint:fix": "tslint --project tsconfig.json --config tslint.json --fix",
-    "lint:staged": "lint-staged",
     "typedoc": "typedoc",
     "docs": "typedoc --out docs/documentation/ src/"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s format:fix lint:staged",
+      "pre-commit": "lint-staged",
       "pre-push": "npm run test:push"
     }
   },
   "lint-staged": {
     "linters": {
       "*.ts": [
+        "npm run format:fix",
         "git add",
         "test"
       ]

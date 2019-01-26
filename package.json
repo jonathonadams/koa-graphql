@@ -39,7 +39,9 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "npm run test:integration",
+        "npm run format:fix",
+        "npm run lint:fix",
+        "npm run test:staged",
         "git add"
       ]
     },

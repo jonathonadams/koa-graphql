@@ -1,5 +1,5 @@
 import { User } from './user.model';
-import { login } from '../../auth/auth';
+import { login, register } from '../../auth/auth';
 import { generateResolvers } from '../../util/create-resolvers';
 import { verifyToken, authenticateRequest } from '../../auth/authGuardGraphQL';
 
@@ -12,7 +12,7 @@ export const userResolvers = {
   },
   Mutation: {
     login: login,
-    newUser: authenticateRequest(verifyToken)(resolvers.createOne),
+    register: authenticateRequest(verifyToken)(register),
     updateUser: authenticateRequest(verifyToken)(resolvers.updateOne),
     removeUser: authenticateRequest(verifyToken)(resolvers.removeOne)
   }

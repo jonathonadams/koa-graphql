@@ -48,14 +48,16 @@ export const login = async (root, args, context, info): Promise<{ token: string 
 
 export const register = async (root, args, context, info) => {
   try {
-    const user: User = args.user;
-    const username: string = args.username;
-    const password: string = args.password;
+    const user: User = args.input;
+    const username: string = user.username;
+    const password: string = (user as any).password;
 
     user.hashedPassword = await hash(password, 10);
 
-    return await User.create(user);
+    const usern = await User.create(user);
+    return usern;
   } catch (err) {
+    throw err;
     // TODO -> Error Handling
   }
 };

@@ -12,14 +12,15 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "cross-env NODE_ENV=dev node-dev -r dotenv/config dist/index.js",
-    "test": "npm run test:unit",
-    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --coverage --testPathPattern='\\w+\\.spec.tsx?' --findRelatedTests",
-    "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
-    "test:push": "cross-env NODE_ENV=test jest --ci=true --passWithNoTests --coverage --bail --testPathPattern='\\w+\\.spec.tsx?'",
-    "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
+    "dev": "cross-env NODE_ENV=dev nodemon -r dotenv/config dist/index.js",
+    "test": "run-s test:unit test:integration",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec.tsx?'",
-    "test:integration": "cross-env NODE_ENV=test jest --coverage --runInBand --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test:integration": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test:staged": "run-s test:staged:unit test:staged:integration",
+    "test:staged:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --findRelatedTests --testPathPattern='\\w+\\.spec.tsx?'",
+    "test:staged:integration": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --findRelatedTests --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
+    "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
     "build": "cross-env NODE_ENV=build gulp build",
     "build:dist": "gulp dist",
     "format:fix": "pretty-quick --staged",
@@ -38,8 +39,7 @@
   "lint-staged": {
     "linters": {
       "*.ts": [
-        "tslint --fix",
-        "npm run test:unit",
+        "npm run test:integration",
         "git add"
       ]
     },
@@ -51,6 +51,7 @@
     "apollo-server-koa": "^2.3.1",
     "bcryptjs": "^2.4.3",
     "dataloader": "^1.4.0",
+    "glob": "^7.1.3",
     "graphql": "^14.0.2",
     "graphql-iso-date": "^3.6.1",
     "graphql-tools": "^4.0.3",
@@ -84,7 +85,7 @@
     "jest": "^23.6.0",
     "jest-extended": "^0.11.0",
     "lint-staged": "^8.1.0",
-    "node-dev": "^3.1.3",
+    "nodemon": "^1.18.9",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.15.3",
     "pretty-quick": "^1.8.0",

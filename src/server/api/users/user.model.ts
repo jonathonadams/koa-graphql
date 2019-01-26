@@ -10,7 +10,7 @@ export class User extends Model {
   firstName: string;
   lastName: string;
   emailAddress: string;
-  dateOfBirth: Date;
+  dateOfBirth: Date | string;
   hashedPassword: string;
   createdAt: Date;
   updatedAt: Date;

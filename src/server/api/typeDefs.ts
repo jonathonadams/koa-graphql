@@ -1,15 +1,13 @@
+import * as glob from 'glob';
 import { readFileSync } from 'fs';
 
-// ALl types and resolvers
-import { todoType } from './todos';
-import { userType } from './users';
+function loadGraphQLSchema(filePath: string) {
+  return readFileSync(`${process.cwd()}/${filePath}`, { encoding: 'utf-8' });
+}
 
-// Base scheme that defindes
-// the Query and Mutation operations
-// And any custom scalars
-const baseSchema = readFileSync(__dirname + '/base.graphql', 'utf8');
-
-// An array of type definitions
-const typeDefs = [baseSchema, userType, todoType];
+// Glob will return an array of all the files located in the dist/ director ending in .graphql
+// The Base schema (base.graphql) must be loaded first however it is the first element in the array becuase
+// It located at the highest directory level.
+const typeDefs = glob.sync('dist/**/*.graphql').map(loadGraphQLSchema);
 
 export default typeDefs;

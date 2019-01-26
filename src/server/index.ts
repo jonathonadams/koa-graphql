@@ -22,12 +22,12 @@ export default class ApiServer {
    * @param {Koa} app an instance of a koa server
    * @param {Router} router an instance of a koa-router
    */
-  private setupServer(app: Koa, router: Router) {
+  private async setupServer(app: Koa, router: Router) {
     // Setup all the required middleware for the app
     setupMiddleware(app);
 
     // Apply the API endpoints
-    applyApiEndpoints(app);
+    await applyApiEndpoints(app);
 
     // Health check for kubernetes on google cloud
     // Container must return status 200 on a designated healthz route

@@ -13,6 +13,7 @@ input NewUserInput {
   username: String!
   emailAddress: String!
   dateOfBirth: Date!
+  password: String!
 }
 
 input UpdatedUserInput {
@@ -35,7 +36,7 @@ type Query {
 
 type Mutation {
   login(username: String!, password: String!): AuthPayload!
-  newUser(input: NewUserInput!): User!
+  register(input: NewUserInput!): User!
   updateUser(input: UpdatedUserInput!): User!
   removeUser(id: ID!): User!
 }

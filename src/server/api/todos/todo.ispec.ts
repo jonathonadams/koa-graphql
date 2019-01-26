@@ -21,11 +21,11 @@ const todo = {
   userId: '00d8bd28-3480-11e8-b43d-0242ac110002',
   title: 'Some Todo',
   description: 'A todo that needs to be done',
-  completed: false,
+  completed: false
 } as Todo;
 
 const updatedTodo = {
   completed: true
 };
 
-createGraphQLSpec(Todo, 'todo', todo, updatedTodo, dependents);
+createGraphQLSpec(Todo, 'Todo', todo, updatedTodo, dependents);

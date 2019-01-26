@@ -52,6 +52,6 @@ export const apolloServer = new ApolloServer({
 });
 
 // A function that applies the middlware to the app.
-export function applyGraphQLEnpoint(app) {
+export async function applyGraphQLEnpoint(app) {
   apolloServer.applyMiddleware({ app });
 }

@@ -32,7 +32,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "run-s format:fix lint:staged",
+      "pre-commit": "run-s lint:staged",
       "pre-push": "npm run test:push"
     }
   },

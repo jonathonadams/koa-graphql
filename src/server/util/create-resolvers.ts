@@ -10,7 +10,7 @@ import { Model } from 'sequelize';
 //   -> place logic here
 // }
 
-export function generateResolvers<T extends Model>(model) {
+export function generateResolvers<T>(model) {
   const controllers = createControllers<T>(model);
 
   return {
@@ -33,7 +33,7 @@ export function generateResolvers<T extends Model>(model) {
   };
 }
 
-export function createTypeResolver<T extends Model>(model: T, name: string) {
+export function createTypeResolver<T>(model, name: string) {
   const resolvers = generateResolvers<T>(model);
 
   const typeResolver = {

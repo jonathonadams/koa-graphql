@@ -2,6 +2,7 @@ import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import { setupMiddleware } from './middleware';
 import { applyApiEndpoints } from './api';
+import { applyAuthorizationRoutes } from './auth/auth-routes';
 
 /**
  * Crates a new API Server
@@ -28,6 +29,9 @@ export default class ApiServer {
 
     // Apply the API endpoints
     await applyApiEndpoints(app);
+
+    // apply all authorizatoin router
+    await applyAuthorizationRoutes(app);
 
     // Health check for kubernetes on google cloud
     // Container must return status 200 on a designated healthz route

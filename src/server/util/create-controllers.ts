@@ -2,7 +2,7 @@ import * as merge from 'lodash.merge';
 import { escapeObjectProperties } from './helper-functions';
 import { Model } from 'sequelize/types';
 
-export function createControllers<T extends Model>(model) {
+export function createControllers<T>(model) {
   return {
     // Get All
     getAll: async () => {

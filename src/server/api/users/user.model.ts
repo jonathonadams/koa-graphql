@@ -1,5 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import { sequelize } from '../../db/sequelize';
+import { AuthenticationScopes } from 'src/server/auth/scopes';
 
 // Sequelize Operation symbols
 const Op = (Sequelize as any).Op;
@@ -12,6 +13,7 @@ export class User extends Model<User> {
   emailAddress: string;
   dateOfBirth: Date | string;
   hashedPassword: string;
+  scope: AuthenticationScopes;
   createdAt: Date;
   updatedAt: Date;
 
@@ -37,7 +39,8 @@ User.init(
     username: DataTypes.STRING,
     emailAddress: DataTypes.STRING,
     dateOfBirth: DataTypes.DATE,
-    hashedPassword: DataTypes.STRING
+    hashedPassword: DataTypes.STRING,
+    scope: DataTypes.INTEGER
   },
   {
     sequelize: sequelize,

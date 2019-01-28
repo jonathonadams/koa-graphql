@@ -15,10 +15,9 @@ export function applyRestEndpoints(app: Koa) {
   // Global check to ensure token is valid
   router.use(verifyToken);
 
+  // Apply all your routes here
   router.use('/users', userRouter.routes());
   router.use('/todos', generateRestEndpoints(Todo));
 
-  // Apply all your routes here
-  app.use(router.allowedMethods());
   app.use(router.routes());
 }

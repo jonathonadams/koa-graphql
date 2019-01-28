@@ -4,7 +4,7 @@ import { sequelize } from '../../db/sequelize';
 // Sequelize Operation symbols
 const Op = (Sequelize as any).Op;
 
-export class Todo extends Model {
+export class Todo extends Model<Todo> {
   id: string;
   userId: string;
   title: string;

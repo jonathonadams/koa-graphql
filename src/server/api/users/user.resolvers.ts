@@ -1,5 +1,5 @@
 import { User } from './user.model';
-import { login, register } from '../../auth/auth';
+import { login, register } from '../../auth/graphqlAuth';
 import { generateResolvers } from '../../util/create-resolvers';
 import { verifyToken, authenticateRequest } from '../../auth/authGuardGraphQL';
 

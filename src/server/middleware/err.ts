@@ -1,4 +1,5 @@
-// Configure error handling error handling must go after routes
+import { badImplementation } from 'boom';
+
 /**
  * Buiilds a custom eror and logs it to the console.
  *
@@ -8,16 +9,13 @@ export const errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    switch (err.name) {
-      case 'JsonWebTokenError':
-      case 'TokenExpiredError':
-        ctx.status = 401;
-        ctx.body = 'Unauthorized';
-        break;
-      default:
-        // if the error in not handdled here, it will
-        // bubble up to the default Koa error handler
-        throw err;
+    if (err.isBoom) {
+      ctx.status = err.output.statusCode;
+      ctx.body = err.outout.paylod;
+    } else {
+      const error = badImplementation(err.message);
+      ctx.status = error.output.statusCode;
+      ctx.body = error.output.payload;
     }
   }
 };

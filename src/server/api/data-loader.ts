@@ -15,7 +15,6 @@ const createUsersLoader = () => {
         }
       }
     });
-    console.log('Users loader batch: ', userIds.length);
     const usersByIds = keyBy(users, 'id');
     return usersByIds.map((id: string) => usersByIds[id]);
   });
@@ -30,7 +29,6 @@ const createTodoLoader = () => {
         }
       }
     });
-    console.log('todo loader batch: ', todoIds.length);
     const todosById = keyBy(todos, 'id');
     return todoIds.map((id: string) => todosById[id]);
   });

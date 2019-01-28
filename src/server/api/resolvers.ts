@@ -4,6 +4,6 @@ import { userResolvers } from './users';
 import { Todo } from './todos';
 
 // All the resolvers as an object.
-const resolvers = merge({}, userResolvers, createTypeResolver(Todo, 'Todo'));
+const resolvers = merge({}, userResolvers, createTypeResolver<Todo>(Todo, 'Todo'));
 
 export default resolvers;

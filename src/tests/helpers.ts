@@ -17,13 +17,13 @@ export const syncDb = async () => {
   }
 };
 
-export const runQuery = async (query, variables, user, token) => {
+export const runQuery = async (query, variables, token) => {
   return graphql(
     schema,
     query,
     null,
     {
-      user,
+      state: {},
       token
     },
     variables

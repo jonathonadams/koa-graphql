@@ -28,6 +28,7 @@ export const apolloServer = new ApolloServer({
     // if the connection exists, it is a subscription
     if (connection) {
       return {
+        state: {},
         model: {},
         loaders: {}
       };
@@ -35,6 +36,8 @@ export const apolloServer = new ApolloServer({
     // if the ctx exists, it is a req/res
     if (ctx) {
       return {
+        // create an empty state object to store temporary data in the resolvers
+        state: {},
         // put the desired models on the context for quick access if needed
         // Such as the user
         model: { user: User },

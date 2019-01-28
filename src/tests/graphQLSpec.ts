@@ -9,13 +9,7 @@ import { Sequelize } from 'sequelize';
 // This can be used to create abstraced values to create the query strings
 // Example of a query string
 // `
-// mutation NewAdviser($input: NewAdviser!) {
-//   Adviser(input: $input) {
-//     id
-//     name
-//   }
-// }
-// `
+
 // ------------------------------------
 export default function createGraphQLSpec<T>(
   model: any,
@@ -33,7 +27,6 @@ export default function createGraphQLSpec<T>(
   }
 
   // GraphQL schemas are designed written with UpperCase names
-  // const lowerResourceName = resourceName.toLocaleLowerCase();
   const upperResourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
 
   describe(`GraphQL / ${upperResourceName}`, () => {
@@ -75,15 +68,11 @@ export default function createGraphQLSpec<T>(
             }
           }`,
           {},
-          user,
           jwt
         );
 
         expect(result.errors).not.toBeDefined();
         expect(result.data[queryName]).toBeArray();
-
-        // expect(result.errors).to.not.exist;
-        // expect(result.data[queryName]).to.be.an('array');
       });
     });
 
@@ -99,17 +88,12 @@ export default function createGraphQLSpec<T>(
           }
         }`,
           {},
-          user,
           jwt
         );
 
         expect(result.errors).not.toBeDefined();
         expect(result.data[queryName]).toBeObject();
         expect(result.data[queryName].id).toEqual((resource as any).id.toString());
-
-        // expect(result.errors).to.not.exist;
-        // expect(result.data[queryName]).to.be.an('object');
-        // expect(result.data[queryName].id).to.eql((resource as any).id);
       });
     });
 
@@ -130,17 +114,12 @@ export default function createGraphQLSpec<T>(
         }
       `,
           { input: resourceToCreate },
-          user,
           jwt
         );
 
         expect(result.errors).not.toBeDefined();
         expect(result.data[queryName]).toBeObject();
         expect(result.data[queryName].id).toBeString();
-
-        // expect(result.errors).to.not.exist;
-        // expect(result.data[queryName]).to.be.an('object');
-        // expect(result.data[queryName].id).to.be.a('string');
       });
     });
 
@@ -148,9 +127,6 @@ export default function createGraphQLSpec<T>(
       it(`should update an ${upperResourceName}`, async () => {
         const queryName = `update${upperResourceName}`;
 
-        // const update = { id: (resource as any).id };
-        // update[Object.keys(resourceToUpdate)[0]] =
-        //   resourceToUpdate[Object.keys(resourceToUpdate)[0]];
         resourceToUpdate.id = (resource as any).id;
 
         const result = await runQuery(
@@ -162,17 +138,12 @@ export default function createGraphQLSpec<T>(
             }
           `,
           { input: resourceToUpdate },
-          user,
           jwt
         );
 
         expect(result.errors).not.toBeDefined();
         expect(result.data[queryName]).toBeObject();
         expect(result.data[queryName].id).toEqual((resource as any).id.toString());
-
-        // expect(result.errors).to.not.exist;
-        // expect(result.data[queryName]).to.be.an('object');
-        // expect(result.data[queryName].id).to.eql((resource as any).id);
       });
     });
 
@@ -187,15 +158,11 @@ export default function createGraphQLSpec<T>(
               }
             }`,
           { id: (resource as any).id },
-          user,
           jwt
         );
 
         expect(result.errors).not.toBeDefined();
         expect(result.data[queryName]).toBeObject();
-
-        // expect(result.errors).to.not.exist;
-        // expect(result.data[queryName]).to.be.an('object');
       });
     });
   });

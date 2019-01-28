@@ -26,42 +26,36 @@ export function generateRestControllers<T>(model) {
       ctx.state.id = id;
       await next();
     },
-    getAll: async <T>(ctx) => {
+    getAll: async ctx => {
       ctx.status = 200;
       ctx.body = await controllers.getAll();
     },
-    getOne: async <T>(ctx, next) => {
+    getOne: async (ctx, next) => {
       try {
         ctx.status = 200;
         ctx.body = await controllers.getOne(ctx.state.id as string);
       } catch (err) {
-        if (err.name === '404') {
-          ctx.status = 404;
-        }
+        throw err;
       }
     },
-    createOne: async <T>(ctx, next) => {
+    createOne: async (ctx, next) => {
       ctx.status = 201;
       ctx.body = await controllers.createOne(ctx.request.body);
     },
-    updateOne: async <T>(ctx, next) => {
+    updateOne: async (ctx, next) => {
       try {
         ctx.status = 201;
         ctx.body = await controllers.updateOne(ctx.state.id, ctx.request.body);
       } catch (err) {
-        if (err.name === '404') {
-          ctx.status = 404;
-        }
+        throw err;
       }
     },
-    removeOne: async <T>(ctx, next) => {
+    removeOne: async (ctx, next) => {
       try {
         ctx.status = 200;
         ctx.body = await controllers.removeOne(ctx.state.id);
       } catch (err) {
-        if (err.name === '404') {
-          ctx.status = 404;
-        }
+        throw err;
       }
     }
   };

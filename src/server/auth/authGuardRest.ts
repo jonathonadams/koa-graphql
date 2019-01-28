@@ -15,7 +15,7 @@ export const verifyToken = async (ctx, next) => {
     // if the verification passes, replace the encoded token with the decoded token
     // note that the verify function  operates synchronously
     try {
-      ctx.state.token = verify(ctx.request.token, config.secrets.jwt);
+      ctx.state.token = verify(ctx.request.token, config.secrets.accessToken);
     } catch (err) {
       throw Boom.unauthorized('Invalid Token.');
     }

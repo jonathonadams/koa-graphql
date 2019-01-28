@@ -44,7 +44,6 @@ describe(`GraphQL / User`, () => {
           }
         }`,
         {},
-        user,
         jwt
       );
 
@@ -65,7 +64,6 @@ describe(`GraphQL / User`, () => {
         }
       }`,
         {},
-        user,
         jwt
       );
 
@@ -92,7 +90,6 @@ describe(`GraphQL / User`, () => {
       }
     `,
         { input: user },
-        user,
         jwt
       );
 
@@ -117,7 +114,6 @@ describe(`GraphQL / User`, () => {
           }
         `,
         { input: updatedUser },
-        user,
         jwt
       );
 
@@ -138,7 +134,6 @@ describe(`GraphQL / User`, () => {
             }
           }`,
         { id: createdUser.id },
-        user,
         jwt
       );
 

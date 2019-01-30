@@ -11,7 +11,7 @@ export const errorHandler = async (ctx, next) => {
   } catch (err) {
     if (err.isBoom) {
       ctx.status = err.output.statusCode;
-      ctx.body = err.outout.paylod;
+      ctx.body = err.output.payload;
     } else {
       const error = badImplementation(err.message);
       ctx.status = error.output.statusCode;

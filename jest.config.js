@@ -3,7 +3,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 module.exports = {
-  setupTestFrameworkScriptFile: 'jest-extended',
+  setupFilesAfterEnv: ['jest-extended'],
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   transform: {

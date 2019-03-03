@@ -7,9 +7,9 @@ const user = ({
   username: 'test user',
   firstName: 'test',
   lastName: 'user',
-  emailAddress: 'test@domsin.com',
+  emailAddress: 'test@domain.com',
   dateOfBirth: '2019-01-01',
-  password: 'somePassword'
+  password: 'asF.s0f.s'
 } as any) as User;
 
 const updatedUser = { username: 'updated user' };

@@ -13,9 +13,9 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon -r dotenv/config dist/index.js",
-    "test": "run-s test:unit test:e2e",
-    "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec.tsx?'",
-    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --runInBand --testPathPattern='\\w+\\.ispec.tsx?'",
+    "test": "run-p test:unit test:e2e",
+    "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
+    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --runInBand --testPathPattern='\\w+\\.e2e\\.tsx?'",
     "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --runInBand --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
@@ -65,6 +65,7 @@
     "koa-router": "^7.4.0",
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
+    "lodash.omit": "^4.5.0",
     "pg": "^7.8.0",
     "sequelize": "^5.0.0-beta.16"
   },

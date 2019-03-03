@@ -4,6 +4,7 @@ import { compare, hash } from 'bcryptjs';
 import config from '../config';
 import { User } from '../api/users';
 import { ServerState } from '../api/server-state/server-state.model';
+import { isPasswordAllowed } from './util';
 
 // A function that returns a singed JWT
 export const signToken = (user: User): string => {
@@ -48,10 +49,12 @@ export const loginController = async (
 export const registerController = async (user: User) => {
   const username: string = user.username;
   const password: string = (user as any).password;
-
-  user.hashedPassword = await hash(password, 10);
-
-  return await User.create(user);
+  if (isPasswordAllowed(password)) {
+    user.hashedPassword = await hash(password, 10);
+    return await User.create(user);
+  } else {
+    throw Boom.unauthorized('Password does not match requirements');
+  }
 };
 
 export const authorize = async (ctx, next) => {
@@ -92,7 +95,7 @@ export const authorize = async (ctx, next) => {
   };
 };
 
-// a controller that recives a refresh token and returns an access token.
+// a controller that receives a refresh token and returns an access token.
 export async function refreshAccessToken(ctx, nex) {
   const refreshToken = ctx.request.body.refreshToken;
   const username = ctx.request.body.username;

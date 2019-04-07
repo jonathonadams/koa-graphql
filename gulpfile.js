@@ -1,15 +1,16 @@
 'use strict';
-var gulp = require('gulp');
-var del = require('del');
-var ts = require('gulp-typescript');
-var tsProject = ts.createProject('tsconfig.json');
+const gulp = require('gulp');
+const del = require('del');
+const ts = require('gulp-typescript');
+const devTsProject = ts.createProject('tsconfig.json');
+const prodTsProject = ts.createProject('tsconfig.json', { sourceMap: false });
 
-var paths = {
+const paths = {
   ts: ['src/**/*.ts'],
-  specs: ['dist/**/*.spec.js', 'dist/**/*.ispec.js', 'dist/tests'],
+  specs: ['dist/**/*.spec.js', 'dist/**/*.e2e.js', 'dist/tests'],
   graphQl: ['src/**/*.graphql'],
   json: ['src/**/*.json'],
-  js: [`builds/**/*.js`]
+  js: ['builds/**/*.js']
 };
 
 // Output destination folder
@@ -31,10 +32,18 @@ gulp.task('json', function() {
 });
 
 // Compiles the typescript based on the project tsconfig
-gulp.task('ts', function() {
-  return tsProject
+gulp.task('dev-ts', function() {
+  return devTsProject
     .src()
-    .pipe(tsProject())
+    .pipe(devTsProject())
+    .js.pipe(gulp.dest(`${dest}/`));
+});
+
+// Compiles the typescript based on the project tsconfig
+gulp.task('prod-ts', function() {
+  return prodTsProject
+    .src()
+    .pipe(prodTsProject())
     .js.pipe(gulp.dest(`${dest}/`));
 });
 
@@ -45,24 +54,23 @@ gulp.task('rmv-tests', function() {
 
 // Rerun the task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(paths.ts, gulp.series('ts'));
+  gulp.watch(paths.ts, gulp.series('dev-ts'));
   gulp.watch(paths.graphQl, gulp.series('graphql'));
   gulp.watch(paths.json, gulp.series('json'));
 });
 
-// Build task
-// Also watched files
+// Build task & Watch
 gulp.task(
-  'build',
-  gulp.series('clean', gulp.parallel('graphql', 'ts', 'json'), gulp.series('watch'))
+  'dev',
+  gulp.series('clean', gulp.parallel('graphql', 'dev-ts', 'json'), gulp.series('watch'))
 );
 
-// Distribution task.
+// Distribution task, also removes all spec files.
 // Removes test
 gulp.task(
-  'dist',
-  gulp.series('clean', gulp.parallel('graphql', 'ts', 'json'), gulp.series('rmv-tests'))
+  'prod',
+  gulp.series('clean', gulp.parallel('graphql', 'prod-ts', 'json'), gulp.series('rmv-tests'))
 );
 
-// // Default task is to run the build
-gulp.task('default', gulp.series('build'));
+// Default task is to run the build
+gulp.task('default', gulp.series('dev'));

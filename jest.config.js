@@ -11,7 +11,6 @@ module.exports = {
   },
   testRegex: '(/__tests__/.*|(\\.|/)(e2e|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-
   verbose: true,
   coverageThreshold: {
     global: {

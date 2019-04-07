@@ -1,3 +1,4 @@
+import * as Koa from 'koa';
 import * as helmet from 'koa-helmet';
 import * as morgan from 'koa-morgan';
 import * as bearerToken from 'koa-bearer-token';
@@ -8,7 +9,7 @@ import config from '../config';
 import { errorHandler, errorLogger } from './err';
 
 // Configure middleware to parse income requests
-export const setupMiddleware = app => {
+export const setupMiddleware = (app: Koa) => {
   app.use(helmet());
   app.use(compress());
   app.use(bodyParser());

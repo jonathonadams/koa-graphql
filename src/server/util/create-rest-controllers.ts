@@ -1,8 +1,8 @@
 import { createControllers } from './create-controllers';
-import { Middleware } from 'koa';
+import { Middleware, ParameterizedContext } from 'koa';
 import * as Router from 'koa-router';
 
-export function generateRestEndpoints(model): Middleware {
+export function generateRestEndpoints(model: any): Middleware {
   const router = new Router();
   const controllers = generateRestControllers(model);
 
@@ -18,19 +18,19 @@ export function generateRestEndpoints(model): Middleware {
   return router.routes();
 }
 
-export function generateRestControllers<T>(model) {
+export function generateRestControllers<T>(model: any) {
   const controllers = createControllers<T>(model);
 
   return {
-    params: async (id, ctx, next) => {
+    params: async (id: string, ctx: ParameterizedContext, next: () => Promise<any>) => {
       ctx.state.id = id;
       await next();
     },
-    getAll: async ctx => {
+    getAll: async (ctx: ParameterizedContext) => {
       ctx.status = 200;
       ctx.body = await controllers.getAll();
     },
-    getOne: async (ctx, next) => {
+    getOne: async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       try {
         ctx.status = 200;
         ctx.body = await controllers.getOne(ctx.state.id as string);
@@ -38,11 +38,11 @@ export function generateRestControllers<T>(model) {
         throw err;
       }
     },
-    createOne: async (ctx, next) => {
+    createOne: async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       ctx.status = 201;
       ctx.body = await controllers.createOne(ctx.request.body);
     },
-    updateOne: async (ctx, next) => {
+    updateOne: async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       try {
         ctx.status = 201;
         ctx.body = await controllers.updateOne(ctx.state.id, ctx.request.body);
@@ -50,7 +50,7 @@ export function generateRestControllers<T>(model) {
         throw err;
       }
     },
-    removeOne: async (ctx, next) => {
+    removeOne: async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       try {
         ctx.status = 200;
         ctx.body = await controllers.removeOne(ctx.state.id);

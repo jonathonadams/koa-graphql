@@ -1,36 +1,36 @@
 import * as DataLoader from 'dataloader';
 import { Sequelize } from 'sequelize';
-import * as keyBy from 'lodash.keyby';
+import keyBy from 'lodash.keyby';
 import { User } from './users';
 import { Todo } from './todos';
 
 const Op = (Sequelize as any).Op;
 
 const createUsersLoader = () => {
-  return new DataLoader(async userIds => {
+  return new DataLoader(async usersIds => {
     const users = await User.findAll({
       where: {
         id: {
-          [Op.in]: userIds
+          [Op.in]: usersIds
         }
       }
     });
     const usersByIds = keyBy(users, 'id');
-    return usersByIds.map((id: string) => usersByIds[id]);
+    return usersIds.map((id: string) => usersByIds[id]);
   });
 };
 
 const createTodoLoader = () => {
-  return new DataLoader(async todoIds => {
+  return new DataLoader(async todosIds => {
     const todos = await Todo.findAll({
       where: {
         id: {
-          [Op.in]: todoIds
+          [Op.in]: todosIds
         }
       }
     });
     const todosById = keyBy(todos, 'id');
-    return todoIds.map((id: string) => todosById[id]);
+    return todosIds.map((id: string) => todosById[id]);
   });
 };
 

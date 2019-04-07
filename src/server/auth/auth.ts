@@ -5,6 +5,7 @@ import config from '../config';
 import { User } from '../api/users';
 import { ServerState } from '../api/server-state/server-state.model';
 import { isPasswordAllowed } from './util';
+import { Middleware, ParameterizedContext } from 'koa';
 
 // A function that returns a singed JWT
 export const signToken = (user: User): string => {
@@ -57,7 +58,7 @@ export const registerController = async (user: User) => {
   }
 };
 
-export const authorize = async (ctx, next) => {
+export const authorize: Middleware = async (ctx, next) => {
   const username = ctx.request.body.username;
   const password = ctx.request.body.password;
 
@@ -96,7 +97,7 @@ export const authorize = async (ctx, next) => {
 };
 
 // a controller that receives a refresh token and returns an access token.
-export async function refreshAccessToken(ctx, nex) {
+export async function refreshAccessToken(ctx: ParameterizedContext, next: () => Promise<any>) {
   const refreshToken = ctx.request.body.refreshToken;
   const username = ctx.request.body.username;
 
@@ -122,7 +123,7 @@ export async function refreshAccessToken(ctx, nex) {
 }
 
 // a controller to revoke a refresh token
-export async function revokeRefreshToken(ctx, next) {
+export async function revokeRefreshToken(ctx: ParameterizedContext, next: () => Promise<any>) {
   const refreshToken = ctx.request.body.refreshToken;
 
   const serverState: ServerState = await ServerState.getServerState();

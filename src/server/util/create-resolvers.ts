@@ -1,39 +1,54 @@
 import { createControllers } from './create-controllers';
 import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
-import { Model } from 'sequelize';
+import { GraphQLFieldResolver } from 'graphql';
 
 // const resolver = async (rootValue, args, context, info) => {
 //   -> place logic here
 // }
 
-// const exampleResolver = async (_, { spreaOperator }, { req, user } , __ ) => {
+// const exampleResolver = async (_, { destructedProperty }, { req, user } , __ ) => {
 //   -> place logic here
 // }
 
-export function generateResolvers<T>(model) {
+type Resolver<T> = GraphQLFieldResolver<any, any, T>;
+
+export function generateResolvers<T>(model: any) {
   const controllers = createControllers<T>(model);
 
+  const getAll: Resolver<any> = async (root, args, ctx, info) => {
+    return await controllers.getAll();
+  };
+  const getOne: Resolver<{ id: string }> = async (root, { id }, ctx, info) => {
+    return await controllers.getOne(id);
+  };
+  const createOne: Resolver<{ input: T }> = async (root, { input }, ctx, info) => {
+    return await controllers.createOne(input);
+  };
+
+  const updateOne: Resolver<{ input: { id: string; [property: string]: any } }> = async (
+    root,
+    { input },
+    ctx,
+    info
+  ) => {
+    const { id, ...values } = input;
+    return await controllers.updateOne(id, values);
+  };
+
+  const removeOne: Resolver<{ id: string }> = async (root, { id }, ctx, info) => {
+    return await controllers.removeOne(id);
+  };
+
   return {
-    getAll: async (root, args, ctx, info) => {
-      return await controllers.getAll();
-    },
-    getOne: async (root, { id }, ctx, info) => {
-      return await controllers.getOne(id as string);
-    },
-    createOne: async (root, { input }, ctx, info) => {
-      return await controllers.createOne(input);
-    },
-    updateOne: async (root, { input }, ctx, info) => {
-      const { id, ...values } = input;
-      return await controllers.updateOne(id, values);
-    },
-    removeOne: async (root, { id }, ctx, info) => {
-      return await controllers.removeOne(id);
-    }
+    getAll,
+    getOne,
+    createOne,
+    updateOne,
+    removeOne
   };
 }
 
-export function createTypeResolver<T>(model, name: string) {
+export function createTypeResolver<T>(model: any, name: string) {
   const resolvers = generateResolvers<T>(model);
 
   const typeResolver = {

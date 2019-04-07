@@ -2,7 +2,7 @@ import * as Boom from 'boom';
 import * as merge from 'lodash.merge';
 import { escapeObjectProperties } from './helper-functions';
 
-export function createControllers<T>(model) {
+export function createControllers<T>(model: any) {
   return {
     // Get All
     getAll: async () => {
@@ -20,7 +20,7 @@ export function createControllers<T>(model) {
 
     // Create a Resource
     createOne: async (values: any) => {
-      // Escaoe the input values before create
+      // Escape the input values before create
       escapeObjectProperties(values);
       return await (model.create(values) as T);
     },
@@ -34,12 +34,12 @@ export function createControllers<T>(model) {
     },
 
     // Remove one
-    removeOne: async id => {
+    removeOne: async (id: any) => {
       const resource = await model.findByPk(id);
       if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
 
       // Sequelize does not return an object from the destroy method.
-      // Create a cloase of the object to send back with status 2000
+      // Create a clone of the object to send back with status 2000
       const resourceToReturn = { ...resource.get() };
       await resource.destroy();
 

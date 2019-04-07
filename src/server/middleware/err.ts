@@ -1,11 +1,12 @@
 import { badImplementation } from 'boom';
+import { Middleware, ParameterizedContext } from 'koa';
 
 /**
- * Buiilds a custom eror and logs it to the console.
+ * Builds a custom error and logs it to the console.
  *
  * @param {Error} error
  */
-export const errorHandler = async (ctx, next) => {
+export const errorHandler: Middleware = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
@@ -20,7 +21,7 @@ export const errorHandler = async (ctx, next) => {
   }
 };
 
-export function errorLogger(err, ctx) {
+export function errorLogger(err: any, ctx: ParameterizedContext) {
   const date = new Date();
   console.error('There was an error.', {
     timestamp: date.toISOString(),

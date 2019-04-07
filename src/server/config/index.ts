@@ -2,9 +2,10 @@ import * as merge from 'lodash.merge';
 import devConfig from './development';
 import prodConfig from './production';
 import testConfig from './test';
+import { Options } from 'sequelize';
 
 // ---------------------------------------------------------------
-// Applicatoin configuration belongs in this file
+// Application configuration belongs in this file
 // and associated environment files
 // Configuration is dynamic based on what environment is running
 // production, development or testing
@@ -20,10 +21,8 @@ config.port = process.env.PORT || 3000;
 // Default timezone for date manipulation
 config.timezone = process.env.TIMEZONE;
 
-// Global database options for sequlize
-// Note the type definitions for sequelize are for v4
-// and have not been upgarded for v5, hence can't use the Options type for type checking
-const databaseOptions: any = {
+// Global database options for sequelize
+const databaseOptions: Options = {
   dialect: 'postgres',
   logging: false,
   pool: {
@@ -68,7 +67,7 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
-// Merge overides the global settings with the
+// Merge overrides the global settings with the
 // environment settings based on the NODE_ENV
 merge(config, environmentSettings);
 

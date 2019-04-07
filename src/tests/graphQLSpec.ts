@@ -6,7 +6,7 @@ import { Sequelize } from 'sequelize';
 
 // -----------------------------------
 // Object.keys(object) is used to return an array of the names of object properties.
-// This can be used to create abstraced values to create the query strings
+// This can be used to create abstracted values to create the query strings
 // Example of a query string
 // `
 
@@ -19,11 +19,11 @@ export default function createGraphQLSpec<T>(
   testDependents: TestDependents<any>[] = []
 ) {
   if (!resourceToCreate || Object.keys(resourceToCreate).length === 0) {
-    throw new Error('Must provide an obect to create with properties of at least length 1');
+    throw new Error('Must provide an object to create with properties of at least length 1');
   }
 
   if (!resourceToUpdate || Object.keys(resourceToUpdate).length === 0) {
-    throw new Error('Must provide an obect to updated with properties of at least length 1');
+    throw new Error('Must provide an object to updated with properties of at least length 1');
   }
 
   // GraphQL schemas are designed written with UpperCase names

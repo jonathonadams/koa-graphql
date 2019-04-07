@@ -14,14 +14,14 @@ import { User } from '../api/users';
  *
  * @returns { Object } A User and signed JWT.
  */
-export const login = async (ctx, next) => {
+export const login: Koa.Middleware = async (ctx, next) => {
   const username: string = ctx.request.body.username;
   const password: string = ctx.request.body.password;
 
   return await loginController(username, password);
 };
 
-export const register = async (ctx, next) => {
+export const register: Koa.Middleware = async (ctx, next) => {
   const user: User = ctx.request.body;
   return registerController(user);
 };

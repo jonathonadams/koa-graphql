@@ -6,7 +6,7 @@ import * as Router from 'koa-router';
 import { apolloServer } from './server/api/graphql';
 
 /**
- * A instance of the API Aplication
+ * A instance of the API Application
  * @param {Koa} app an instance of a koa server
  * @param {Router} router an instance of a koa-router
  */

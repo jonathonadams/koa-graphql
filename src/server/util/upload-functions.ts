@@ -1,5 +1,5 @@
 // -----------------------------------
-// Healper functions for file uploading.
+// Helper functions for file uploading.
 // -----------------------------------
 
 import * as fs from 'fs';
@@ -15,11 +15,13 @@ interface MulterUpload {
   mimetype: string;
   buffer: Buffer;
   size: number;
+  fileName?: string;
+  filePath?: string;
 }
 // Process -> use muter to write file to buffer.
 // Check magic number are match .pdf image
 // If magic number match buffer -> write to file system
-// Convert to magick numbers
+// Convert to magic numbers
 
 // hex buffer removes the spacing // 25 50 44 66 for .pdf
 const MAGIC_NUMBER = {
@@ -66,9 +68,9 @@ export const verifyMagicNumbers = async (file: MulterUpload) => {
   }
 };
 
-export function saveFileBufferToUploads(file) {
+export function saveFileBufferToUploads(file: MulterUpload) {
   return new Promise((resolve, reject) => {
-    // Generate a random filename so it does not clash. must be done syncronosly
+    // Generate a random filename so it does not clash. must be done synchronously
     const fileName = crypto.randomBytes(8).toString('hex') + Date.now();
     const filePath = fileName + path.extname(file.originalname);
     file.fileName = fileName;
@@ -84,9 +86,9 @@ export function saveFileBufferToUploads(file) {
   });
 }
 
-export const asnycSaveFileBufferToUploads = async file => {
+export const asyncSaveFileBufferToUploads = async (file: MulterUpload) => {
   try {
-    // Generate a random filename so it does not clash. must be done syncronosly
+    // Generate a random filename so it does not clash. must be done synchronously
     const fileName = crypto.randomBytes(8).toString('hex') + Date.now();
     const filePath = fileName + path.extname(file.originalname);
     file.fileName = fileName;

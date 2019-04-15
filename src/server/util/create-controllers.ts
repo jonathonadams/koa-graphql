@@ -13,7 +13,7 @@ export function createControllers<T>(model: any) {
     getOne: async (id: string) => {
       const resource = await (model.findByPk(id) as T);
 
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
 
       return resource;
     },
@@ -28,15 +28,14 @@ export function createControllers<T>(model: any) {
     // Update a resource
     updateOne: async (id: string, values: any) => {
       const resource = await model.findByPk(id);
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
-      merge(resource, values);
-      return await (resource.save() as T);
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      return (await resource.update(values)) as T;
     },
 
     // Remove one
     removeOne: async (id: any) => {
       const resource = await model.findByPk(id);
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
 
       // Sequelize does not return an object from the destroy method.
       // Create a clone of the object to send back with status 2000

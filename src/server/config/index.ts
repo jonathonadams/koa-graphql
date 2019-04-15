@@ -34,13 +34,10 @@ const databaseOptions: Options = {
   define: {
     // Default options for each model definition
     // converts cameCase js to snake_case db table and field names
-    underscored: true
-    // // don't add the timestamp attributes (updatedAt, createdAt)
-    // timestamps: false,
-    // // don't delete database entries but set the newly added attribute deletedAt
-    // // to the current date (when deletion was done). paranoid will only work if
-    // // timestamps are enabled
-    // paranoid: true
+    underscored: true,
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    }
   }
 };
 config.databaseOptions = databaseOptions;

@@ -1,4 +1,3 @@
-import merge from 'lodash.merge';
 import { User } from './user.model';
 import { escapeObjectProperties } from '../../util/helper-functions';
 import { ParameterizedContext } from 'koa';
@@ -36,15 +35,11 @@ export async function createOne(ctx: ParameterizedContext) {
 
 // Update a user
 export async function updateOne(ctx: ParameterizedContext) {
-  const userToUpdate = ctx.state.user;
+  const userToUpdate: User = ctx.state.user;
   const user = ctx.request.body;
 
-  // Escape the updated values before merge
-  escapeObjectProperties(user);
-  merge(userToUpdate, user);
-
   ctx.status = 201;
-  ctx.body = await userToUpdate.save();
+  ctx.body = await userToUpdate.update(user);
 }
 
 // Remove one

@@ -12,6 +12,15 @@ export class User extends Model<User> {
   lastName: string;
   emailAddress: string;
   dateOfBirth: Date | string;
+  settings: {
+    darkMode: boolean;
+    colors: {
+      lightPrimary: string;
+      lightAccent: string;
+      darkPrimary: string;
+      darkAccent: string;
+    };
+  };
   hashedPassword: string;
   scope: AuthenticationScopes;
   createdAt: Date;
@@ -30,7 +39,7 @@ export class User extends Model<User> {
   }
 }
 
-// Initialize the sequlize map.
+// Initialize the sequelize map.
 User.init(
   {
     id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV1, primaryKey: true },
@@ -39,13 +48,14 @@ User.init(
     username: DataTypes.STRING,
     emailAddress: DataTypes.STRING,
     dateOfBirth: DataTypes.DATE,
+    settings: DataTypes.JSONB,
     hashedPassword: DataTypes.STRING,
     scope: DataTypes.INTEGER
   },
   {
     sequelize: sequelize,
     defaultScope: {
-      attributes: { exclude: ['hashedPassword'] }
+      attributes: { exclude: ['hashedPassword', 'createdAt', 'updatedAt'] }
     },
     scopes: {
       withPassword: {

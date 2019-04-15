@@ -11,7 +11,7 @@ import { Middleware, ParameterizedContext } from 'koa';
 export const signToken = (user: User): string => {
   return sign(
     {
-      // Enter addtional paylod info here
+      // Enter additional payload info here
       scope: user.scope
     },
     config.secrets.accessToken,

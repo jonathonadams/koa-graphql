@@ -43,6 +43,5 @@ uploads/
 
 # Builds and Distribution directory
 dist/
-docs/
 .nyc_output
 coverage/

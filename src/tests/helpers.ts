@@ -1,6 +1,6 @@
-import { sequelize } from '../server/db/sequelize';
+import { db } from '../server/db/sequelize.js';
 import { graphql } from 'graphql';
-import { schema } from '../server/api/graphql';
+import { schema } from '../server/api/graphql.js';
 
 export interface TestDependents<T> {
   model: any;
@@ -9,11 +9,11 @@ export interface TestDependents<T> {
 
 export const syncDb = async () => {
   try {
-    await sequelize.authenticate();
-    await sequelize.drop({ cascade: true });
-    return await sequelize.sync();
+    await db.authenticate();
+    await db.drop({ cascade: true });
+    return await db.sync();
   } catch (err) {
-    console.error('Unable to connect to the database:', err);
+    throw new Error('Unable to connect to the database:');
   }
 };
 

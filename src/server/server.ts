@@ -1,8 +1,8 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import { setupMiddleware } from './middleware';
-import { applyApiEndpoints } from './api';
-import { applyAuthorizationRoutes } from './auth/auth-routes';
+import { setupMiddleware } from './middleware/index.js';
+import { applyApiEndpoints } from './api/index.js';
+import { applyAuthorizationRoutes } from './auth/auth-routes.js';
 
 /**
  * Crates a new API Server
@@ -24,19 +24,27 @@ export default class ApiServer {
    * @param {Router} router an instance of a koa-router
    */
   private async setupServer(app: Koa, router: Router) {
-    // Setup all the required middleware for the app
+    /**
+     * Setup all the required middleware for the app
+     */
     setupMiddleware(app);
 
-    // Apply the API endpoints
+    /**
+     * Apply the API endpoints
+     */
     await applyApiEndpoints(app);
 
-    // apply all authorizatoin router
+    /**
+     * apply all authorization router
+     */
     await applyAuthorizationRoutes(app);
 
-    // Health check for kubernetes on google cloud
-    // Container must return status 200 on a designated healthz route
-    // In k8's the default route is '/'
-    // Must be configured on the deployment object to use this route for checking
+    /**
+     * Health check for kubernetes on google cloud
+     *
+     * Container must return status 200 on a designated health route. In k8's the default route is '/'
+     * Must be configured on the deployment object to use this route for checking
+     */
     router.get('/healthz', ctx => {
       ctx.status = 200;
     });

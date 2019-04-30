@@ -1,5 +1,5 @@
-import { applyGraphQLEndpoints } from './graphql';
-import { applyRestEndpoints } from './rest';
+import { applyGraphQLEndpoints } from './graphql.js';
+import { applyRestEndpoints } from './rest.js';
 import Koa from 'koa';
 
 export async function applyApiEndpoints(app: Koa) {

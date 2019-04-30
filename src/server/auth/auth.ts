@@ -1,11 +1,14 @@
-import { sign, verify } from 'jsonwebtoken';
-import * as Boom from 'boom';
-import { compare, hash } from 'bcryptjs';
-import config from '../config';
-import { User } from '../api/users';
-import { ServerState } from '../api/server-state/server-state.model';
-import { isPasswordAllowed } from './util';
+import jsonwebtoken from 'jsonwebtoken';
+import Boom from 'boom';
+import bcryptjs from 'bcryptjs';
+import config from '../config/index.js';
+import { User } from '../api/users/index.js';
+import { ServerState } from '../api/server-state/server-state.model.js';
+import { isPasswordAllowed } from './util.js';
 import { Middleware, ParameterizedContext } from 'koa';
+
+const { sign, verify } = jsonwebtoken;
+const { compare, hash } = bcryptjs;
 
 // A function that returns a singed JWT
 export const signToken = (user: User): string => {
@@ -82,7 +85,8 @@ export const authorize: Middleware = async (ctx, next) => {
     }
   );
 
-  const serverState: ServerState = await ServerState.getServerState();
+  const serverState: ServerState | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
 
@@ -102,8 +106,10 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
   const username = ctx.request.body.username;
 
   // find the token
-  const state: ServerState = await ServerState.findOne({ where: { id: 1 } });
-  const refreshTokens = { ...state.refreshTokens };
+  const serverState: ServerState | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
+
+  const refreshTokens = { ...serverState.refreshTokens };
   const token = refreshTokens[refreshToken];
 
   if (!token || token !== username) {
@@ -126,7 +132,8 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
 export async function revokeRefreshToken(ctx: ParameterizedContext, next: () => Promise<any>) {
   const refreshToken = ctx.request.body.refreshToken;
 
-  const serverState: ServerState = await ServerState.getServerState();
+  const serverState: ServerState | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
   delete refreshTokens[refreshToken];

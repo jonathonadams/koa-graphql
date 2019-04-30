@@ -1,6 +1,8 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { sequelize } from '../../db/sequelize';
-import { AuthenticationScopes } from 'src/server/auth/scopes';
+import sequelize from 'sequelize';
+import { db } from '../../db/sequelize.js';
+import { AuthenticationScopes } from 'src/server/auth/scopes.js';
+
+const { Model, DataTypes, Sequelize } = sequelize;
 
 // Sequelize Operation symbols
 const Op = (Sequelize as any).Op;
@@ -53,7 +55,7 @@ User.init(
     scope: DataTypes.INTEGER
   },
   {
-    sequelize: sequelize,
+    sequelize: db,
     defaultScope: {
       attributes: { exclude: ['hashedPassword', 'createdAt', 'updatedAt'] }
     },

@@ -1,7 +1,8 @@
-import { User } from './user.model';
-import { Sequelize } from 'sequelize';
-import { syncDb, runQuery } from '../../../tests/helpers';
-import { signToken } from '../../auth/auth';
+import { User } from './user.model.js';
+import sq from 'sequelize';
+import { syncDb, runQuery } from '../../../tests/helpers.js';
+import { signToken } from '../../auth/auth.js';
+import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 
 const user = ({
   username: 'test user',
@@ -18,7 +19,7 @@ const updatedUser = { username: 'updated user' };
 // GraphQL API tests
 // ----------------------------------
 describe(`GraphQL / User`, () => {
-  let db: Sequelize;
+  let db: sq.Sequelize;
   let createdUser: User;
   let jwt: string;
 
@@ -48,7 +49,7 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeArray();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
     });
   });
 
@@ -68,8 +69,10 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toEqual(createdUser.id.toString());
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+        createdUser.id.toString()
+      );
     });
   });
 
@@ -94,8 +97,8 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toBeString();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
     });
   });
 
@@ -118,8 +121,10 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toEqual(createdUser.id.toString());
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+        createdUser.id.toString()
+      );
     });
   });
 
@@ -138,7 +143,7 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
     });
   });
 });

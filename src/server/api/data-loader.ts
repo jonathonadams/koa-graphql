@@ -1,8 +1,10 @@
-import * as DataLoader from 'dataloader';
-import { Sequelize } from 'sequelize';
+import DataLoader from 'dataloader';
+import sequelize from 'sequelize';
 import keyBy from 'lodash.keyby';
-import { User } from './users';
-import { Todo } from './todos';
+import { User } from './users/index.js';
+import { Todo } from './todos/index.js';
+
+const { Sequelize } = sequelize;
 
 const Op = (Sequelize as any).Op;
 

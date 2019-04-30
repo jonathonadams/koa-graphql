@@ -1,5 +1,5 @@
-import { isPasswordAllowed, userToJSON } from './util';
-import { User } from '../api/users';
+import { isPasswordAllowed, userToJSON } from './util.js';
+import { User } from '../api/users/index.js';
 
 describe('isPasswordAllowed', () => {
   const allowedPasswords = ['asF.s0f.s'];

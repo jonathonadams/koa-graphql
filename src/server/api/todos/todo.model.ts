@@ -1,5 +1,7 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { sequelize } from '../../db/sequelize';
+import sequelize from 'sequelize';
+import { db } from '../../db/sequelize.js';
+
+const { Model, DataTypes, Sequelize } = sequelize;
 
 // Sequelize Operation symbols
 const Op = (Sequelize as any).Op;
@@ -14,7 +16,7 @@ export class Todo extends Model<Todo> {
   updatedAt: Date;
 }
 
-// Initialize the sequlize map.
+// Initialize the sequelize map.
 Todo.init(
   {
     id: {
@@ -31,5 +33,5 @@ Todo.init(
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   },
-  { sequelize }
+  { sequelize: db }
 );

@@ -1,4 +1,4 @@
-import { badImplementation } from 'boom';
+import * as Boom from 'boom';
 import { Middleware, ParameterizedContext } from 'koa';
 
 /**
@@ -14,7 +14,7 @@ export const errorHandler: Middleware = async (ctx, next) => {
       ctx.status = err.output.statusCode;
       ctx.body = err.output.payload;
     } else {
-      const error = badImplementation(err.message);
+      const error = Boom.badImplementation(err.message);
       ctx.status = error.output.statusCode;
       ctx.body = error.output.payload;
     }

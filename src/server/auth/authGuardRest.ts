@@ -1,8 +1,10 @@
-import * as Boom from 'boom';
-import { verify } from 'jsonwebtoken';
-import config from '../config';
-import { User } from '../api/users';
-import { ParameterizedContext } from 'koa';
+import koa from 'koa';
+import Boom from 'boom';
+import jsonwebtoken from 'jsonwebtoken';
+import config from '../config/index.js';
+import { User } from '../api/users/index.js';
+
+const { verify } = jsonwebtoken;
 
 // npm module koa-bearer-token will get the bearer token from Authorize Header
 // and add it to ctx.request.token. Note this is not decoded
@@ -30,7 +32,7 @@ export const verifyToken = async (ctx: any, next: () => Promise<any>) => {
 /**
  *  Checks if the user exists in the DB.
  */
-export const verifyUser = async (ctx: ParameterizedContext, next: () => Promise<any>) => {
+export const verifyUser = async (ctx: koa.ParameterizedContext, next: () => Promise<any>) => {
   try {
     // This middleware will only be called on a route that is after the verify token
     // middleware has already been called. Hence you can guarantee that ctx.request.token

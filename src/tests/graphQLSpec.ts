@@ -1,16 +1,21 @@
 import 'jest-extended';
-import { runQuery, TestDependents, syncDb } from './helpers';
-import { User } from '../server/api/users';
-import { signToken } from '../server/auth/auth';
+import { runQuery, TestDependents, syncDb } from './helpers.js';
+import { User } from '../server/api/users/index.js';
+import { signToken } from '../server/auth/auth.js';
 import { Sequelize } from 'sequelize';
+import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 
-// -----------------------------------
-// Object.keys(object) is used to return an array of the names of object properties.
-// This can be used to create abstracted values to create the query strings
-// Example of a query string
-// `
-
-// ------------------------------------
+/**
+ * Object.keys(object) is used to return an array of the names of object properties.
+ * This can be used to create abstracted values to create the query strings
+ * Example of a query string
+ *
+ * @param model
+ * @param resourceName
+ * @param resourceToCreate
+ * @param resourceToUpdate
+ * @param testDependents
+ */
 export default function createGraphQLSpec<T>(
   model: any,
   resourceName: string,
@@ -72,7 +77,7 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeArray();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
       });
     });
 
@@ -92,8 +97,10 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toEqual((resource as any).id.toString());
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+          (resource as any).id.toString()
+        );
       });
     });
 
@@ -118,8 +125,8 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toBeString();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
       });
     });
 
@@ -142,8 +149,10 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toEqual((resource as any).id.toString());
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+          (resource as any).id.toString()
+        );
       });
     });
 
@@ -162,7 +171,7 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
       });
     });
   });

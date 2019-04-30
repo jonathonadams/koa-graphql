@@ -1,8 +1,10 @@
-import { verify } from 'jsonwebtoken';
-import * as Boom from 'boom';
-import { User } from '../api/users';
-import config from '../config';
+import jsonwebtoken from 'jsonwebtoken';
+import Boom from 'boom';
+import { User } from '../api/users/index.js';
+import config from '../config/index.js';
 import { GraphQLResolveInfo, GraphQLFieldResolver } from 'graphql';
+
+const { verify } = jsonwebtoken;
 
 type AuthMiddleware = GraphQLFieldResolver<any, any, any>;
 /**

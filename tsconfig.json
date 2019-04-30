@@ -7,7 +7,7 @@
     "target": "es2017",
     "rootDir": "src",
     "outDir": "dist",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
@@ -15,10 +15,11 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
-    "strictNullChecks": false,
-    "strict": false,
+    "strictNullChecks": true,
     "strictFunctionTypes": false,
     "strictBindCallApply": false,
+    "strict": false,
+    "strictPropertyInitialization": false,
     "lib": ["es2017", "esnext"]
   }
 }

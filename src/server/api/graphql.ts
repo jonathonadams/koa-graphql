@@ -1,14 +1,18 @@
-import './associations'; // Import all associations
-import { ApolloServer } from 'apollo-server-koa';
-import { makeExecutableSchema } from 'graphql-tools';
-import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
-import config from '../config';
-import typeDefs from './typeDefs';
-import resolvers from './resolvers';
-import { loaders } from './data-loader';
-import { User } from './users';
+import './associations.js'; // Import all associations
+import apolloServerKoa from 'apollo-server-koa';
+import graphqlTools from 'graphql-tools';
+import graphqlIsoData from 'graphql-iso-date';
+import config from '../config/index.js';
+import typeDefs from './typeDefs.js';
+import resolvers from './resolvers.js';
+import { loaders } from './data-loader.js';
+import { User } from './users/index.js';
 
-// A function to add addtional Scalar types.
+const { ApolloServer } = apolloServerKoa;
+const { GraphQLDate, GraphQLTime, GraphQLDateTime } = graphqlIsoData;
+const { makeExecutableSchema } = graphqlTools;
+
+// A function to add additional Scalar types.
 const resolveFunctions = {
   Date: GraphQLDate,
   Time: GraphQLTime,
@@ -41,7 +45,7 @@ export const apolloServer = new ApolloServer({
         // put the desired models on the context for quick access if needed
         // Such as the user
         model: { user: User },
-        // Add any necessary data loaders here if awanted
+        // Add any necessary data loaders here if wanted
         loaders: loaders(),
         // Add the JWT as the token property
         token: (<any>ctx).request.token

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Example Koa API that support REST and GraphQL",
   "author": "Jonathon Adams",
+  "type": "module",
   "license": "ISC",
   "main": "dist/index.js",
   "keywords": [
@@ -12,7 +13,7 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "cross-env NODE_ENV=dev nodemon -r dotenv/config dist/index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon --experimental-modules -r dotenv/config dist/index.js",
     "test": "run-p test:unit test:e2e",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
     "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --runInBand --testPathPattern='\\w+\\.e2e\\.tsx?'",
@@ -38,8 +39,7 @@
     "linters": {
       "*.ts": [
         "npm run lint:fix",
-        "git add",
-        "npm run test:staged"
+        "git add"
       ]
     },
     "ignore": [

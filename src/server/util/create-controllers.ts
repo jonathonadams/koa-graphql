@@ -1,6 +1,5 @@
 import * as Boom from 'boom';
-import * as merge from 'lodash.merge';
-import { escapeObjectProperties } from './helper-functions';
+import { escapeObjectProperties } from './helper-functions.js';
 
 export function createControllers<T>(model: any) {
   return {

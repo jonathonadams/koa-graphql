@@ -1,5 +1,5 @@
-import { User } from './user.model';
-import { escapeObjectProperties } from '../../util/helper-functions';
+import { User } from './user.model.js';
+import { escapeObjectProperties } from '../../util/helper-functions.js';
 import { ParameterizedContext } from 'koa';
 
 export async function params(id: string, ctx: ParameterizedContext, next: () => Promise<any>) {

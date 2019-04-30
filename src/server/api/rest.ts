@@ -1,11 +1,9 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
-import { generateRestEndpoints } from '../util/create-rest-controllers';
-
-import { router as userRouter } from './users';
-
-import { Todo } from './todos';
-import { verifyToken } from '../auth/authGuardRest';
+import Koa from 'koa';
+import Router from 'koa-router';
+import { generateRestEndpoints } from '../util/create-rest-controllers.js';
+import { router as userRouter } from './users/index.js';
+import { Todo } from './todos/index.js';
+import { verifyToken } from '../auth/authGuardRest.js';
 
 export function applyRestEndpoints(app: Koa) {
   const router = new Router({

@@ -1,5 +1,5 @@
-import * as Router from 'koa-router';
-import * as controllers from './user.controllers';
+import Router from 'koa-router';
+import * as controllers from './user.controllers.js';
 
 export const router = new Router();
 

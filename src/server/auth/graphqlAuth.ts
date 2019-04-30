@@ -1,6 +1,6 @@
-import { loginController, registerController } from './auth';
-import { User } from '../api/users';
 import { GraphQLFieldResolver } from 'graphql';
+import { loginController, registerController } from './auth.js';
+import { User } from '../api/users/index.js';
 
 /**
  *  A function that handles logging a user in

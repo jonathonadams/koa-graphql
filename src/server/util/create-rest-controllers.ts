@@ -1,8 +1,8 @@
 import { createControllers } from './create-controllers.js';
-import { Middleware, ParameterizedContext } from 'koa';
+import { ParameterizedContext } from 'koa';
 import Router from 'koa-router';
 
-export function generateRestEndpoints(model: any): Middleware {
+export function generateRestEndpoints(model: any) {
   const router = new Router();
   const controllers = generateRestControllers(model);
 

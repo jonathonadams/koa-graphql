@@ -9,7 +9,7 @@ const { Sequelize } = sequelize;
 const Op = (Sequelize as any).Op;
 
 const createUsersLoader = () => {
-  return new DataLoader(async usersIds => {
+  return new DataLoader<string, User>(async usersIds => {
     const users = await User.findAll({
       where: {
         id: {
@@ -23,7 +23,7 @@ const createUsersLoader = () => {
 };
 
 const createTodoLoader = () => {
-  return new DataLoader(async todosIds => {
+  return new DataLoader<string, Todo>(async todosIds => {
     const todos = await Todo.findAll({
       where: {
         id: {

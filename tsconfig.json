@@ -14,11 +14,7 @@
     "removeComments": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": false,
-    "strictBindCallApply": false,
-    "strict": false,
+    "strict": true,
     "strictPropertyInitialization": false,
     "lib": ["es2017", "esnext"]
   }

@@ -1,5 +1,5 @@
-import { createControllers } from './create-controllers.js';
-import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL.js';
+import { createControllers } from './create-controllers';
+import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
 import { GraphQLFieldResolver } from 'graphql';
 
 // const resolver = async (rootValue, args, context, info) => {

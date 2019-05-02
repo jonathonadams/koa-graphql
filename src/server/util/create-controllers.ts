@@ -1,5 +1,5 @@
 import * as Boom from 'boom';
-import { escapeObjectProperties } from './helper-functions.js';
+import { escapeObjectProperties } from './helper-functions';
 
 export function createControllers<T>(model: any) {
   return {

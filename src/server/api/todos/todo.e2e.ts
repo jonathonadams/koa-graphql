@@ -1,7 +1,7 @@
-import { Todo } from './todo.model.js';
-import createGraphQLSpec from '../../../tests/graphQLSpec.js';
-import { TestDependents } from '../../../tests/helpers.js';
-import { User } from '../users/index.js';
+import { Todo } from './todo.model';
+import createGraphQLSpec from '../../../tests/graphQLSpec';
+import { TestDependents } from '../../../tests/helpers';
+import { User } from '../users';
 
 const user: TestDependents<User> = {
   model: User,

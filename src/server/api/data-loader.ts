@@ -1,8 +1,8 @@
 import DataLoader from 'dataloader';
 import sequelize from 'sequelize';
-import keyBy from 'lodash.keyby';
-import { User } from './users/index.js';
-import { Todo } from './todos/index.js';
+import * as keyBy from 'lodash.keyby';
+import { User } from './users';
+import { Todo } from './todos';
 
 const { Sequelize } = sequelize;
 

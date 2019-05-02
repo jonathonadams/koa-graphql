@@ -1,6 +1,6 @@
 import sequelize from 'sequelize';
-import { db } from '../../db/sequelize.js';
-import { AuthenticationScopes } from 'src/server/auth/scopes.js';
+import { db } from '../../db/sequelize';
+import { AuthenticationScopes } from 'src/server/auth/scopes';
 
 const { Model, DataTypes, Sequelize } = sequelize;
 

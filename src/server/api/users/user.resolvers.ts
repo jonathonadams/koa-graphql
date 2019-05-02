@@ -1,7 +1,7 @@
-import { User } from './user.model.js';
-import { login, register } from '../../auth/graphqlAuth.js';
-import { generateResolvers } from '../../util/create-resolvers.js';
-import { verifyToken, authenticateRequest } from '../../auth/authGuardGraphQL.js';
+import { User } from './user.model';
+import { login, register } from '../../auth/graphqlAuth';
+import { generateResolvers } from '../../util/create-resolvers';
+import { verifyToken, authenticateRequest } from '../../auth/authGuardGraphQL';
 
 const resolvers = generateResolvers<User>(User);
 

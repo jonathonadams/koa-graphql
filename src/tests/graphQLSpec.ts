@@ -1,7 +1,7 @@
 import 'jest-extended';
-import { runQuery, TestDependents, syncDb } from './helpers.js';
-import { User } from '../server/api/users/index.js';
-import { signToken } from '../server/auth/auth.js';
+import { runQuery, TestDependents, syncDb } from './helpers';
+import { User } from '../server/api/users';
+import { signToken } from '../server/auth/auth';
 import { Sequelize } from 'sequelize';
 import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 

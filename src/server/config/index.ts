@@ -1,14 +1,14 @@
-import merge from 'lodash.merge';
-import devConfig from './development.js';
-import prodConfig from './production.js';
-import testConfig from './test.js';
+import * as merge from 'lodash.merge';
+import devConfig from './development';
+import prodConfig from './production';
+import testConfig from './test';
 import { GlobalConfig, EnvironnementConfig, ServerConfig } from './config.js';
 
 /**
  * Config values common across all environments environments
  *
  * Application configuration belongs in this file and associated
- * environment files. The appropriate environment file is merged based on the
+//  * environment files. The appropriate environment file is merged based on the
  * NODE_ENV variable: development, production, and test.
  *
  */

@@ -1,10 +1,10 @@
-import jsonwebtoken from 'jsonwebtoken';
-import Boom from 'boom';
-import bcryptjs from 'bcryptjs';
-import config from '../config/index.js';
-import { User } from '../api/users/index.js';
-import { ServerState } from '../api/server-state/server-state.model.js';
-import { isPasswordAllowed } from './util.js';
+import * as jsonwebtoken from 'jsonwebtoken';
+import * as Boom from 'boom';
+import * as bcryptjs from 'bcryptjs';
+import config from '../config';
+import { User } from '../api/users';
+import { ServerState } from '../api/server-state/server-state.model';
+import { isPasswordAllowed } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
 
 const { sign, verify } = jsonwebtoken;

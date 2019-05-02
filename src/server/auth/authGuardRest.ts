@@ -1,8 +1,8 @@
-import koa from 'koa';
-import Boom from 'boom';
-import jsonwebtoken from 'jsonwebtoken';
-import config from '../config/index.js';
-import { User } from '../api/users/index.js';
+import * as koa from 'koa';
+import * as Boom from 'boom';
+import * as jsonwebtoken from 'jsonwebtoken';
+import config from '../config';
+import { User } from '../api/users';
 
 const { verify } = jsonwebtoken;
 

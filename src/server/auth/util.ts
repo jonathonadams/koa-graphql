@@ -1,5 +1,5 @@
-import omit from 'lodash.omit';
-import { User } from '../api/users/index.js';
+import * as omit from 'lodash.omit';
+import { User } from '../api/users';
 
 export function userToJSON(user: User) {
   return omit(user, ['hashedPassword', 'createdAt', 'updatedAt']);

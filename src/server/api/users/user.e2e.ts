@@ -1,7 +1,7 @@
-import { User } from './user.model.js';
-import sq from 'sequelize';
-import { syncDb, runQuery } from '../../../tests/helpers.js';
-import { signToken } from '../../auth/auth.js';
+import { User } from './user.model';
+import * as sq from 'sequelize';
+import { syncDb, runQuery } from '../../../tests/helpers';
+import { signToken } from '../../auth/auth';
 import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 
 const user = ({

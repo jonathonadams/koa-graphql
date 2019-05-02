@@ -1,5 +1,5 @@
-import Koa from 'koa';
-import Router from 'koa-router';
+import * as Koa from 'koa';
+import * as Router from 'koa-router';
 import {
   loginController,
   registerController,
@@ -7,7 +7,7 @@ import {
   refreshAccessToken,
   revokeRefreshToken
 } from './auth.js';
-import { User } from '../api/users/index.js';
+import { User } from '../api/users';
 
 /**
  *  A function that handles logging a user in

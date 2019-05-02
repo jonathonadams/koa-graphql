@@ -1,5 +1,5 @@
-import sequelize from 'sequelize';
-import config from '../config/index.js';
+import * as sequelize from 'sequelize';
+import config from '../config';
 
 const { Sequelize } = sequelize;
 

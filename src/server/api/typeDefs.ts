@@ -1,4 +1,4 @@
-import glob from 'glob';
+import * as glob from 'glob';
 import { readFileSync } from 'fs';
 
 const { sync } = glob;

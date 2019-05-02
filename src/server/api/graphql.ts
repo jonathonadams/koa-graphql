@@ -1,12 +1,12 @@
-import './associations.js'; // Import all associations
-import apolloServerKoa from 'apollo-server-koa';
-import graphqlTools from 'graphql-tools';
-import graphqlIsoData from 'graphql-iso-date';
-import config from '../config/index.js';
-import typeDefs from './typeDefs.js';
-import resolvers from './resolvers.js';
-import { loaders } from './data-loader.js';
-import { User } from './users/index.js';
+import './associations'; // Import all associations
+import * as apolloServerKoa from 'apollo-server-koa';
+import * as graphqlTools from 'graphql-tools';
+import * as graphqlIsoData from 'graphql-iso-date';
+import config from '../config';
+import typeDefs from './typeDefs';
+import resolvers from './resolvers';
+import { loaders } from './data-loader';
+import { User } from './users';
 
 const { ApolloServer } = apolloServerKoa;
 const { GraphQLDate, GraphQLTime, GraphQLDateTime } = graphqlIsoData;

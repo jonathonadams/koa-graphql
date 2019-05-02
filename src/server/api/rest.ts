@@ -1,5 +1,5 @@
-import Koa from 'koa';
-import Router from 'koa-router';
+import * as Koa from 'koa';
+import * as Router from 'koa-router';
 import { generateRestEndpoints } from '../util/create-rest-controllers.js';
 import { router as userRouter } from './users/index.js';
 import { Todo } from './todos/index.js';

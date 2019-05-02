@@ -1,8 +1,8 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import { setupMiddleware } from './middleware/index.js';
-import { applyApiEndpoints } from './api/index.js';
-import { applyAuthorizationRoutes } from './auth/auth-routes.js';
+import { setupMiddleware } from './middleware';
+import { applyApiEndpoints } from './api';
+import { applyAuthorizationRoutes } from './auth/auth-routes';
 
 /**
  * Crates a new API Server

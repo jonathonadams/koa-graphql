@@ -1,6 +1,6 @@
-import { db } from '../server/db/sequelize.js';
+import { db } from '../server/db/sequelize';
 import { graphql } from 'graphql';
-import { schema } from '../server/api/graphql.js';
+import { schema } from '../server/api/graphql';
 
 export interface TestDependents<T> {
   model: any;

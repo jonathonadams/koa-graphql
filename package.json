@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Example Koa API that support REST and GraphQL",
   "author": "Jonathon Adams",
-  "type": "module",
+  "type": "commonjs",
   "license": "ISC",
   "main": "dist/index.js",
   "keywords": [
@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "cross-env NODE_ENV=dev nodemon --experimental-modules -r dotenv/config dist/index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon  -r dotenv/config dist/index.js",
     "test": "run-p test:unit test:e2e",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
     "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --runInBand --testPathPattern='\\w+\\.e2e\\.tsx?'",
@@ -63,6 +63,7 @@
     "koa-helmet": "^4.1.0",
     "koa-morgan": "^1.0.1",
     "koa-router": "^7.4.0",
+    "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
     "pg": "^7.9.0",
@@ -77,7 +78,6 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
-    "@types/lodash.keyby": "^4.6.6",
     "cross-env": "^5.2.0",
     "del": "^4.0.0",
     "dotenv": "^7.0.0",

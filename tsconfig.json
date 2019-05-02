@@ -7,7 +7,7 @@
     "target": "es2017",
     "rootDir": "src",
     "outDir": "dist",
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,

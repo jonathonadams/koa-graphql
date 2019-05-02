@@ -6,18 +6,21 @@ import * as Router from 'koa-router';
 import { apolloServer } from './server/api/graphql';
 
 /**
- * A instance of the API Application
+ * A instance of the API ApplicationA
+ *
  * @param {Koa} app an instance of a koa server
  * @param {Router} router an instance of a koa-router
  */
 const app = new ApiServer(new Koa(), new Router());
 
 /**
- * An instance of a http server
+ * Create and export a http server
  */
 export const server = http.createServer(app.start()).listen(config.port, () => {
   console.log(`Server listening on port ${config.port}.`);
 });
 
-// Add the subscription options, this is a websocket connection
+/**
+ * Add the subscription options, this is a websocket connection
+ */
 apolloServer.installSubscriptionHandlers(server);

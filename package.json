@@ -66,6 +66,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
+    "mongoose": "^5.5.5",
     "pg": "^7.9.0",
     "sequelize": "^5.1.1"
   },
@@ -78,6 +79,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
+    "@types/mongoose": "^5.3.27",
     "cross-env": "^5.2.0",
     "del": "^4.0.0",
     "dotenv": "^7.0.0",

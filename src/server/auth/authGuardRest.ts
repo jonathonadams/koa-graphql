@@ -34,10 +34,12 @@ export const verifyToken = async (ctx: any, next: () => Promise<any>) => {
  */
 export const verifyUser = async (ctx: koa.ParameterizedContext, next: () => Promise<any>) => {
   try {
-    // This middleware will only be called on a route that is after the verify token
-    // middleware has already been called. Hence you can guarantee that ctx.request.token
-    // will contain the decoded token, and hence the 'sub' property will be the id
-    const user = await User.findByPk(ctx.state.token.sub);
+    /**
+     * This middleware will only be called on a route that is after the verify token
+     * middleware has already been called. Hence you can guarantee that ctx.request.token
+     * will contain the decoded token, and hence the 'sub' property will be the id
+     */
+    const user = await User.findById(ctx.state.token.sub);
     if (!user) throw Boom.unauthorized('Unauthorized');
 
     // Set the user on the ctx.state.user property

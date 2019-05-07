@@ -3,15 +3,16 @@ import * as Boom from 'boom';
 import * as bcryptjs from 'bcryptjs';
 import config from '../config';
 import { User } from '../api/users';
-import { ServerState } from '../api/server-state/server-state.model';
+import { ServerState, IServerStateDocument } from '../api/server-state/server-state.model';
 import { isPasswordAllowed } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
+import { UserClass, IUserDocument } from '../api/users/user.model';
 
 const { sign, verify } = jsonwebtoken;
 const { compare, hash } = bcryptjs;
 
 // A function that returns a singed JWT
-export const signToken = (user: User): string => {
+export const signToken = (user: UserClass): string => {
   return sign(
     {
       // Enter additional payload info here
@@ -50,8 +51,7 @@ export const loginController = async (
   };
 };
 
-export const registerController = async (user: User) => {
-  const username: string = user.username;
+export const registerController = async (user: IUserDocument) => {
   const password: string = (user as any).password;
   if (isPasswordAllowed(password)) {
     user.hashedPassword = await hash(password, 10);
@@ -85,7 +85,7 @@ export const authorize: Middleware = async (ctx, next) => {
     }
   );
 
-  const serverState: ServerState | null = await ServerState.getServerState();
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
   if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
@@ -106,7 +106,7 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
   const username = ctx.request.body.username;
 
   // find the token
-  const serverState: ServerState | null = await ServerState.getServerState();
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
   if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
@@ -132,7 +132,7 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
 export async function revokeRefreshToken(ctx: ParameterizedContext, next: () => Promise<any>) {
   const refreshToken = ctx.request.body.refreshToken;
 
-  const serverState: ServerState | null = await ServerState.getServerState();
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
   if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };

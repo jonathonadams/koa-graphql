@@ -1,4 +1,3 @@
-import './associations'; // Import all associations
 import * as apolloServerKoa from 'apollo-server-koa';
 import * as graphqlTools from 'graphql-tools';
 import * as graphqlIsoData from 'graphql-iso-date';

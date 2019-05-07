@@ -1,16 +1,20 @@
 import * as Boom from 'boom';
-import { escapeObjectProperties } from './helper-functions';
+import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
 
-export function createControllers<T>(model: any) {
+export function createControllers(model: mongoose.Model<mongoose.Document>) {
   return {
     // Get All
     getAll: async () => {
-      return await (model.findAll() as T);
+      return await model
+        .find({})
+        .lean()
+        .exec();
     },
 
     // Get an individual resource
-    getOne: async (id: string) => {
-      const resource = await (model.findByPk(id) as T);
+    getOne: async (id: ObjectId) => {
+      const resource = await model.findById(id);
 
       if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
 
@@ -19,29 +23,21 @@ export function createControllers<T>(model: any) {
 
     // Create a Resource
     createOne: async (values: any) => {
-      // Escape the input values before create
-      escapeObjectProperties(values);
-      return await (model.create(values) as T);
+      return await model.create(values);
     },
 
     // Update a resource
-    updateOne: async (id: string, values: any) => {
-      const resource = await model.findByPk(id);
+    updateOne: async (id: ObjectId, values: any) => {
+      const resource = await model.findByIdAndUpdate(id, values, { new: true }).exec();
       if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
-      return (await resource.update(values)) as T;
+      return resource;
     },
 
     // Remove one
-    removeOne: async (id: any) => {
-      const resource = await model.findByPk(id);
+    removeOne: async (id: ObjectId) => {
+      const resource = await model.findByIdAndRemove(id).exec();
       if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
-
-      // Sequelize does not return an object from the destroy method.
-      // Create a clone of the object to send back with status 2000
-      const resourceToReturn = { ...resource.get() };
-      await resource.destroy();
-
-      return resourceToReturn as T;
+      return resource;
     }
   };
 }

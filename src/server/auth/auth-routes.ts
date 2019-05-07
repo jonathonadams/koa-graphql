@@ -7,7 +7,7 @@ import {
   refreshAccessToken,
   revokeRefreshToken
 } from './auth.js';
-import { User } from '../api/users';
+import { IUserDocument } from '../api/users/user.model.js';
 
 /**
  *  A function that handles logging a user in
@@ -22,7 +22,7 @@ export const login: Koa.Middleware = async (ctx, next) => {
 };
 
 export const register: Koa.Middleware = async (ctx, next) => {
-  const user: User = ctx.request.body;
+  const user: IUserDocument = ctx.request.body;
   return registerController(user);
 };
 

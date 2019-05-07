@@ -1,8 +1,11 @@
 import * as mongoose from 'mongoose';
 
-const uri = 'mongodb://localhost/todo-db';
-const db = mongoose.connect(uri, {});
+const uri = 'mongodb://localhost/todo_db';
 
-export const dbConnection = (url = uri, opts = {}) => {
-  return mongoose.connect(url, { ...opts, useNewUrlParser: true });
+export const dbConnection = async (url = uri, opts = {}) => {
+  const connectionOptions: mongoose.ConnectionOptions = {
+    ...opts,
+    useNewUrlParser: true
+  };
+  return await mongoose.connect(url, connectionOptions);
 };

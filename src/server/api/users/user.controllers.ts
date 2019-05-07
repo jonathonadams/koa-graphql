@@ -1,55 +1,43 @@
 import { User } from './user.model';
-import { escapeObjectProperties } from '../../util/helper-functions';
 import { ParameterizedContext } from 'koa';
 
-export async function params(id: string, ctx: ParameterizedContext, next: () => Promise<any>) {
-  const user = await (User as any).findByPk(id);
-  if (!user) {
-    ctx.status = 404;
-  } else {
-    ctx.state.user = user;
-    await next();
-  }
+export async function params(
+  id: string,
+  ctx: ParameterizedContext,
+  next: () => Promise<any>
+): Promise<void> {
+  ctx.state.id = id;
+  await next();
 }
 
 // Get All
-export async function getAll(ctx: ParameterizedContext) {
+export async function getAll(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 200;
-  ctx.body = await User.findAll();
+  ctx.body = await User.find({})
+    .lean()
+    .exec();
 }
 
 // Get an individual user
-export async function getOne(ctx: ParameterizedContext) {
+export async function getOne(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 200;
-  ctx.body = ctx.state.user;
+  ctx.body = await User.findById(ctx.state.id).exec();
 }
 
 // Create a Resource
-export async function createOne(ctx: ParameterizedContext) {
-  const user = ctx.request.body;
-  // Escape the input values before create
-  escapeObjectProperties(user);
+export async function createOne(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 201;
-  ctx.body = await User.create(user);
+  ctx.body = await User.create(ctx.request.body);
 }
 
 // Update a user
-export async function updateOne(ctx: ParameterizedContext) {
-  const userToUpdate: User = ctx.state.user;
-  const user = ctx.request.body;
-
+export async function updateOne(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 201;
-  ctx.body = await userToUpdate.update(user);
+  ctx.body = await User.findByIdAndUpdate(ctx.state.id, ctx.request.body, { new: true });
 }
 
 // Remove one
-export async function removeOne(ctx: ParameterizedContext) {
-  const user = ctx.state.user;
-  // Sequelize does not return an object from the destroy method.
-  // Create a close of the object to send back with status 2000
-  const userToReturn = { ...user.get() };
-  await user.destroy();
-
+export async function removeOne(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 200;
-  ctx.body = userToReturn;
+  ctx.body = User.findByIdAndDelete(ctx.state.id).exec();
 }

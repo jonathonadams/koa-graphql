@@ -1,14 +1,12 @@
-import { Options } from 'sequelize';
-
 export interface GlobalConfig {
   port: number;
-  databaseOptions: Options;
+  databaseOptions: any;
 }
 
 export interface EnvironnementConfig {
   logging: false | 'dev';
   docs: boolean;
-  databaseOptions: Options;
+  databaseOptions: any;
   expireTime: number;
   secrets: {
     accessToken: string;

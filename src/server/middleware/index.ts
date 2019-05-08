@@ -6,8 +6,7 @@ import * as compress from 'koa-compress';
 import * as bodyParser from 'koa-bodyparser';
 import * as cors from 'kcors';
 import config from '../config';
-import { errorHandler, errorLogger } from './err.js';
-import { postRoutesMiddleware } from './postRoutes';
+import { errorHandler, errorLogger } from './err';
 
 // Configure middleware to parse income requests
 export const setupMiddleware = (app: Koa) => {

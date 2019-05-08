@@ -47,6 +47,7 @@
     ]
   },
   "dependencies": {
+    "@shelf/jest-mongodb": "^1.0.1",
     "apollo-server-koa": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "boom": "^7.3.0",
@@ -66,8 +67,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
-    "mongoose": "^5.5.5",
-    "pg": "^7.9.0"
+    "mongoose": "^5.5.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

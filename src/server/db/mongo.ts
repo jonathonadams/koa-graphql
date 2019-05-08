@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 
+// TODO pull in environnement variables
 const uri = 'mongodb://localhost/todo_db';
 
 export const dbConnection = async (url = uri, opts = {}) => {

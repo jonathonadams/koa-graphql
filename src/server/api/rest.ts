@@ -5,8 +5,6 @@ import { router as userRouter } from './users';
 import { Todo } from './todos';
 import { verifyToken } from '../auth/authGuardRest';
 
-import { router as todoRouter } from './todos/todos.router';
-
 export function applyRestEndpoints(app: Koa) {
   const router = new Router({
     prefix: '/api'
@@ -18,7 +16,6 @@ export function applyRestEndpoints(app: Koa) {
   // Apply all your routes here
   router.use('/users', userRouter.routes());
   router.use('/todos', generateRestEndpoints(Todo));
-  // router.use('/todos', todoRouter.routes());
 
   app.use(router.routes());
 }

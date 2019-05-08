@@ -20,7 +20,7 @@ export const signToken = (user: UserClass): string => {
     },
     config.secrets.accessToken,
     {
-      subject: user.id,
+      subject: ((user._id ? user._id : user.id) as number).toString(),
       expiresIn: config.expireTime,
       issuer: 'your-company-here'
     }
@@ -53,12 +53,16 @@ export const loginController = async (
 
 export const registerController = async (user: IUserDocument) => {
   const password: string = (user as any).password;
-  if (isPasswordAllowed(password)) {
-    user.hashedPassword = await hash(password, 10);
-    return await User.create(user);
-  } else {
-    throw Boom.unauthorized('Password does not match requirements');
-  }
+  if (!password) Boom.badRequest('No password provided');
+
+  if (!isPasswordAllowed(password)) throw Boom.unauthorized('Password does not match requirements');
+
+  user.hashedPassword = await hash(password, 10);
+
+  const currentUser = await User.findByUsername(user.username);
+  if (currentUser !== null) throw Boom.badRequest('Username is not available');
+
+  return await User.create(user);
 };
 
 export const authorize: Middleware = async (ctx, next) => {

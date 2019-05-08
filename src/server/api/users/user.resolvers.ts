@@ -3,7 +3,6 @@ import { login, register } from '../../auth/graphqlAuth';
 import { verifyToken, authenticateRequest } from '../../auth/authGuardGraphQL';
 import { generateResolvers } from '../../util/create-resolvers';
 
-console.log(generateResolvers);
 const resolvers = generateResolvers<IUserDocument>(User);
 
 export const userResolvers = {

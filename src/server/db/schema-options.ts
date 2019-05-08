@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 export const defaultSchemaOptions: mongoose.SchemaOptions = {
   versionKey: false,
+  timestamps: false,
   // __v: false
   toJSON: {
     transform: function(doc: any, ret: any, options: any) {

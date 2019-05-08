@@ -6,8 +6,12 @@ import { User } from '../api/users';
 
 const { verify } = jsonwebtoken;
 
-// npm module koa-bearer-token will get the bearer token from Authorize Header
-// and add it to ctx.request.token. Note this is not decoded
+/* 
+/  ------------------------------------------
+/  npm module koa-bearer-token will get the bearer token from Authorize Header
+/  and add it to ctx.request.token. Note this is not decoded
+/  ------------------------------------------ 
+*/
 
 /**
  * Checks if the the token passed is valid
@@ -21,7 +25,7 @@ export const verifyToken = async (ctx: any, next: () => Promise<any>) => {
     try {
       ctx.state.token = verify(ctx.request.token, config.secrets.accessToken);
     } catch (err) {
-      throw Boom.unauthorized('Invalid Token.');
+      throw Boom.unauthorized();
     }
     return next();
   } catch (err) {

@@ -30,23 +30,17 @@ export class UserClass extends mongoose.Model {
    */
   public static findByUsername(
     username: string
-  ): mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}> {
+  ): Promise<mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}>> {
     return this.findOne({
-      where: {
-        username: username
-      }
-    });
+      username: username
+    })
+      .select('+hashedPassword')
+      .exec();
   }
 }
 
 export const userSchema = new mongoose.Schema(
   {
-    // id: {
-    //   type: String,
-    //   required: true,
-    //   unique: true,
-    //   default: uuidV1
-    // },
     username: {
       type: String,
       required: true
@@ -66,8 +60,7 @@ export const userSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     settings: {
       darkMode: {

@@ -1,5 +1,6 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
+import * as Boom from 'boom';
 import {
   loginController,
   registerController,
@@ -7,26 +8,26 @@ import {
   refreshAccessToken,
   revokeRefreshToken
 } from './auth';
-import { User } from '../api/users';
+import { IUserDocument } from '../api/users/user.model';
 
 /**
  *  A function that handles logging a user in
  *
- * @returns { Object } A User and signed JWT.
+ * @returns A signed JWT.
  */
 export const login: Koa.Middleware = async (ctx, next) => {
-  const username: string = ctx.request.body.username;
-  const password: string = ctx.request.body.password;
-
-  return await loginController(username, password);
+  const username: string | undefined = ctx.request.body.username;
+  const password: string | undefined = ctx.request.body.password;
+  if (!username || !password) throw Boom.unauthorized('A username and password must be provided');
+  ctx.body = await loginController(username, password);
 };
 
 export const register: Koa.Middleware = async (ctx, next) => {
-  const user: User = ctx.request.body;
-  return registerController(user);
+  const user: IUserDocument = ctx.request.body;
+  ctx.body = await registerController(user);
 };
 
-export async function applyAuthorizationRoutes(app: Koa) {
+export function applyAuthorizationRoutes(app: Koa) {
   const router = new Router();
 
   router.post('/api/users/login', login);

@@ -1,19 +1,14 @@
 import * as DataLoader from 'dataloader';
-import { Sequelize } from 'sequelize';
-import keyBy from 'lodash.keyby';
+import * as keyBy from 'lodash.keyby';
 import { User } from './users';
 import { Todo } from './todos';
-
-const Op = (Sequelize as any).Op;
+import { IUserDocument } from './users/user.model';
+import { ITodoDocument } from './todos/todo.model';
 
 const createUsersLoader = () => {
-  return new DataLoader(async usersIds => {
-    const users = await User.findAll({
-      where: {
-        id: {
-          [Op.in]: usersIds
-        }
-      }
+  return new DataLoader<string, IUserDocument>(async usersIds => {
+    const users = await User.find({
+      id: { $in: usersIds }
     });
     const usersByIds = keyBy(users, 'id');
     return usersIds.map((id: string) => usersByIds[id]);
@@ -21,13 +16,9 @@ const createUsersLoader = () => {
 };
 
 const createTodoLoader = () => {
-  return new DataLoader(async todosIds => {
-    const todos = await Todo.findAll({
-      where: {
-        id: {
-          [Op.in]: todosIds
-        }
-      }
+  return new DataLoader<string, ITodoDocument>(async todosIds => {
+    const todos = await Todo.find({
+      id: { $in: todosIds }
     });
     const todosById = keyBy(todos, 'id');
     return todosIds.map((id: string) => todosById[id]);

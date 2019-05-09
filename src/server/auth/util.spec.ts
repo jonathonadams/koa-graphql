@@ -1,5 +1,5 @@
 import { isPasswordAllowed, userToJSON } from './util';
-import { User } from '../api/users';
+import { IUserDocument } from '../api/users/user.model';
 
 describe('isPasswordAllowed', () => {
   const allowedPasswords = ['asF.s0f.s'];
@@ -26,14 +26,14 @@ describe('userToJson', () => {
       lastName: 'User',
       emailAddress: 'user@user.com',
       dateOfBirth: new Date()
-    } as User;
+    } as IUserDocument;
 
     const user = {
       ...safeUser,
       hashedPassword: 'some really long hash',
       createdAt: new Date(),
       updatedAt: new Date()
-    } as User;
+    } as IUserDocument;
 
     const filteredUser = userToJSON(user);
 

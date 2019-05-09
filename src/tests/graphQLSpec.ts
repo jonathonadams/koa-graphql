@@ -1,22 +1,27 @@
 import 'jest-extended';
-import { runQuery, TestDependents, syncDb } from './helpers';
-import { User } from '../server/api/users';
+import * as mongoose from 'mongoose';
+import { runQuery, setupTestDB } from './helpers';
 import { signToken } from '../server/auth/auth';
-import { Sequelize } from 'sequelize';
+import { ExecutionResultDataDefault } from 'graphql/execution/execute';
+import { IUserDocument } from 'src/server/api/users/user.model';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
-// -----------------------------------
-// Object.keys(object) is used to return an array of the names of object properties.
-// This can be used to create abstracted values to create the query strings
-// Example of a query string
-// `
-
-// ------------------------------------
+/**
+ * Object.keys(object) is used to return an array of the names of object properties.
+ * This can be used to create abstracted values to create the query strings
+ * Example of a query string
+ *
+ * @param model
+ * @param resourceName
+ * @param resourceToCreate
+ * @param resourceToUpdate
+ * @param testDependents
+ */
 export default function createGraphQLSpec<T>(
   model: any,
   resourceName: string,
   resourceToCreate: any,
-  resourceToUpdate: any,
-  testDependents: TestDependents<any>[] = []
+  resourceToUpdate: any
 ) {
   if (!resourceToCreate || Object.keys(resourceToCreate).length === 0) {
     throw new Error('Must provide an object to create with properties of at least length 1');
@@ -30,30 +35,42 @@ export default function createGraphQLSpec<T>(
   const upperResourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
 
   describe(`GraphQL / ${upperResourceName}`, () => {
-    let db: Sequelize;
-    let user: User;
+    let mongoServer: MongoMemoryServer;
+    let db: mongoose.Mongoose;
     let resource: T;
     let jwt: string;
 
-    beforeEach(async () => {
-      db = await syncDb();
-      user = await User.create({ username: 'stu1', passwordHash: '123' });
-      jwt = signToken(user);
+    beforeAll(async () => {
+      ({ db, mongoServer } = await setupTestDB());
+      jwt = signToken({ id: '1', role: 0 } as IUserDocument);
 
-      // If any depended models/resources are required,
-      // Sync and create them in the database.
-      if (testDependents.length !== 0) {
-        for (const dependent of testDependents) {
-          await dependent.model.drop({ cascade: true });
-          await dependent.model.sync();
-          await dependent.model.create(dependent.resource);
-        }
-      }
       resource = await model.create(resourceToCreate);
     });
 
     afterAll(async () => {
-      await db.close();
+      await db.disconnect();
+      await mongoServer.stop();
+    });
+
+    describe(`new${upperResourceName}($input: New${upperResourceName}Input!)`, () => {
+      it(`should create a new ${upperResourceName}`, async () => {
+        const queryName = `new${upperResourceName}`;
+        const result = await runQuery(
+          `
+        mutation New${upperResourceName}($input: New${upperResourceName}Input!) {
+          ${queryName}(input: $input) {
+            id
+          }
+        }
+      `,
+          { input: resourceToCreate },
+          jwt
+        );
+
+        expect(result.errors).not.toBeDefined();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
+      });
     });
 
     describe(`all${upperResourceName}s`, () => {
@@ -72,7 +89,7 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeArray();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
       });
     });
 
@@ -92,34 +109,10 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toEqual((resource as any).id.toString());
-      });
-    });
-
-    describe(`new${upperResourceName}($input: New${upperResourceName}Input!)`, () => {
-      it(`should create a new ${upperResourceName}`, async () => {
-        // Drop the table and sync again when creating a resource as the resource has already been created
-        // This will cause an errors if there are meant to be unique fields
-        await model.drop({ cascade: true });
-        await model.sync();
-
-        const queryName = `new${upperResourceName}`;
-        const result = await runQuery(
-          `
-        mutation New${upperResourceName}($input: New${upperResourceName}Input!) {
-          ${queryName}(input: $input) {
-            id
-          }
-        }
-      `,
-          { input: resourceToCreate },
-          jwt
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+          (resource as any).id.toString()
         );
-
-        expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toBeString();
       });
     });
 
@@ -142,8 +135,10 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
-        expect(result.data[queryName].id).toEqual((resource as any).id.toString());
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+          (resource as any).id.toString()
+        );
       });
     });
 
@@ -162,7 +157,7 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect(result.data[queryName]).toBeObject();
+        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
       });
     });
   });

@@ -1,15 +1,13 @@
 type Todo {
   id: ID!
-  userId: ID!
+  user: ID!
   title: String!
   description: String!
   completed: Boolean!
-  createdAt: Date!
-  updatedAt: Date!
 }
 
 input NewTodoInput {
-  userId: ID!
+  user: ID!
   title: String!
   description: String!
   completed: Boolean!
@@ -17,7 +15,7 @@ input NewTodoInput {
 
 input UpdatedTodoInput {
   id: ID!
-  userId: ID
+  user: ID
   title: String
   description: String
   completed: Boolean

@@ -1,20 +1,14 @@
-import { sequelize } from '../server/db/sequelize';
+import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { graphql } from 'graphql';
 import { schema } from '../server/api/graphql';
 
-export interface TestDependents<T> {
-  model: any;
-  resource: T;
-}
-
-export const syncDb = async () => {
-  try {
-    await sequelize.authenticate();
-    await sequelize.drop({ cascade: true });
-    return await sequelize.sync();
-  } catch (err) {
-    console.error('Unable to connect to the database:', err);
-  }
+/**
+ * Helper function to generate ObjectID, note it returns the hex string of the ObjectId
+ */
+export const newId = () => {
+  return (mongoose.Types.ObjectId().toHexString() as unknown) as ObjectId;
 };
 
 export const runQuery = async (
@@ -33,3 +27,29 @@ export const runQuery = async (
     variables
   );
 };
+
+/**
+ * Helper function to setup Mongo Memory server
+ */
+export async function setupTestDB(): Promise<{
+  db: mongoose.Mongoose;
+  mongoServer: MongoMemoryServer;
+}> {
+  const mongoServer = new MongoMemoryServer();
+  const mongoUri: string = await mongoServer.getConnectionString();
+  const mongooseOpts: mongoose.ConnectionOptions = {
+    promiseLibrary: Promise,
+    autoReconnect: true,
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 1000,
+    useNewUrlParser: true
+  };
+
+  const db: mongoose.Mongoose = await mongoose.connect(mongoUri, mongooseOpts);
+  console.log(`MongoDB successfully connected to ${mongoUri}`);
+
+  return {
+    db: db,
+    mongoServer: mongoServer
+  };
+}

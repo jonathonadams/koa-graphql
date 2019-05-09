@@ -1,6 +1,6 @@
-import { loginController, registerController } from './auth';
-import { User } from '../api/users';
 import { GraphQLFieldResolver } from 'graphql';
+import { loginController, registerController } from './auth';
+import { IUserDocument } from '../api/users/user.model';
 
 /**
  *  A function that handles logging a user in
@@ -19,12 +19,12 @@ export const login: GraphQLFieldResolver<any, { username: string; password: stri
   return await loginController(username, password);
 };
 
-export const register: GraphQLFieldResolver<any, { input: User }, any> = async (
+export const register: GraphQLFieldResolver<any, { input: IUserDocument }, any> = async (
   root,
   args,
   context,
   info
 ) => {
-  const user: User = args.input;
+  const user: IUserDocument = args.input;
   return registerController(user);
 };

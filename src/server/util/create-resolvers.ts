@@ -1,31 +1,33 @@
 import { createControllers } from './create-controllers';
 import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
 import { GraphQLFieldResolver } from 'graphql';
+import * as mongoose from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 // const resolver = async (rootValue, args, context, info) => {
 //   -> place logic here
 // }
 
-// const exampleResolver = async (_, { destructedProperty }, { req, user } , __ ) => {
+// const exampleResolver = async (_, { destructuredProperty }, { req, user } , __ ) => {
 //   -> place logic here
 // }
 
 type Resolver<T> = GraphQLFieldResolver<any, any, T>;
 
-export function generateResolvers<T>(model: any) {
-  const controllers = createControllers<T>(model);
+export function generateResolvers<T extends mongoose.Document>(model: mongoose.Model<T>) {
+  const controllers = createControllers(model);
 
   const getAll: Resolver<any> = async (root, args, ctx, info) => {
     return await controllers.getAll();
   };
-  const getOne: Resolver<{ id: string }> = async (root, { id }, ctx, info) => {
+  const getOne: Resolver<{ id: ObjectId }> = async (root, { id }, ctx, info) => {
     return await controllers.getOne(id);
   };
   const createOne: Resolver<{ input: T }> = async (root, { input }, ctx, info) => {
     return await controllers.createOne(input);
   };
 
-  const updateOne: Resolver<{ input: { id: string; [property: string]: any } }> = async (
+  const updateOne: Resolver<{ input: { id: ObjectId; [property: string]: any } }> = async (
     root,
     { input },
     ctx,
@@ -35,7 +37,7 @@ export function generateResolvers<T>(model: any) {
     return await controllers.updateOne(id, values);
   };
 
-  const removeOne: Resolver<{ id: string }> = async (root, { id }, ctx, info) => {
+  const removeOne: Resolver<{ id: ObjectId }> = async (root, { id }, ctx, info) => {
     return await controllers.removeOne(id);
   };
 
@@ -48,7 +50,17 @@ export function generateResolvers<T>(model: any) {
   };
 }
 
-export function createTypeResolver<T>(model: any, name: string) {
+export function createTypeResolver<T extends mongoose.Document>(
+  model: mongoose.Model<T>,
+  name: string
+): {
+  Query: {
+    [queryName: string]: GraphQLFieldResolver<any, any, any> | undefined;
+  };
+  Mutation: {
+    [mutationName: string]: GraphQLFieldResolver<any, any, any> | undefined;
+  };
+} {
   const resolvers = generateResolvers<T>(model);
 
   const typeResolver = {

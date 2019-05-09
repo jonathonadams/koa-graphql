@@ -1,56 +1,123 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { sequelize } from '../../db/sequelize';
-import { AuthenticationScopes } from 'src/server/auth/scopes';
+import * as mongoose from 'mongoose';
+import { AuthenticationRoles } from '../../auth/scopes';
+import { defaultSchemaOptions } from '../../db/schema-options';
 
-// Sequelize Operation symbols
-const Op = (Sequelize as any).Op;
-
-export class User extends Model<User> {
+export class UserClass extends mongoose.Model {
   id: string;
   username: string;
   firstName: string;
   lastName: string;
   emailAddress: string;
   dateOfBirth: Date | string;
+  settings: {
+    darkMode: boolean;
+    colors: {
+      lightPrimary: string;
+      lightAccent: string;
+      darkPrimary: string;
+      darkAccent: string;
+    };
+  };
   hashedPassword: string;
-  scope: AuthenticationScopes;
+  role: AuthenticationRoles;
   createdAt: Date;
   updatedAt: Date;
 
-  // This function is only used for the auth function
-  // And hence, must return the hashed password
-  public static findByUsername(username: string) {
-    return this.scope('withPassword').findOne({
-      where: {
-        username: {
-          [Op.eq]: username
-        }
-      }
-    });
+  /**
+   * This function is only used for the auth function and hence, must return the hashed password
+   *
+   * @param username The username to search by.
+   */
+  public static findByUsername(
+    username: string
+  ): Promise<mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}>> {
+    return this.findOne({
+      username: username
+    })
+      .select('+hashedPassword +scope')
+      .exec();
   }
 }
 
-// Initialize the sequlize map.
-User.init(
+export const userSchema = new mongoose.Schema(
   {
-    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV1, primaryKey: true },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    username: DataTypes.STRING,
-    emailAddress: DataTypes.STRING,
-    dateOfBirth: DataTypes.DATE,
-    hashedPassword: DataTypes.STRING,
-    scope: DataTypes.INTEGER
+    username: {
+      type: String,
+      required: true
+    },
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    emailAddress: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    dateOfBirth: {
+      type: String,
+      required: true
+    },
+    settings: {
+      darkMode: {
+        type: Boolean,
+        required: true
+      },
+      colors: {
+        lightPrimary: String,
+        lightAccent: String,
+        darkPrimary: String,
+        darkAccent: String
+      }
+    },
+    role: {
+      type: Number,
+      required: true,
+      select: false,
+      default: AuthenticationRoles.User
+    },
+    hashedPassword: {
+      type: String,
+      required: true,
+      select: false
+    }
   },
   {
-    sequelize: sequelize,
-    defaultScope: {
-      attributes: { exclude: ['hashedPassword'] }
-    },
-    scopes: {
-      withPassword: {
-        attributes: { include: ['hashedPassword'] }
-      }
-    }
+    ...defaultSchemaOptions
   }
 );
+
+export interface IUserDocument extends mongoose.Document {
+  id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  dateOfBirth: Date | string;
+  settings: {
+    darkMode: boolean;
+    colors: {
+      lightPrimary: string;
+      lightAccent: string;
+      darkPrimary: string;
+      darkAccent: string;
+    };
+  };
+  hashedPassword: string;
+  role: AuthenticationRoles;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IUserModel extends mongoose.Model<IUserDocument> {
+  findByUsername: (
+    userName: string
+  ) => mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}>;
+}
+
+userSchema.loadClass(UserClass);
+export const User = mongoose.model<IUserDocument, IUserModel>('user', userSchema);

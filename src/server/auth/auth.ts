@@ -1,22 +1,25 @@
-import { sign, verify } from 'jsonwebtoken';
+import * as jsonwebtoken from 'jsonwebtoken';
 import * as Boom from 'boom';
-import { compare, hash } from 'bcryptjs';
+import * as bcryptjs from 'bcryptjs';
 import config from '../config';
-import { User } from '../api/users';
-import { ServerState } from '../api/server-state/server-state.model';
+import { ServerState, IServerStateDocument } from '../api/server-state/server-state.model';
 import { isPasswordAllowed } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
+import { IUserDocument, User } from '../api/users/user.model';
+
+const { sign, verify } = jsonwebtoken;
+const { compare, hash } = bcryptjs;
 
 // A function that returns a singed JWT
-export const signToken = (user: User): string => {
+export const signToken = (user: IUserDocument): string => {
   return sign(
     {
-      // Enter addtional paylod info here
-      scope: user.scope
+      // Enter additional payload info here
+      role: user.role
     },
     config.secrets.accessToken,
     {
-      subject: user.id,
+      subject: user.id.toString(),
       expiresIn: config.expireTime,
       issuer: 'your-company-here'
     }
@@ -47,15 +50,18 @@ export const loginController = async (
   };
 };
 
-export const registerController = async (user: User) => {
-  const username: string = user.username;
+export const registerController = async (user: IUserDocument) => {
   const password: string = (user as any).password;
-  if (isPasswordAllowed(password)) {
-    user.hashedPassword = await hash(password, 10);
-    return await User.create(user);
-  } else {
-    throw Boom.unauthorized('Password does not match requirements');
-  }
+  if (!password) Boom.badRequest('No password provided');
+
+  if (!isPasswordAllowed(password)) throw Boom.unauthorized('Password does not match requirements');
+
+  user.hashedPassword = await hash(password, 10);
+
+  const currentUser = await User.findByUsername(user.username);
+  if (currentUser !== null) throw Boom.badRequest('Username is not available');
+
+  return await User.create(user);
 };
 
 export const authorize: Middleware = async (ctx, next) => {
@@ -82,7 +88,8 @@ export const authorize: Middleware = async (ctx, next) => {
     }
   );
 
-  const serverState: ServerState = await ServerState.getServerState();
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
 
@@ -102,8 +109,10 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
   const username = ctx.request.body.username;
 
   // find the token
-  const state: ServerState = await ServerState.findOne({ where: { id: 1 } });
-  const refreshTokens = { ...state.refreshTokens };
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
+
+  const refreshTokens = { ...serverState.refreshTokens };
   const token = refreshTokens[refreshToken];
 
   if (!token || token !== username) {
@@ -126,7 +135,8 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
 export async function revokeRefreshToken(ctx: ParameterizedContext, next: () => Promise<any>) {
   const refreshToken = ctx.request.body.refreshToken;
 
-  const serverState: ServerState = await ServerState.getServerState();
+  const serverState: IServerStateDocument | null = await ServerState.getServerState();
+  if (serverState === null) throw Boom.badRequest();
 
   const refreshTokens = { ...serverState.refreshTokens };
   delete refreshTokens[refreshToken];

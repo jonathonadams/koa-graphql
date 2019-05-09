@@ -1,7 +1,9 @@
-import { User } from './user.model';
-import { Sequelize } from 'sequelize';
-import { syncDb, runQuery } from '../../../tests/helpers';
+import * as mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { User, IUserDocument } from './user.model';
+import { runQuery, setupTestDB } from '../../../tests/helpers';
 import { signToken } from '../../auth/auth';
+import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 
 const user = ({
   username: 'test user',
@@ -9,8 +11,13 @@ const user = ({
   lastName: 'user',
   emailAddress: 'test@domain.com',
   dateOfBirth: '2019-01-01',
-  password: 'asF.s0f.s'
-} as any) as User;
+  password: 'asF.s0f.s',
+  hashedPassword: 'asF.s0f.s',
+  role: 0,
+  settings: {
+    darkMode: false
+  }
+} as any) as IUserDocument;
 
 const updatedUser = { username: 'updated user' };
 
@@ -18,23 +25,29 @@ const updatedUser = { username: 'updated user' };
 // GraphQL API tests
 // ----------------------------------
 describe(`GraphQL / User`, () => {
-  let db: Sequelize;
-  let createdUser: User;
+  // let connection: mongoose.Connection;
+  let mongoServer: MongoMemoryServer;
+  let db: mongoose.Mongoose;
+  let createdUser: IUserDocument;
   let jwt: string;
 
-  beforeEach(async () => {
-    db = await syncDb();
+  beforeAll(async () => {
+    ({ db, mongoServer } = await setupTestDB());
+
     createdUser = await User.create(user);
+    [createdUser.id, createdUser._id] = [createdUser._id, createdUser.id];
     jwt = signToken(createdUser);
   });
 
   afterAll(async () => {
-    await db.close();
+    await db.disconnect();
+    await mongoServer.stop();
   });
 
   describe(`allUsers`, () => {
     it(`should return all Users`, async () => {
       const queryName = `allUsers`;
+      //language=GraphQL
       const result = await runQuery(
         `
         {
@@ -48,7 +61,7 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeArray();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
     });
   });
 
@@ -68,17 +81,22 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toEqual(createdUser.id.toString());
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+        createdUser.id.toString()
+      );
     });
   });
 
   describe(`register($input: NewUserInput!)`, () => {
     it(`should create a new User`, async () => {
-      // Drop the table and sync again when creating a resource as the resource has already been created
-      // This will cause an errors if there are meant to be unique fields
-      await User.drop({ cascade: true });
-      await User.sync();
+      const differentUser = {
+        ...user,
+        username: 'A different user',
+        emailAddress: 'someDifferent@email.com'
+      };
+      delete differentUser['role'];
+      delete differentUser['hashedPassword'];
 
       const queryName = `register`;
       const result = await runQuery(
@@ -86,16 +104,20 @@ describe(`GraphQL / User`, () => {
       mutation Register($input: NewUserInput!) {
         ${queryName}(input: $input) {
           id
+          username
         }
       }
     `,
-        { input: user },
+        { input: differentUser },
         jwt
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toBeString();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
+      expect((result.data as ExecutionResultDataDefault)[queryName].username).toEqual(
+        differentUser.username
+      );
     });
   });
 
@@ -118,8 +140,10 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
-      expect(result.data[queryName].id).toEqual(createdUser.id.toString());
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
+        createdUser.id.toString()
+      );
     });
   });
 
@@ -138,7 +162,7 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect(result.data[queryName]).toBeObject();
+      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
     });
   });
 });

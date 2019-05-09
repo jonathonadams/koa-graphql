@@ -1,35 +1,39 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { sequelize } from '../../db/sequelize';
+import * as mongoose from 'mongoose';
+import { defaultSchemaOptions } from '../../db/schema-options';
 
-// Sequelize Operation symbols
-const Op = (Sequelize as any).Op;
-
-export class Todo extends Model<Todo> {
-  id: string;
-  userId: string;
+export class TodoClass extends mongoose.Model {
+  user: mongoose.Types.ObjectId;
   title: string;
   description: string;
   completed: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-// Initialize the sequlize map.
-Todo.init(
+export const todoSchema = new mongoose.Schema(
   {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV1,
-      primaryKey: true
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'user'
     },
-    userId: {
-      type: DataTypes.UUID
-    },
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    completed: DataTypes.BOOLEAN,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    title: String,
+    description: String,
+    completed: {
+      type: Boolean,
+      required: true
+    }
   },
-  { sequelize }
+  {
+    ...defaultSchemaOptions
+  }
 );
+
+export interface ITodoDocument extends mongoose.Document {
+  user: mongoose.Types.ObjectId;
+  title: string;
+  description: string;
+  completed: boolean;
+}
+export interface ITodoModel extends mongoose.Model<ITodoDocument> {}
+
+todoSchema.loadClass(TodoClass);
+export const Todo = mongoose.model<ITodoDocument, ITodoModel>('todo', todoSchema);

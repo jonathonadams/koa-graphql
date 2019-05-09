@@ -1,27 +1,37 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
-import { sequelize } from '../../db/sequelize';
+import * as mongoose from 'mongoose';
 
-const Op = (Sequelize as any).Op;
-// This resource is an internal resource to manage and state that is required
-// to be stored in the db for the servers internal use. e.g. the issues refresh tokens.
-
-export class ServerState extends Model<ServerState> {
-  id: number;
+/**
+ * This resource is an internal resource to manage the state that is required
+ * to be stored in the db for the servers internal use. e.g. the issues refresh tokens.
+ */
+export class ServerStateClass extends mongoose.Model {
   refreshTokens: any;
 
   public static getServerState() {
     return this.findOne({
-      where: {
-        id: 1
-      }
+      id: 1
     });
   }
 }
 
-ServerState.init(
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
-    refreshTokens: DataTypes.JSONB
-  },
-  { sequelize: sequelize, tableName: 'server_state', timestamps: false }
+export interface IServerStateDocument extends mongoose.Document {
+  refreshTokens: any;
+}
+
+export interface IServerStateModel extends mongoose.Model<IServerStateDocument> {
+  getServerState: () => mongoose.DocumentQuery<
+    IServerStateDocument | null,
+    IServerStateDocument,
+    {}
+  >;
+}
+
+export const serverStateSchema = new mongoose.Schema({
+  refreshTokens: String
+});
+
+serverStateSchema.loadClass(ServerStateClass);
+export const ServerState = mongoose.model<IServerStateDocument, IServerStateModel>(
+  'server-state',
+  serverStateSchema
 );

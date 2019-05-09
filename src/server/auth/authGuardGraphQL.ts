@@ -1,8 +1,10 @@
-import { verify } from 'jsonwebtoken';
+import * as jsonwebtoken from 'jsonwebtoken';
 import * as Boom from 'boom';
-import { User } from '../api/users';
+import { User } from '../api/users/user.model';
 import config from '../config';
 import { GraphQLResolveInfo, GraphQLFieldResolver } from 'graphql';
+
+const { verify } = jsonwebtoken;
 
 type AuthMiddleware = GraphQLFieldResolver<any, any, any>;
 /**
@@ -42,7 +44,7 @@ const checkToken: AuthMiddleware = (parent, args, context, info) => {
 // Throws an error if the user is invalid
 const checkUser: AuthMiddleware = async (parent, args, context, info) => {
   const id = context.state.token.sub;
-  const user = await User.findByPk(id);
+  const user = await User.findById(id);
   if (!user) throw Boom.unauthorized();
   context.state.user = user;
 };

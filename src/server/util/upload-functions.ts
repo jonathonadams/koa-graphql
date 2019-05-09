@@ -64,7 +64,7 @@ export const verifyMagicNumbers = async (file: MulterUpload) => {
     return file;
   } else {
     // File is not a .pdf
-    return new Error('File is not compatiable');
+    return new Error('File is not compatible');
   }
 };
 

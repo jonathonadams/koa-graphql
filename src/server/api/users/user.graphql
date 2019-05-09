@@ -1,3 +1,27 @@
+type UserSettings {
+  darkMode: Boolean
+  colors: ColorSetting
+}
+
+type ColorSetting {
+  lightPrimary: String
+  lightAccent: String
+  darkPrimary: String
+  darkAccent: String
+}
+
+input UserSettingsInput {
+  darkMode: Boolean
+  colors: ColorSettingInput
+}
+
+input ColorSettingInput {
+  lightPrimary: String
+  lightAccent: String
+  darkPrimary: String
+  darkAccent: String
+}
+
 type User {
   id: ID!
   firstName: String!
@@ -5,6 +29,7 @@ type User {
   username: String!
   emailAddress: String!
   dateOfBirth: Date!
+  settings: UserSettings
 }
 
 input NewUserInput {
@@ -14,6 +39,7 @@ input NewUserInput {
   emailAddress: String!
   dateOfBirth: Date!
   password: String!
+  settings: UserSettingsInput
 }
 
 input UpdatedUserInput {

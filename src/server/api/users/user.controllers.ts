@@ -1,60 +1,65 @@
-import merge from 'lodash.merge';
-import { User } from './user.model';
-import { escapeObjectProperties } from '../../util/helper-functions';
 import { ParameterizedContext } from 'koa';
+import * as Boom from 'boom';
+import { Utils } from '../../util/utils';
+import { User } from './user.model';
 
-export async function params(id: string, ctx: ParameterizedContext, next: () => Promise<any>) {
-  const user = await (User as any).findByPk(id);
-  if (!user) {
-    ctx.status = 404;
-  } else {
-    ctx.state.user = user;
-    await next();
-  }
+export async function params(
+  id: string,
+  ctx: ParameterizedContext,
+  next: () => Promise<any>
+): Promise<void> {
+  ctx.state.id = id;
+  await next();
 }
 
 // Get All
-export async function getAll(ctx: ParameterizedContext) {
+export async function getAll(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 200;
-  ctx.body = await User.findAll();
+  const resources = await User.find({})
+    .lean()
+    .exec();
+
+  ctx.body = resources.map(Utils.swapId);
 }
 
 // Get an individual user
-export async function getOne(ctx: ParameterizedContext) {
+export async function getOne(ctx: ParameterizedContext): Promise<void> {
+  const user = await User.findById(ctx.state.id)
+    .lean()
+    .exec();
+
+  if (!user) throw Boom.notFound('Cannot find a user with the supplied parameters.');
+
   ctx.status = 200;
-  ctx.body = ctx.state.user;
+  ctx.body = Utils.swapId(user);
 }
 
 // Create a Resource
-export async function createOne(ctx: ParameterizedContext) {
-  const user = ctx.request.body;
-  // Escape the input values before create
-  escapeObjectProperties(user);
+export async function createOne(ctx: ParameterizedContext): Promise<void> {
   ctx.status = 201;
-  ctx.body = await User.create(user);
+  ctx.body = await User.create(ctx.request.body);
 }
 
 // Update a user
-export async function updateOne(ctx: ParameterizedContext) {
-  const userToUpdate = ctx.state.user;
-  const user = ctx.request.body;
+export async function updateOne(ctx: ParameterizedContext): Promise<void> {
+  const updatedUser = await User.findByIdAndUpdate(ctx.state.id, ctx.request.body, { new: true })
+    .lean()
+    .exec();
 
-  // Escape the updated values before merge
-  escapeObjectProperties(user);
-  merge(userToUpdate, user);
+  if (!updatedUser) throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
   ctx.status = 201;
-  ctx.body = await userToUpdate.save();
+  ctx.body = Utils.swapId(updatedUser);
 }
 
 // Remove one
-export async function removeOne(ctx: ParameterizedContext) {
-  const user = ctx.state.user;
-  // Sequelize does not return an object from the destroy method.
-  // Create a close of the object to send back with status 2000
-  const userToReturn = { ...user.get() };
-  await user.destroy();
+export async function removeOne(ctx: ParameterizedContext): Promise<void> {
+  const removedUser = await User.findByIdAndDelete(ctx.state.id)
+    .lean()
+    .exec();
+
+  if (!removedUser) throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
   ctx.status = 200;
-  ctx.body = userToReturn;
+  ctx.body = Utils.swapId(removedUser);
 }

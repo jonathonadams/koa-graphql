@@ -1,9 +1,16 @@
 {
   "name": "api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Example Koa API that support REST and GraphQL",
-  "author": "Jonathon Adams",
-  "license": "ISC",
+  "author": {
+    "name": "Jonathon Adams"
+  },
+  "type": "commonjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jadams88/koa-graphql-rest-api"
+  },
   "main": "dist/index.js",
   "keywords": [
     "Koa",
@@ -12,11 +19,11 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "cross-env NODE_ENV=dev nodemon -r dotenv/config dist/index.js",
-    "test": "run-p test:unit test:e2e",
+    "dev": "cross-env NODE_ENV=dev nodemon  -r dotenv/config dist/index.js",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
-    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --runInBand --testPathPattern='\\w+\\.e2e\\.tsx?'",
-    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --runInBand --findRelatedTests",
+    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
+    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
     "build": "gulp dev",
@@ -38,8 +45,7 @@
     "linters": {
       "*.ts": [
         "npm run lint:fix",
-        "git add",
-        "npm run test:staged"
+        "git add"
       ]
     },
     "ignore": [
@@ -66,8 +72,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
-    "pg": "^7.9.0",
-    "sequelize": "^5.1.1"
+    "mongoose": "^5.5.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -78,6 +83,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
+    "@types/mongoose": "^5.5.0",
     "cross-env": "^5.2.0",
     "del": "^4.0.0",
     "dotenv": "^7.0.0",
@@ -87,6 +93,7 @@
     "jest": "^24.5.0",
     "jest-extended": "^0.11.1",
     "lint-staged": "^8.1.5",
+    "mongodb-memory-server": "^5.1.0",
     "nodemon": "^1.18.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.16.4",

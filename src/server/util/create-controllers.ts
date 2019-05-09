@@ -1,49 +1,65 @@
 import * as Boom from 'boom';
-import * as merge from 'lodash.merge';
-import { escapeObjectProperties } from './helper-functions';
+import * as mongoose from 'mongoose';
+import { Utils } from '../util/utils';
+import { ObjectId } from 'mongodb';
 
-export function createControllers<T>(model: any) {
+/**
+ * A helper function to create all CRUD related controllers.
+ *
+ * Because this function does not do any logic except to get or update
+ * we use the lean() method to not create instances of mongoose documents
+ * and returns the wrap document from mongoose.This means that the transform
+ * functions for toObject() and toJSON() on the schemas will not get run.
+ * This means we have to manually deal with the swapping of ._id and .id
+ * This is manually done with a Utils helper method
+ */
+export function createControllers(model: mongoose.Model<mongoose.Document>) {
   return {
     // Get All
     getAll: async () => {
-      return await (model.findAll() as T);
+      const resources: any[] = await model
+        .find({})
+        .lean()
+        .exec();
+
+      return resources.map(Utils.swapId);
     },
 
     // Get an individual resource
-    getOne: async (id: string) => {
-      const resource = await (model.findByPk(id) as T);
+    getOne: async (id: ObjectId) => {
+      const resource = await model
+        .findById(id)
+        .lean()
+        .exec();
 
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
 
-      return resource;
+      return Utils.swapId(resource);
     },
 
     // Create a Resource
     createOne: async (values: any) => {
-      // Escape the input values before create
-      escapeObjectProperties(values);
-      return await (model.create(values) as T);
+      return await model.create(values);
     },
 
     // Update a resource
-    updateOne: async (id: string, values: any) => {
-      const resource = await model.findByPk(id);
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
-      merge(resource, values);
-      return await (resource.save() as T);
+    updateOne: async (id: ObjectId, values: any) => {
+      const resource = await model
+        .findByIdAndUpdate(id, values, { new: true })
+        .lean()
+        .exec();
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      return Utils.swapId(resource);
     },
 
     // Remove one
-    removeOne: async (id: any) => {
-      const resource = await model.findByPk(id);
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied paramaters.');
-
-      // Sequelize does not return an object from the destroy method.
-      // Create a clone of the object to send back with status 2000
-      const resourceToReturn = { ...resource.get() };
-      await resource.destroy();
-
-      return resourceToReturn as T;
+    removeOne: async (id: ObjectId) => {
+      const resource = await model
+        .findByIdAndRemove(id)
+        .lean()
+        .exec();
+      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      return Utils.swapId(resource);
     }
   };
 }

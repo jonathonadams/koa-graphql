@@ -14,10 +14,10 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon  -r dotenv/config dist/index.js",
-    "test": "run-p test:unit test:e2e",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
-    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --runInBand --testPathPattern='\\w+\\.e2e\\.tsx?'",
-    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --runInBand --findRelatedTests",
+    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
+    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
     "build": "gulp dev",
@@ -47,7 +47,6 @@
     ]
   },
   "dependencies": {
-    "@shelf/jest-mongodb": "^1.0.1",
     "apollo-server-koa": "^2.4.8",
     "bcryptjs": "^2.4.3",
     "boom": "^7.3.0",
@@ -67,7 +66,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
-    "mongoose": "^5.5.5"
+    "mongoose": "^5.5.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -78,7 +77,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
-    "@types/mongoose": "^5.3.27",
+    "@types/mongoose": "^5.5.0",
     "cross-env": "^5.2.0",
     "del": "^4.0.0",
     "dotenv": "^7.0.0",
@@ -88,6 +87,7 @@
     "jest": "^24.5.0",
     "jest-extended": "^0.11.1",
     "lint-staged": "^8.1.5",
+    "mongodb-memory-server": "^5.1.0",
     "nodemon": "^1.18.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.16.4",

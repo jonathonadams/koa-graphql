@@ -2,25 +2,24 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import * as Boom from 'boom';
 import * as bcryptjs from 'bcryptjs';
 import config from '../config';
-import { User } from '../api/users';
 import { ServerState, IServerStateDocument } from '../api/server-state/server-state.model';
 import { isPasswordAllowed } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
-import { UserClass, IUserDocument } from '../api/users/user.model';
+import { IUserDocument, User } from '../api/users/user.model';
 
 const { sign, verify } = jsonwebtoken;
 const { compare, hash } = bcryptjs;
 
 // A function that returns a singed JWT
-export const signToken = (user: UserClass): string => {
+export const signToken = (user: IUserDocument): string => {
   return sign(
     {
       // Enter additional payload info here
-      scope: user.scope
+      role: user.role
     },
     config.secrets.accessToken,
     {
-      subject: ((user._id ? user._id : user.id) as number).toString(),
+      subject: user.id.toString(),
       expiresIn: config.expireTime,
       issuer: 'your-company-here'
     }

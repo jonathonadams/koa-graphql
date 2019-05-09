@@ -3,7 +3,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
 module.exports = {
-  preset: '@shelf/jest-mongodb',
   setupFilesAfterEnv: ['jest-extended'],
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],

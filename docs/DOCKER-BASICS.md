@@ -70,7 +70,7 @@ docker network create internal
 docker network rm proxy
 ```
 
-## Development Local Postgres Container
+## Development Local Postgres Container (Archive)
 
 How to create a local postgres container for development
 Configuring postgres can be difficult and time consuming. You can avoid this by running postgres in a local docker container.
@@ -114,3 +114,14 @@ The username is **postgres** because we did not specify a **POSTGRES_USER** envi
 Read more about Postgres and Docker and how to configure it [here](https://hub.docker.com/_/postgres/).
 
 Note: If the postgres image has not previously been downloaded, the `docker create` command will pull the image for you. Alternatively you can run `docker pull postgres` or `docker pull postgres:alpine` to manually download the image before your run `docker create`
+
+# Development Local Mongo Container
+
+docker create \
+ --name local-mongo \
+ -p 27017:27017 \
+ -e MONGO_INITDB_ROOT_USERNAME=mongo \
+ -e MONGO_INITDB_ROOT_PASSWORD=mongo_password \
+mongo
+
+Read more about Mongo and Docker and how to configure it [here](https://hub.docker.com/_/mongo).

@@ -1,9 +1,9 @@
-import { User, IUserDocument } from './user.model';
 import * as mongoose from 'mongoose';
-import { runQuery } from '../../../tests/helpers';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { User, IUserDocument } from './user.model';
+import { runQuery, setupTestDB } from '../../../tests/helpers';
 import { signToken } from '../../auth/auth';
 import { ExecutionResultDataDefault } from 'graphql/execution/execute';
-import { dbConnection } from '../../db/mongo';
 
 const user = ({
   username: 'test user',
@@ -11,7 +11,12 @@ const user = ({
   lastName: 'user',
   emailAddress: 'test@domain.com',
   dateOfBirth: '2019-01-01',
-  password: 'asF.s0f.s'
+  password: 'asF.s0f.s',
+  hashedPassword: 'asF.s0f.s',
+  role: 0,
+  settings: {
+    darkMode: false
+  }
 } as any) as IUserDocument;
 
 const updatedUser = { username: 'updated user' };
@@ -21,28 +26,28 @@ const updatedUser = { username: 'updated user' };
 // ----------------------------------
 describe(`GraphQL / User`, () => {
   // let connection: mongoose.Connection;
-  let db: any;
+  let mongoServer: MongoMemoryServer;
+  let db: mongoose.Mongoose;
   let createdUser: IUserDocument;
   let jwt: string;
 
-  beforeEach(async () => {
-    db = await dbConnection();
-    // connection = ;
-    // db = connection.db
-
-    console.log(db);
+  beforeAll(async () => {
+    ({ db, mongoServer } = await setupTestDB());
 
     createdUser = await User.create(user);
+    [createdUser.id, createdUser._id] = [createdUser._id, createdUser.id];
     jwt = signToken(createdUser);
   });
 
   afterAll(async () => {
-    await db.close();
+    await db.disconnect();
+    await mongoServer.stop();
   });
 
   describe(`allUsers`, () => {
     it(`should return all Users`, async () => {
       const queryName = `allUsers`;
+      //language=GraphQL
       const result = await runQuery(
         `
         {
@@ -85,9 +90,13 @@ describe(`GraphQL / User`, () => {
 
   describe(`register($input: NewUserInput!)`, () => {
     it(`should create a new User`, async () => {
-      // Drop the table and sync again when creating a resource as the resource has already been created
-      // This will cause an errors if there are meant to be unique fields
-      await db.collections['user'].remove(function() {});
+      const differentUser = {
+        ...user,
+        username: 'A different user',
+        emailAddress: 'someDifferent@email.com'
+      };
+      delete differentUser['role'];
+      delete differentUser['hashedPassword'];
 
       const queryName = `register`;
       const result = await runQuery(
@@ -95,16 +104,20 @@ describe(`GraphQL / User`, () => {
       mutation Register($input: NewUserInput!) {
         ${queryName}(input: $input) {
           id
+          username
         }
       }
     `,
-        { input: user },
+        { input: differentUser },
         jwt
       );
 
       expect(result.errors).not.toBeDefined();
       expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
       expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
+      expect((result.data as ExecutionResultDataDefault)[queryName].username).toEqual(
+        differentUser.username
+      );
     });
   });
 

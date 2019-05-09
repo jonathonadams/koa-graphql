@@ -1,31 +1,16 @@
-// import { Todo } from './todo.model';
-// import createGraphQLSpec from '../../../tests/graphQLSpec';
-// import { TestDependents } from '../../../tests/helpers';
-// import { User } from '../users';
+import { Todo, ITodoDocument } from './todo.model';
+import { newId } from '../../../tests/helpers';
+import createGraphQLSpec from '../../../tests/graphQLSpec';
 
-// const user: TestDependents<User> = {
-//   model: User,
-//   resource: {
-//     id: '00d8bd28-3480-11e8-b43d-0242ac110002',
-//     firstName: 'Some',
-//     lastName: 'User',
-//     username: 'someuser',
-//     emailAddress: 'email@domain.com',
-//     hashedPassword: '$2a$10$yTVUkddFs4sT2CBAiWkbGOp3Y5R4MMUrQ/IQo0nSbDHQfJuYNwMJu'
-//   } as User
-// };
+const todo = {
+  title: 'Some Todo',
+  description: 'A todo that needs to be done',
+  completed: false,
+  user: newId()
+} as ITodoDocument;
 
-// const dependents = [user];
+const updatedTodo = {
+  completed: true
+};
 
-// const todo = {
-//   userId: '00d8bd28-3480-11e8-b43d-0242ac110002',
-//   title: 'Some Todo',
-//   description: 'A todo that needs to be done',
-//   completed: false
-// } as Todo;
-
-// const updatedTodo = {
-//   completed: true
-// };
-
-// createGraphQLSpec(Todo, 'Todo', todo, updatedTodo, dependents);
+createGraphQLSpec(Todo, 'Todo', todo, updatedTodo);

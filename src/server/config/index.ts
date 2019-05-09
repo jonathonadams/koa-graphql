@@ -4,7 +4,6 @@ import prodConfig from './production';
 import testConfig from './test';
 import { GlobalConfig, EnvironnementConfig, ServerConfig } from './config';
 
-// TODO -> refactor for mongoose and remove sequelize configs
 /**
  * Config values common across all environments environments
  *
@@ -26,25 +25,8 @@ const config: GlobalConfig = {
    * Global database options for sequelize
    */
   databaseOptions: {
-    dialect: 'postgres',
-    pool: {
-      max: 5,
-      min: 0,
-      idle: 10000
-    },
-    quoteIdentifiers: false,
-    /**
-     * Default options for each model definition
-     */
-    define: {
-      underscored: true,
-      /**
-       * Exclude created_at and updated_at fields by default
-       */
-      defaultScope: {
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
-      }
-    }
+    useNewUrlParser: true,
+    promiseLibrary: Promise
   }
 };
 

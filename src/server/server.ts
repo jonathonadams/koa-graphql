@@ -3,7 +3,7 @@ import * as Router from 'koa-router';
 import { setupMiddleware } from './middleware';
 import { applyApiEndpoints } from './api';
 import { applyAuthorizationRoutes } from './auth/auth-routes';
-import { dbConnection } from './db/mongo';
+import { dbConnection } from './db/db-connection';
 
 /**
  * Crates a new API Server
@@ -38,12 +38,12 @@ export default class ApiServer {
     /**
      * Apply the API endpoints
      */
-    await applyApiEndpoints(app);
+    applyApiEndpoints(app);
 
     /**
      * apply all authorization routes
      */
-    await applyAuthorizationRoutes(app);
+    applyAuthorizationRoutes(app);
 
     /**
      * Apply the routes

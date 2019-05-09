@@ -11,6 +11,7 @@ export const errorHandler: Middleware = async (ctx, next) => {
     await next();
   } catch (err) {
     if ((err as Boom).isBoom) {
+      // Is A Boom
       ctx.status = err.output.statusCode;
       ctx.body = err.output.payload;
     } else if ((err as Error).name === 'ValidationError') {
@@ -19,6 +20,8 @@ export const errorHandler: Middleware = async (ctx, next) => {
       ctx.status = error.output.statusCode;
       ctx.body = error.output.payload;
     } else if (err.name === 'MongoError' && err.code === 11000) {
+      /* A MongoError with code 11000 is a duplicate error
+       *  Using regex to extrapolate the error and construct an error message */
       const errorMessage = `${
         (/index: (\w+)_/.exec(err.errmsg) as RegExpExecArray)[1]
       } must be unique`;

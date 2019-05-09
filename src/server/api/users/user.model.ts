@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { AuthenticationScopes } from '../../auth/scopes';
+import { AuthenticationRoles } from '../../auth/scopes';
 import { defaultSchemaOptions } from '../../db/schema-options';
 
 export class UserClass extends mongoose.Model {
@@ -19,7 +19,7 @@ export class UserClass extends mongoose.Model {
     };
   };
   hashedPassword: string;
-  scope: AuthenticationScopes;
+  role: AuthenticationRoles;
   createdAt: Date;
   updatedAt: Date;
 
@@ -34,7 +34,7 @@ export class UserClass extends mongoose.Model {
     return this.findOne({
       username: username
     })
-      .select('+hashedPassword')
+      .select('+hashedPassword +scope')
       .exec();
   }
 }
@@ -74,9 +74,11 @@ export const userSchema = new mongoose.Schema(
         darkAccent: String
       }
     },
-    scope: {
+    role: {
       type: Number,
-      required: true
+      required: true,
+      select: false,
+      default: AuthenticationRoles.User
     },
     hashedPassword: {
       type: String,
@@ -106,7 +108,7 @@ export interface IUserDocument extends mongoose.Document {
     };
   };
   hashedPassword: string;
-  scope: AuthenticationScopes;
+  role: AuthenticationRoles;
   createdAt: Date;
   updatedAt: Date;
 }

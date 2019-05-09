@@ -27,7 +27,7 @@ export const register: Koa.Middleware = async (ctx, next) => {
   ctx.body = await registerController(user);
 };
 
-export async function applyAuthorizationRoutes(app: Koa) {
+export function applyAuthorizationRoutes(app: Koa) {
   const router = new Router();
 
   router.post('/api/users/login', login);

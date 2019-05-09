@@ -1,10 +1,16 @@
 {
   "name": "api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Example Koa API that support REST and GraphQL",
-  "author": "Jonathon Adams",
+  "author": {
+    "name": "Jonathon Adams"
+  },
   "type": "commonjs",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jadams88/koa-graphql-rest-api"
+  },
   "main": "dist/index.js",
   "keywords": [
     "Koa",

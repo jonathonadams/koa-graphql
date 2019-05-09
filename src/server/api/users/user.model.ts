@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { AuthenticationRoles } from '../../auth/scopes';
+import { AuthenticationRoles } from '../../auth/roles';
 import { defaultSchemaOptions } from '../../db/schema-options';
 
 export class UserClass extends mongoose.Model {
@@ -34,7 +34,7 @@ export class UserClass extends mongoose.Model {
     return this.findOne({
       username: username
     })
-      .select('+hashedPassword +scope')
+      .select('+hashedPassword +role')
       .exec();
   }
 }

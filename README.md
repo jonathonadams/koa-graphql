@@ -11,6 +11,12 @@ TODO -> Document
 TODO -> Document
 Follow the instructions [here](./docs/DOCKER_BASICS.md) to setup a Database with Docker
 
+## Redis
+
+If you would like to set up Redis for caching (or any other reason), there is an example redis client using [ioredis](https://github.com/luin/ioredis) in the [redis directory](./src/server/redis/redis.ts) and controller in the [users director](./src/server/api/users/user.controller.redis.ts).
+
+To use io redis, run `npm install --save ioredis`. It is also recommended to install the TypeScript definitions `npm install --save-dev @types/ioredis`
+
 ### Node 12 & ES6 Module Imports
 
 While typescript can work fine using ES6 Imports (adding fully resolved imports and `"type": "module"` to the package.json), currently Jest does not work with native ES6 Modules yet.

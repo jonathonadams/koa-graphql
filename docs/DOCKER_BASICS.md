@@ -127,3 +127,15 @@ docker create \
 mongo
 
 Read more about Mongo and Docker and how to configure it [here](https://hub.docker.com/_/mongo).
+
+## Local Redis Server
+
+Redis can be used in many ways, but the easiest way to get up and running locally is with [docker redis](https://hub.docker.com/_/redis).
+
+```
+docker pull redis
+
+docker create --name redis -p 6379:6379 reds
+
+docker start redis
+```

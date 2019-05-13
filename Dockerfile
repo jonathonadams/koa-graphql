@@ -2,6 +2,7 @@
 # Multi build file
 # One for building our app and one for production
 # -----------------------------------------
+
 # -----------------------------------------
 # Build container
 # -----------------------------------------
@@ -16,7 +17,8 @@ ENV NODE_ENV development
 
 # Copy all files required for the build container to run
 # Do not copy the source files here, every change will require a new npm install
-COPY package.json package-lock.json tsconfig.json gulpfile.js /usr/src/app/
+# NOTE: The .dockerignore needs to explicitly allow files to be 'visible' or this will fail
+COPY package.json package-lock.json tsconfig.json gulpfile.js global.d.ts /usr/src/app/
 
 # You have to specify "--unsafe-perm" with npm install
 # when running as root.  Failing to do this can cause
@@ -25,6 +27,9 @@ COPY package.json package-lock.json tsconfig.json gulpfile.js /usr/src/app/
 # as well.
 # This command will also cat the npm-debug.log file after the
 # build, if it exists.
+# Also disable the MongoMemoryServer Post Install
+ENV MONGOMS_DISABLE_POSTINSTALL=1
+
 RUN npm install --only=dev --unsafe-perm || \
   ((if [ -f npm-debug.log ]; then \
       cat npm-debug.log; \
@@ -32,13 +37,13 @@ RUN npm install --only=dev --unsafe-perm || \
 
 # Gulp does not currently install from npm install because of v4
 # It needs to be installed it mannualy (issues with v4)
-RUN npm install gulpjs/gulp#4.0 --no-save
+RUN npm install gulp --no-save
 
 # Copy the src files accross
 COPY src src/
 
-# Run the gulp build script using local gulp package
-RUN npx gulp dist
+# Run the production build task
+RUN npm run build:prod 
 
 # -----------------------------------------
 # Production container

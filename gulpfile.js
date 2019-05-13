@@ -2,8 +2,8 @@
 const gulp = require('gulp');
 const del = require('del');
 const ts = require('gulp-typescript');
-const devTsProject = ts.createProject('tsconfig.json');
-const prodTsProject = ts.createProject('tsconfig.json', { sourceMap: false });
+const devTsProject = ts.createProject('tsconfig.json', { sourceMap: true });
+const prodTsProject = ts.createProject('tsconfig.json');
 
 const paths = {
   ts: ['src/**/*.ts'],

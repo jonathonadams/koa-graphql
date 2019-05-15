@@ -6,4 +6,5 @@
 !package-lock.json
 !tsconfig.json
 !gulpfile.js
+!global.d.ts
 !src/

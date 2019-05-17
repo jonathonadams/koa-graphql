@@ -18,7 +18,8 @@ import { IUserDocument } from '../api/users/user.model';
 export const login: Koa.Middleware = async (ctx, next) => {
   const username: string | undefined = ctx.request.body.username;
   const password: string | undefined = ctx.request.body.password;
-  if (!username || !password) throw Boom.unauthorized('A username and password must be provided');
+  if (!username || !password)
+    throw Boom.unauthorized('A username and password must be provided');
   ctx.body = await loginController(username, password);
 };
 

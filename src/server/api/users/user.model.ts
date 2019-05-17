@@ -120,4 +120,7 @@ export interface IUserModel extends mongoose.Model<IUserDocument> {
 }
 
 userSchema.loadClass(UserClass);
-export const User = mongoose.model<IUserDocument, IUserModel>('user', userSchema);
+export const User = mongoose.model<IUserDocument, IUserModel>(
+  'user',
+  userSchema
+);

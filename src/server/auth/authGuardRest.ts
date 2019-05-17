@@ -36,7 +36,10 @@ export const verifyToken = async (ctx: any, next: () => Promise<any>) => {
 /**
  *  Checks if the user exists in the DB.
  */
-export const verifyUser = async (ctx: koa.ParameterizedContext, next: () => Promise<any>) => {
+export const verifyUser = async (
+  ctx: koa.ParameterizedContext,
+  next: () => Promise<any>
+) => {
   try {
     /**
      * This middleware will only be called on a route that is after the verify token

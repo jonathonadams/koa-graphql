@@ -24,15 +24,20 @@ export default function createGraphQLSpec<T>(
   resourceToUpdate: any
 ) {
   if (!resourceToCreate || Object.keys(resourceToCreate).length === 0) {
-    throw new Error('Must provide an object to create with properties of at least length 1');
+    throw new Error(
+      'Must provide an object to create with properties of at least length 1'
+    );
   }
 
   if (!resourceToUpdate || Object.keys(resourceToUpdate).length === 0) {
-    throw new Error('Must provide an object to updated with properties of at least length 1');
+    throw new Error(
+      'Must provide an object to updated with properties of at least length 1'
+    );
   }
 
   // GraphQL schemas are designed written with UpperCase names
-  const upperResourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
+  const upperResourceName =
+    resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
 
   describe(`GraphQL / ${upperResourceName}`, () => {
     let mongoServer: MongoMemoryServer;
@@ -68,8 +73,12 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
-        expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName]
+        ).toBeObject();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName].id
+        ).toBeString();
       });
     });
 
@@ -89,7 +98,9 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName]
+        ).toBeArray();
       });
     });
 
@@ -109,10 +120,12 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
-        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
-          (resource as any).id.toString()
-        );
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName]
+        ).toBeObject();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName].id
+        ).toEqual((resource as any).id.toString());
       });
     });
 
@@ -135,10 +148,12 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
-        expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
-          (resource as any).id.toString()
-        );
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName]
+        ).toBeObject();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName].id
+        ).toEqual((resource as any).id.toString());
       });
     });
 
@@ -157,7 +172,9 @@ export default function createGraphQLSpec<T>(
         );
 
         expect(result.errors).not.toBeDefined();
-        expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+        expect(
+          (result.data as ExecutionResultDataDefault)[queryName]
+        ).toBeObject();
       });
     });
   });

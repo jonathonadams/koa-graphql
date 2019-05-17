@@ -28,7 +28,8 @@ export async function getOne(ctx: ParameterizedContext): Promise<void> {
     .lean()
     .exec();
 
-  if (!user) throw Boom.notFound('Cannot find a user with the supplied parameters.');
+  if (!user)
+    throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
   ctx.status = 200;
   ctx.body = Utils.swapId(user);
@@ -42,11 +43,16 @@ export async function createOne(ctx: ParameterizedContext): Promise<void> {
 
 // Update a user
 export async function updateOne(ctx: ParameterizedContext): Promise<void> {
-  const updatedUser = await User.findByIdAndUpdate(ctx.state.id, ctx.request.body, { new: true })
+  const updatedUser = await User.findByIdAndUpdate(
+    ctx.state.id,
+    ctx.request.body,
+    { new: true }
+  )
     .lean()
     .exec();
 
-  if (!updatedUser) throw Boom.notFound('Cannot find a user with the supplied parameters.');
+  if (!updatedUser)
+    throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
   ctx.status = 201;
   ctx.body = Utils.swapId(updatedUser);
@@ -58,7 +64,8 @@ export async function removeOne(ctx: ParameterizedContext): Promise<void> {
     .lean()
     .exec();
 
-  if (!removedUser) throw Boom.notFound('Cannot find a user with the supplied parameters.');
+  if (!removedUser)
+    throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
   ctx.status = 200;
   ctx.body = Utils.swapId(removedUser);

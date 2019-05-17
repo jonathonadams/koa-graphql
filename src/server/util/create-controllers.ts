@@ -32,7 +32,10 @@ export function createControllers(model: mongoose.Model<mongoose.Document>) {
         .lean()
         .exec();
 
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      if (!resource)
+        throw Boom.notFound(
+          'Cannot find a resource with the supplied parameters.'
+        );
 
       return Utils.swapId(resource);
     },
@@ -48,7 +51,10 @@ export function createControllers(model: mongoose.Model<mongoose.Document>) {
         .findByIdAndUpdate(id, values, { new: true })
         .lean()
         .exec();
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      if (!resource)
+        throw Boom.notFound(
+          'Cannot find a resource with the supplied parameters.'
+        );
       return Utils.swapId(resource);
     },
 
@@ -58,7 +64,10 @@ export function createControllers(model: mongoose.Model<mongoose.Document>) {
         .findByIdAndRemove(id)
         .lean()
         .exec();
-      if (!resource) throw Boom.notFound('Cannot find a resource with the supplied parameters.');
+      if (!resource)
+        throw Boom.notFound(
+          'Cannot find a resource with the supplied parameters.'
+        );
       return Utils.swapId(resource);
     }
   };

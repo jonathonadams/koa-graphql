@@ -2,7 +2,10 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import * as Boom from 'boom';
 import * as bcryptjs from 'bcryptjs';
 import config from '../config';
-import { ServerState, IServerStateDocument } from '../api/server-state/server-state.model';
+import {
+  ServerState,
+  IServerStateDocument
+} from '../api/server-state/server-state.model';
 import { isPasswordAllowed } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
 import { IUserDocument, User } from '../api/users/user.model';
@@ -54,7 +57,8 @@ export const registerController = async (user: IUserDocument) => {
   const password: string = (user as any).password;
   if (!password) Boom.badRequest('No password provided');
 
-  if (!isPasswordAllowed(password)) throw Boom.unauthorized('Password does not match requirements');
+  if (!isPasswordAllowed(password))
+    throw Boom.unauthorized('Password does not match requirements');
 
   user.hashedPassword = await hash(password, 10);
 
@@ -104,7 +108,10 @@ export const authorize: Middleware = async (ctx, next) => {
 };
 
 // a controller that receives a refresh token and returns an access token.
-export async function refreshAccessToken(ctx: ParameterizedContext, next: () => Promise<any>) {
+export async function refreshAccessToken(
+  ctx: ParameterizedContext,
+  next: () => Promise<any>
+) {
   const refreshToken = ctx.request.body.refreshToken;
   const username = ctx.request.body.username;
 
@@ -132,7 +139,10 @@ export async function refreshAccessToken(ctx: ParameterizedContext, next: () => 
 }
 
 // a controller to revoke a refresh token
-export async function revokeRefreshToken(ctx: ParameterizedContext, next: () => Promise<any>) {
+export async function revokeRefreshToken(
+  ctx: ParameterizedContext,
+  next: () => Promise<any>
+) {
   const refreshToken = ctx.request.body.refreshToken;
 
   const serverState: IServerStateDocument | null = await ServerState.getServerState();

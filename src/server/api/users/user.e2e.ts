@@ -61,7 +61,9 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeArray();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName]
+      ).toBeArray();
     });
   });
 
@@ -81,7 +83,9 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName]
+      ).toBeObject();
       expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
         createdUser.id.toString()
       );
@@ -113,11 +117,15 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
-      expect((result.data as ExecutionResultDataDefault)[queryName].id).toBeString();
-      expect((result.data as ExecutionResultDataDefault)[queryName].username).toEqual(
-        differentUser.username
-      );
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName]
+      ).toBeObject();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName].id
+      ).toBeString();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName].username
+      ).toEqual(differentUser.username);
     });
   });
 
@@ -140,7 +148,9 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName]
+      ).toBeObject();
       expect((result.data as ExecutionResultDataDefault)[queryName].id).toEqual(
         createdUser.id.toString()
       );
@@ -162,7 +172,9 @@ describe(`GraphQL / User`, () => {
       );
 
       expect(result.errors).not.toBeDefined();
-      expect((result.data as ExecutionResultDataDefault)[queryName]).toBeObject();
+      expect(
+        (result.data as ExecutionResultDataDefault)[queryName]
+      ).toBeObject();
     });
   });
 });

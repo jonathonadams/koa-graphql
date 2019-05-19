@@ -26,14 +26,14 @@ jobs:
       - run: npm install
       - <<: *deps-cache
 
-  build:
-    <<: *setup
-    steps:
-      - checkout
-      - <<: *deps-restore
-      - run:
-          name: Build Application
-          command: npm run build:prod
+  # build:
+  #   <<: *setup
+  #   steps:
+  #     - checkout
+  #     - <<: *deps-restore
+  #     - run:
+  #         name: Build Application
+  #         command: npm run build:prod
 
   build-and-test:
     <<: *setup

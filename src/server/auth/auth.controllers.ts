@@ -23,7 +23,7 @@ export async function registerController(
   if (!isPasswordAllowed(password))
     throw Boom.badRequest('Password does not match requirements');
 
-  const currentUser = await User.findByUsername(user.username).exec();
+  const currentUser = await User.findByUsername(user.username);
   if (currentUser !== null) throw Boom.badRequest('Username is not available');
 
   user.hashedPassword = await hash(password, 10);
@@ -43,9 +43,9 @@ export const loginController = async (
   username: string,
   password: string
 ): Promise<{ token: string }> => {
-  const user = await User.findByUsername(username).exec();
+  const user = await User.findByUsername(username);
 
-  if (!user) throw Boom.unauthorized('Unauthorized1');
+  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized');
 
   const valid = await compare(password, user.hashedPassword);
 
@@ -62,13 +62,13 @@ export async function authorizeController(
   username: string,
   password: string
 ): Promise<{ token: string; refreshToken: string }> {
-  const user = await User.findByUsername(username).exec();
+  const user = await User.findByUsername(username);
 
-  if (!user) throw Boom.unauthorized('Unauthorized.');
+  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized');
 
-  const valid = compare(password, user.hashedPassword);
+  const valid = await compare(password, user.hashedPassword);
 
-  if (!valid) throw Boom.unauthorized('Unauthorized.');
+  if (!valid) throw Boom.unauthorized('Unauthorized');
 
   const accessToken = signAccessToken(user);
 
@@ -97,6 +97,12 @@ export async function refreshAccessTokenController(
   // No user found or matched with given parameters
   if (token.user === null || token.user.username !== username)
     throw Boom.unauthorized();
+
+  // revoke refreshToken if user is inactive
+  if (token.user.active === false) {
+    await token.remove();
+    throw Boom.unauthorized();
+  }
 
   // The provided token is valid
   const valid = await verify(refreshToken, config.secrets.refreshToken);

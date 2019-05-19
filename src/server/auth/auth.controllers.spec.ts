@@ -1,8 +1,14 @@
 import * as mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { setupTestDB } from '../../tests/helpers';
-import { IUserDocument, User, UserClass } from '../api/users/user.model';
-import { registerController, loginController } from './auth.controllers';
+import { IUserDocument, User } from '../api/users/user.model';
+import {
+  registerController,
+  loginController,
+  authorizeController,
+  refreshAccessTokenController,
+  revokeRefreshTokenController
+} from './auth.controllers';
 
 const userToCreate = ({
   username: 'uniqueUsername',
@@ -126,7 +132,7 @@ describe(`Authentication Controllers`, () => {
       expect(token.token).toBeDefined();
     });
 
-    it('should throw unauthorized error if the credentials are incorrect', async () => {
+    it('should throw unauthorized errors if the credentials are incorrect', async () => {
       await registerController(userToCreate);
 
       await expect(
@@ -136,9 +142,134 @@ describe(`Authentication Controllers`, () => {
         loginController('user', (userToCreate as any).password)
       ).rejects.toThrowError('Unauthorized');
     });
+
+    it('should throw an unauthorized error if the user is not active', async () => {
+      await registerController(userToCreate);
+      const user = (await User.findByUsername(
+        userToCreate.username
+      )) as IUserDocument;
+
+      await expect(
+        loginController(userToCreate.username, (userToCreate as any).password)
+      ).resolves.not.toThrowError();
+
+      await user.update({ active: false }).exec();
+
+      await expect(
+        loginController(userToCreate.username, (userToCreate as any).password)
+      ).rejects.toThrowError('Unauthorized');
+    });
   });
 
-  //   describe(`loginController`, () => {
-  //     it(`should return a authorization token if the credentials match`, async () => {});
-  //   });
+  describe('authorizeController', () => {
+    it('should return an accessToken and refreshToken if the credentials correct', async () => {
+      await registerController(userToCreate);
+      const token = await authorizeController(
+        userToCreate.username,
+        (userToCreate as any).password
+      );
+      expect(token.token).toBeDefined();
+      expect(token.refreshToken).toBeDefined();
+    });
+
+    it('should throw unauthorized errors if the credentials are incorrect', async () => {
+      await registerController(userToCreate);
+
+      await expect(
+        authorizeController(userToCreate.username, 'somePassword')
+      ).rejects.toThrowError('Unauthorized');
+
+      await expect(
+        authorizeController('userafad', (userToCreate as any).password)
+      ).rejects.toThrowError('Unauthorized');
+    });
+
+    it('should throw an unauthorized error if the user is not active', async () => {
+      await registerController(userToCreate);
+      const user = (await User.findByUsername(
+        userToCreate.username
+      )) as IUserDocument;
+
+      await expect(
+        authorizeController(
+          userToCreate.username,
+          (userToCreate as any).password
+        )
+      ).resolves.not.toThrowError();
+
+      await user.update({ active: false }).exec();
+
+      await expect(
+        authorizeController(
+          userToCreate.username,
+          (userToCreate as any).password
+        )
+      ).rejects.toThrowError('Unauthorized');
+    });
+  });
+
+  describe('refreshAccessTokenController', () => {
+    it('should return a new access token when the a valid refresh token is provided', async () => {
+      await registerController(userToCreate);
+      const { refreshToken } = await authorizeController(
+        userToCreate.username,
+        (userToCreate as any).password
+      );
+      const accessToken = await refreshAccessTokenController(
+        userToCreate.username,
+        refreshToken
+      );
+
+      expect(accessToken.token).toBeDefined();
+      expect(accessToken.token).toBeString();
+    });
+
+    it('should throw a unauthorized errors if invalid username or token provided', async () => {
+      await registerController(userToCreate);
+
+      const { refreshToken } = await authorizeController(
+        userToCreate.username,
+        (userToCreate as any).password
+      );
+
+      await expect(
+        authorizeController(userToCreate.username, 'Incorrect Token')
+      ).rejects.toThrowError('Unauthorized');
+
+      await expect(
+        authorizeController('userafad', refreshToken)
+      ).rejects.toThrowError('Unauthorized');
+    });
+  });
+
+  describe('revokeRefreshTokenController', () => {
+    it('should revoke the refresh token provide', async () => {
+      await registerController(userToCreate);
+
+      const { refreshToken } = await authorizeController(
+        userToCreate.username,
+        (userToCreate as any).password
+      );
+
+      const result = await revokeRefreshTokenController(refreshToken);
+      expect(result.success).toBe(true);
+    });
+
+    it('should remove the token from the db', async () => {
+      await registerController(userToCreate);
+
+      const { refreshToken } = await authorizeController(
+        userToCreate.username,
+        (userToCreate as any).password
+      );
+
+      // First call should remove it
+      await revokeRefreshTokenController(refreshToken);
+
+      // Confirm the token has been remove from the db.
+      await expect(
+        revokeRefreshTokenController(refreshToken)
+      ).rejects.toThrowError('Bad Request');
+    });
+  });
 });

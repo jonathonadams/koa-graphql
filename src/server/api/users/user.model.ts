@@ -29,10 +29,12 @@ export class UserClass extends mongoose.Model {
    */
   public static findByUsername(
     username: string
-  ): mongoose.DocumentQuery<IUserDocument, IUserDocument> {
+  ): Promise<IUserDocument | null> {
     return this.findOne({
       username: username
-    }).select('+hashedPassword +role');
+    })
+      .select('+hashedPassword +role')
+      .exec();
   }
 }
 
@@ -115,9 +117,7 @@ export interface IUserDocument extends mongoose.Document {
 }
 
 export interface IUserModel extends mongoose.Model<IUserDocument> {
-  findByUsername: (
-    userName: string
-  ) => mongoose.DocumentQuery<IUserDocument, IUserDocument>;
+  findByUsername: (userName: string) => Promise<IUserDocument | null>;
 }
 
 userSchema.loadClass(UserClass);

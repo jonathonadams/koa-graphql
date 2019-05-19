@@ -17,7 +17,8 @@ const testConfig: EnvironnementConfig = {
   database: {
     host: process.env.MONGO_TCP_ADDR || 'localhost',
     port:
-      process.env.MONGO_TCP_PORT && !Number.isNaN(parseInt(process.env.MONGO_TCP_PORT, 10))
+      process.env.MONGO_TCP_PORT &&
+      !Number.isNaN(parseInt(process.env.MONGO_TCP_PORT, 10))
         ? parseInt(process.env.MONGO_TCP_PORT, 10)
         : 27017,
     dbName: process.env.MONGO_TEST_DB || 'test_database',

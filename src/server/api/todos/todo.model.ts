@@ -36,4 +36,7 @@ export interface ITodoDocument extends mongoose.Document {
 export interface ITodoModel extends mongoose.Model<ITodoDocument> {}
 
 todoSchema.loadClass(TodoClass);
-export const Todo = mongoose.model<ITodoDocument, ITodoModel>('todo', todoSchema);
+export const Todo = mongoose.model<ITodoDocument, ITodoModel>(
+  'todo',
+  todoSchema
+);

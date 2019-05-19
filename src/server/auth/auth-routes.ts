@@ -1,31 +1,14 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import {
   loginController,
   registerController,
-  authorize,
-  refreshAccessToken,
-  revokeRefreshToken
-} from './auth';
+  authorizeController,
+  refreshAccessTokenController,
+  revokeRefreshTokenController
+} from './auth.controllers';
 import { IUserDocument } from '../api/users/user.model';
-
-/**
- *  A function that handles logging a user in
- *
- * @returns A signed JWT.
- */
-export const login: Koa.Middleware = async (ctx, next) => {
-  const username: string | undefined = ctx.request.body.username;
-  const password: string | undefined = ctx.request.body.password;
-  if (!username || !password) throw Boom.unauthorized('A username and password must be provided');
-  ctx.body = await loginController(username, password);
-};
-
-export const register: Koa.Middleware = async (ctx, next) => {
-  const user: IUserDocument = ctx.request.body;
-  ctx.body = await registerController(user);
-};
 
 export function applyAuthorizationRoutes(app: Koa) {
   const router = new Router();
@@ -37,4 +20,49 @@ export function applyAuthorizationRoutes(app: Koa) {
   router.post('/token/revoke', revokeRefreshToken);
 
   app.use(router.routes());
+}
+
+/**
+ *  A function that handles logging a user in
+ *
+ * @returns A signed JWT.
+ */
+export async function login(ctx: Koa.ParameterizedContext) {
+  const username: string = ctx.request.body.username;
+  const password: string = ctx.request.body.password;
+
+  if (!username || !password)
+    throw Boom.unauthorized('A username and password must be provided');
+
+  ctx.body = await loginController(username, password);
+}
+
+export async function register(ctx: Koa.ParameterizedContext) {
+  const user: IUserDocument = ctx.request.body;
+  ctx.body = await registerController(user);
+}
+
+export async function authorize(ctx: Koa.ParameterizedContext) {
+  const username = ctx.request.body.username;
+  const password = ctx.request.body.password;
+
+  if (!username || !password)
+    throw Boom.unauthorized('Not all parameters provided.');
+
+  ctx.body = await authorizeController(username, password);
+}
+
+export async function refreshAccessToken(ctx: Koa.ParameterizedContext) {
+  const username = ctx.request.body.username;
+  const refreshToken = ctx.request.body.refreshToken;
+
+  if (!username || !refreshToken)
+    throw Boom.unauthorized('Not all parameters provided.');
+
+  ctx.body = await refreshAccessTokenController(username, refreshToken);
+}
+
+export async function revokeRefreshToken(ctx: Koa.ParameterizedContext) {
+  const token = ctx.request.body.refreshToken;
+  ctx.body = await revokeRefreshTokenController(token);
 }

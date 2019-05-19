@@ -14,30 +14,44 @@ import { ObjectId } from 'mongodb';
 
 type Resolver<T> = GraphQLFieldResolver<any, any, T>;
 
-export function generateResolvers<T extends mongoose.Document>(model: mongoose.Model<T>) {
+export function generateResolvers<T extends mongoose.Document>(
+  model: mongoose.Model<T>
+) {
   const controllers = createControllers(model);
 
   const getAll: Resolver<any> = async (root, args, ctx, info) => {
     return await controllers.getAll();
   };
-  const getOne: Resolver<{ id: ObjectId }> = async (root, { id }, ctx, info) => {
+  const getOne: Resolver<{ id: ObjectId }> = async (
+    root,
+    { id },
+    ctx,
+    info
+  ) => {
     return await controllers.getOne(id);
   };
-  const createOne: Resolver<{ input: T }> = async (root, { input }, ctx, info) => {
-    return await controllers.createOne(input);
-  };
-
-  const updateOne: Resolver<{ input: { id: ObjectId; [property: string]: any } }> = async (
+  const createOne: Resolver<{ input: T }> = async (
     root,
     { input },
     ctx,
     info
   ) => {
+    return await controllers.createOne(input);
+  };
+
+  const updateOne: Resolver<{
+    input: { id: ObjectId; [property: string]: any };
+  }> = async (root, { input }, ctx, info) => {
     const { id, ...values } = input;
     return await controllers.updateOne(id, values);
   };
 
-  const removeOne: Resolver<{ id: ObjectId }> = async (root, { id }, ctx, info) => {
+  const removeOne: Resolver<{ id: ObjectId }> = async (
+    root,
+    { id },
+    ctx,
+    info
+  ) => {
     return await controllers.removeOne(id);
   };
 
@@ -68,11 +82,21 @@ export function createTypeResolver<T extends mongoose.Document>(
     Mutation: {} as any
   };
 
-  typeResolver.Query[`${name}`] = authenticateRequest(verifyToken)(resolvers.getOne);
-  typeResolver.Query[`all${name}s`] = authenticateRequest(verifyToken)(resolvers.getAll);
-  typeResolver.Mutation[`new${name}`] = authenticateRequest(verifyToken)(resolvers.createOne);
-  typeResolver.Mutation[`update${name}`] = authenticateRequest(verifyToken)(resolvers.updateOne);
-  typeResolver.Mutation[`remove${name}`] = authenticateRequest(verifyToken)(resolvers.removeOne);
+  typeResolver.Query[`${name}`] = authenticateRequest(verifyToken)(
+    resolvers.getOne
+  );
+  typeResolver.Query[`all${name}s`] = authenticateRequest(verifyToken)(
+    resolvers.getAll
+  );
+  typeResolver.Mutation[`new${name}`] = authenticateRequest(verifyToken)(
+    resolvers.createOne
+  );
+  typeResolver.Mutation[`update${name}`] = authenticateRequest(verifyToken)(
+    resolvers.updateOne
+  );
+  typeResolver.Mutation[`remove${name}`] = authenticateRequest(verifyToken)(
+    resolvers.removeOne
+  );
 
   return typeResolver;
 }

@@ -1,5 +1,5 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import { User } from '../api/users/user.model';
 import config from '../config';
 import { GraphQLResolveInfo, GraphQLFieldResolver } from 'graphql';
@@ -16,7 +16,12 @@ type AuthMiddleware = GraphQLFieldResolver<any, any, any>;
  */
 export const authenticateRequest = (authMiddlewares: AuthMiddleware[]) => {
   return (resolverFunction: GraphQLFieldResolver<any, any, any>) => {
-    return async (parent: any, args: any, ctx: any, info: GraphQLResolveInfo) => {
+    return async (
+      parent: any,
+      args: any,
+      ctx: any,
+      info: GraphQLResolveInfo
+    ) => {
       for (const middleware of authMiddlewares) {
         /**
          * loop over there auth functions

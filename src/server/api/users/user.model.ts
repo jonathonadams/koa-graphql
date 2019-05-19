@@ -9,6 +9,7 @@ export class UserClass extends mongoose.Model {
   lastName: string;
   emailAddress: string;
   dateOfBirth: Date | string;
+  active: boolean;
   settings: {
     darkMode: boolean;
     colors: {
@@ -20,8 +21,6 @@ export class UserClass extends mongoose.Model {
   };
   hashedPassword: string;
   role: AuthenticationRoles;
-  createdAt: Date;
-  updatedAt: Date;
 
   /**
    * This function is only used for the auth function and hence, must return the hashed password
@@ -30,7 +29,7 @@ export class UserClass extends mongoose.Model {
    */
   public static findByUsername(
     username: string
-  ): Promise<mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}>> {
+  ): Promise<IUserDocument | null> {
     return this.findOne({
       username: username
     })
@@ -61,6 +60,11 @@ export const userSchema = new mongoose.Schema(
     dateOfBirth: {
       type: String,
       required: true
+    },
+    active: {
+      type: Boolean,
+      required: true,
+      default: true
     },
     settings: {
       darkMode: {
@@ -98,6 +102,7 @@ export interface IUserDocument extends mongoose.Document {
   lastName: string;
   emailAddress: string;
   dateOfBirth: Date | string;
+  active: boolean;
   settings: {
     darkMode: boolean;
     colors: {
@@ -109,15 +114,14 @@ export interface IUserDocument extends mongoose.Document {
   };
   hashedPassword: string;
   role: AuthenticationRoles;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IUserModel extends mongoose.Model<IUserDocument> {
-  findByUsername: (
-    userName: string
-  ) => mongoose.DocumentQuery<IUserDocument | null, IUserDocument, {}>;
+  findByUsername: (userName: string) => Promise<IUserDocument | null>;
 }
 
 userSchema.loadClass(UserClass);
-export const User = mongoose.model<IUserDocument, IUserModel>('user', userSchema);
+export const User = mongoose.model<IUserDocument, IUserModel>(
+  'user',
+  userSchema
+);

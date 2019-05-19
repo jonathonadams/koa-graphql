@@ -3,7 +3,7 @@ import * as Boom from '@hapi/boom';
 import * as bcryptjs from 'bcryptjs';
 import config from '../config';
 import { RefreshToken } from './tokens.model';
-import { IUserDocument, User } from '../api/users/user.model';
+import { IUserDocument, User, UserClass } from '../api/users/user.model';
 import {
   signAccessToken,
   signRefreshToken,
@@ -13,30 +13,6 @@ import {
 
 const { verify } = jsonwebtoken;
 const { compare, hash } = bcryptjs;
-
-/**
- *  A function that handles logging a user in
- *
- * @returns { Object } A User and signed JWT.
- */
-export const loginController = async (
-  username: string,
-  password: string
-): Promise<{ token: string }> => {
-  const user = await User.findByUsername(username).exec();
-
-  if (!user) throw Boom.unauthorized('Unauthorized');
-
-  const valid = await compare(password, user.hashedPassword);
-
-  if (!valid) throw Boom.unauthorized('Unauthorized');
-
-  const token = signAccessToken(user);
-
-  return {
-    token
-  };
-};
 
 export async function registerController(
   user: IUserDocument
@@ -57,6 +33,30 @@ export async function registerController(
 
   return userToJSON<IUserDocument>(newUser.toJSON());
 }
+
+/**
+ *  A function that handles logging a user in
+ *
+ * @returns { Object } A User and signed JWT.
+ */
+export const loginController = async (
+  username: string,
+  password: string
+): Promise<{ token: string }> => {
+  const user = await User.findByUsername(username).exec();
+
+  if (!user) throw Boom.unauthorized('Unauthorized1');
+
+  const valid = await compare(password, user.hashedPassword);
+
+  if (!valid) throw Boom.unauthorized('Unauthorized');
+
+  const token = signAccessToken(user);
+
+  return {
+    token
+  };
+};
 
 export async function authorizeController(
   username: string,

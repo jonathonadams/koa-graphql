@@ -35,7 +35,7 @@ export function signRefreshToken(user: IUserDocument) {
 }
 
 export function userToJSON<T>(user: IUserDocument): T {
-  return omit(user, ['hashedPassword']);
+  return omit(user, ['hashedPassword', 'password']);
 }
 
 export function isPasswordAllowed(password: string): boolean {

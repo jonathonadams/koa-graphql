@@ -1,6 +1,6 @@
 import { GraphQLFieldResolver } from 'graphql';
-import { loginController, registerController } from './auth';
 import { IUserDocument } from '../api/users/user.model';
+import { loginController, registerController } from './auth.controllers';
 
 /**
  *  A function that handles logging a user in

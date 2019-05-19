@@ -1,4 +1,4 @@
-import { isPasswordAllowed, userToJSON } from './util';
+import { isPasswordAllowed, userToJSON } from './auth';
 import { IUserDocument } from '../api/users/user.model';
 
 describe('isPasswordAllowed', () => {
@@ -33,12 +33,12 @@ describe('userToJson', () => {
       hashedPassword: 'some really long hash'
     } as IUserDocument;
 
-    const filteredUser = userToJSON(user);
+    const filteredUser = userToJSON<IUserDocument>(user);
 
     expect(filteredUser.id).toEqual(user.id);
     expect(filteredUser.username).toBeDefined();
 
-    expect(filteredUser.hash).not.toBeDefined();
+    expect(filteredUser.hashedPassword).not.toBeDefined();
     expect(filteredUser).toEqual(safeUser);
   });
 });

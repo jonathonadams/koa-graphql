@@ -35,25 +35,25 @@ jobs:
           name: Build Application
           command: npm run build:prod
 
-  test:
+  build-and-test:
     <<: *setup
     steps:
       - checkout
       - <<: *deps-restore
-      - run: npm run build:prod
+      - run: 
+          name: Build Application
+          command: npm run build:prod
       - run:
-          name: Run tests
+          name: Test Application
           command: npm run test:ci
 
+# Note: Because part of the build process requires copying .graphql files into the distribution
+# directory, this needs to happen as part of the test command. Hence
+# there is no reason to have a separate build workflow
 
 workflows:
   version: 2
   build-and-test:
     jobs:
       - checkout-and-install
-      - build:
-          requires:
-            - checkout-and-install
-      - test:
-          requires:
-            - build
+      - build-and-test

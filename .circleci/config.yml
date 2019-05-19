@@ -17,7 +17,6 @@ references:
       paths:
         - ./node_modules
 
-
 jobs:
   checkout-and-install:
     <<: *setup
@@ -26,15 +25,6 @@ jobs:
       - <<: *deps-restore
       - run: npm install
       - <<: *deps-cache
-
-  test:
-    <<: *setup
-    steps:
-      - checkout
-      - <<: *deps-restore
-      - run:
-          name: Run tests
-          command: npm run test:ci
 
   build:
     <<: *setup
@@ -45,9 +35,20 @@ jobs:
           name: Build Application
           command: npm run build:prod
 
+  test:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run: npm run build:prod
+      - run:
+          name: Run tests
+          command: npm run test:ci
+
+
 workflows:
   version: 2
-  test-and-build:
+  build-and-test:
     jobs:
       - checkout-and-install
       - build:

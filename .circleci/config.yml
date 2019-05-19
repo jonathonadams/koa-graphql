@@ -1,0 +1,58 @@
+version: 2
+
+references:
+
+  setup: &setup
+    working_directory: ~/demo-api
+    docker:
+      - image: circleci/node:10
+
+  deps-restore: &deps-restore
+    restore_cache:
+      key: demo-api-cache-{{ checksum "package-lock.json" }}
+
+  deps-cache: &deps-cache
+    save_cache:
+      key: demo-api-cache-{{ checksum "package-lock.json" }}
+      paths:
+        - ./node_modules
+
+
+jobs:
+  checkout-and-install:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run: npm install --silent
+      - <<: *deps-cache
+
+  test:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run:
+          name: Run tests
+          command: npm run test:ci
+
+  build:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run:
+          name: Build Application
+          command: npm run build:prod
+
+workflows:
+  version: 2
+  test-and-build:
+    jobs:
+      - checkout-and-install
+      - test:
+          requires:
+            - checkout-and-install
+      - build:
+          requires:
+            - test

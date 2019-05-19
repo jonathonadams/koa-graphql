@@ -2,7 +2,7 @@ import * as omit from 'lodash.omit';
 import { IUserDocument } from '../api/users/user.model';
 
 export function userToJSON(user: IUserDocument) {
-  return omit(user, ['hashedPassword', 'createdAt', 'updatedAt']);
+  return omit(user, ['hashedPassword']);
 }
 
 export function isPasswordAllowed(password: string): boolean {

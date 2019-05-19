@@ -30,9 +30,7 @@ describe('userToJson', () => {
 
     const user = {
       ...safeUser,
-      hashedPassword: 'some really long hash',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      hashedPassword: 'some really long hash'
     } as IUserDocument;
 
     const filteredUser = userToJSON(user);

@@ -1,12 +1,12 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import {
   loginController,
   registerController,
   authorize,
-  refreshAccessToken,
-  revokeRefreshToken
+  refreshAccessToken
+  // revokeRefreshToken
 } from './auth';
 import { IUserDocument } from '../api/users/user.model';
 
@@ -35,7 +35,7 @@ export function applyAuthorizationRoutes(app: Koa) {
   router.post('/api/users/register', register);
   router.post('/authorize', authorize);
   router.post('/token', refreshAccessToken);
-  router.post('/token/revoke', revokeRefreshToken);
+  // router.post('/token/revoke', revokeRefreshToken);
 
   app.use(router.routes());
 }

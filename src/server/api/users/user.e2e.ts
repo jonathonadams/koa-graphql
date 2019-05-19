@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { User, IUserDocument } from './user.model';
 import { runQuery, setupTestDB } from '../../../tests/helpers';
-import { signToken } from '../../auth/auth';
+import { signAccessToken } from '../../auth/auth';
 import { ExecutionResultDataDefault } from 'graphql/execution/execute';
 
 const user = ({
@@ -36,7 +36,7 @@ describe(`GraphQL / User`, () => {
 
     createdUser = await User.create(user);
     [createdUser.id, createdUser._id] = [createdUser._id, createdUser.id];
-    jwt = signToken(createdUser);
+    jwt = signAccessToken(createdUser);
   });
 
   afterAll(async () => {

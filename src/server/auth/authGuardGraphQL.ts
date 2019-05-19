@@ -1,5 +1,5 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import { User } from '../api/users/user.model';
 import config from '../config';
 import { GraphQLResolveInfo, GraphQLFieldResolver } from 'graphql';

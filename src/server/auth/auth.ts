@@ -2,7 +2,7 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import * as Boom from '@hapi/boom';
 import * as bcryptjs from 'bcryptjs';
 import config from '../config';
-import { RefreshToken, IRefreshTokenDocument } from './tokens.model';
+import { RefreshToken } from './tokens.model';
 import { isPasswordAllowed, userToJSON } from './util';
 import { Middleware, ParameterizedContext } from 'koa';
 import { IUserDocument, User } from '../api/users/user.model';
@@ -122,6 +122,7 @@ export async function refreshAccessToken(ctx: ParameterizedContext) {
   if (token.user === null || token.user.username !== username)
     throw Boom.unauthorized();
 
+  // The provided token is valid
   const valid = await verify(refreshToken, config.secrets.refreshToken);
   if (!valid) throw Boom.unauthorized();
 
@@ -130,21 +131,15 @@ export async function refreshAccessToken(ctx: ParameterizedContext) {
   };
 }
 
-// // a controller to revoke a refresh token
-// export async function revokeRefreshToken(
-//   ctx: ParameterizedContext,
-//   next: () => Promise<any>
-// ) {
-//   const refreshToken = ctx.request.body.refreshToken;
+// a controller to revoke a refresh token
+export async function revokeRefreshToken(ctx: ParameterizedContext) {
+  const token = ctx.request.body.refreshToken;
 
-//   const serverState: IServerStateDocument | null = await ServerState.getServerState();
-//   if (serverState === null) throw Boom.badRequest();
+  const refreshToken = await RefreshToken.findOne({ token }).exec();
 
-//   const refreshTokens = { ...serverState.refreshTokens };
-//   delete refreshTokens[refreshToken];
+  if (refreshToken === null) throw Boom.badRequest();
 
-//   serverState.set('refreshTokens', refreshTokens);
-//   await serverState.save();
+  const result = await refreshToken.remove();
 
-//   ctx.body = { token: refreshToken };
-// }
+  ctx.body = { success: true };
+}

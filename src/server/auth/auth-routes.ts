@@ -5,8 +5,8 @@ import {
   loginController,
   registerController,
   authorize,
-  refreshAccessToken
-  // revokeRefreshToken
+  refreshAccessToken,
+  revokeRefreshToken
 } from './auth';
 import { IUserDocument } from '../api/users/user.model';
 
@@ -35,7 +35,7 @@ export function applyAuthorizationRoutes(app: Koa) {
   router.post('/api/users/register', register);
   router.post('/authorize', authorize);
   router.post('/token', refreshAccessToken);
-  // router.post('/token/revoke', revokeRefreshToken);
+  router.post('/token/revoke', revokeRefreshToken);
 
   app.use(router.routes());
 }

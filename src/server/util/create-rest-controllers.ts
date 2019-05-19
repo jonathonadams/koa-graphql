@@ -3,7 +3,9 @@ import { ParameterizedContext } from 'koa';
 import * as Router from 'koa-router';
 import * as mongoose from 'mongoose';
 
-export function generateRestEndpoints(model: mongoose.Model<mongoose.Document>) {
+export function generateRestEndpoints(
+  model: mongoose.Model<mongoose.Document>
+) {
   const router = new Router();
   const controllers = generateRestControllers(model);
 
@@ -19,11 +21,17 @@ export function generateRestEndpoints(model: mongoose.Model<mongoose.Document>) 
   return router.routes();
 }
 
-export function generateRestControllers(model: mongoose.Model<mongoose.Document>) {
+export function generateRestControllers(
+  model: mongoose.Model<mongoose.Document>
+) {
   const controllers = createControllers(model);
 
   return {
-    params: async (id: string, ctx: ParameterizedContext, next: () => Promise<any>) => {
+    params: async (
+      id: string,
+      ctx: ParameterizedContext,
+      next: () => Promise<any>
+    ) => {
       ctx.state.id = id;
       await next();
     },

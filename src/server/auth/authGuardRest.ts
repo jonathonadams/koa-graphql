@@ -1,5 +1,5 @@
 import * as koa from 'koa';
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import * as jsonwebtoken from 'jsonwebtoken';
 import config from '../config';
 import { User } from '../api/users';
@@ -36,7 +36,10 @@ export const verifyToken = async (ctx: any, next: () => Promise<any>) => {
 /**
  *  Checks if the user exists in the DB.
  */
-export const verifyUser = async (ctx: koa.ParameterizedContext, next: () => Promise<any>) => {
+export const verifyUser = async (
+  ctx: koa.ParameterizedContext,
+  next: () => Promise<any>
+) => {
   try {
     /**
      * This middleware will only be called on a route that is after the verify token

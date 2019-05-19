@@ -1,4 +1,4 @@
-import * as Boom from 'boom';
+import * as Boom from '@hapi/boom';
 import { Middleware, ParameterizedContext } from 'koa';
 
 /**
@@ -20,14 +20,20 @@ export const errorHandler: Middleware = async (ctx, next) => {
       ctx.status = error.output.statusCode;
       ctx.body = error.output.payload;
     } else if (err.name === 'MongoError' && err.code === 11000) {
-      /* A MongoError with code 11000 is a duplicate error
-       *  Using regex to extrapolate the error and construct an error message */
-      const errorMessage = `${
-        (/index: (\w+)_/.exec(err.errmsg) as RegExpExecArray)[1]
-      } must be unique`;
-      const error = Boom.badRequest(errorMessage);
-      ctx.status = error.output.statusCode;
-      ctx.body = error.output.payload;
+      /**
+       * A MongoError with code 11000 is a duplicate error.
+       * Using regex to extrapolate the error and construct an error message
+       *
+       * Note we are doing a positive look ahead and behind as well as capturing the matching group
+       * as the property field
+       */
+      const index = /(?<=index: )(?<field>\w+)(?=_)/.exec(err.errmsg);
+      if (index && index.groups) {
+        const errorMessage = `${index.groups.field} must be unique`;
+        const error = Boom.badRequest(errorMessage);
+        ctx.status = error.output.statusCode;
+        ctx.body = error.output.payload;
+      }
     } else {
       const error = Boom.badImplementation(err.message);
       ctx.status = error.output.statusCode;

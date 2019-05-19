@@ -24,7 +24,7 @@ jobs:
     steps:
       - checkout
       - <<: *deps-restore
-      - run: npm install --silent
+      - run: npm install
       - <<: *deps-cache
 
   test:

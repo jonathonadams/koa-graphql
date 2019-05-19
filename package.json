@@ -26,7 +26,7 @@
     "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
-    "test:ci" :"jest --detectOpenHandles --coverage --maxWorkers 4",
+    "test:ci": "jest --detectOpenHandles --coverage --maxWorkers 4",
     "build": "gulp dev",
     "build:prod": "gulp prod",
     "format:fix": "pretty-quick --staged",
@@ -75,7 +75,7 @@
     "lodash.keyby": "^4.6.0",
     "lodash.merge": "^4.6.1",
     "lodash.omit": "^4.5.0",
-    "mongoose": "^5.5.7"
+    "mongoose": "^5.5.9"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

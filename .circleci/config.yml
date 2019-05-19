@@ -50,9 +50,9 @@ workflows:
   test-and-build:
     jobs:
       - checkout-and-install
-      - test:
-          requires:
-            - checkout-and-install
       - build:
           requires:
-            - test
+            - checkout-and-install
+      - test:
+          requires:
+            - build

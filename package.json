@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Example Koa API that support REST and GraphQL",
   "author": {
     "name": "Jonathon Adams"

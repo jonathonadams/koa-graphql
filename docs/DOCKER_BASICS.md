@@ -59,7 +59,7 @@ docker network <NETWORK-NAME>
 `docker network rm` remove a docker network.
 
 ```
-docker network rem <NETWORK-NAME>
+docker network rm <NETWORK-NAME>
 ```
 
 e.g.
@@ -70,34 +70,61 @@ docker network create internal
 docker network rm proxy
 ```
 
-## Development Local Postgres Container (Archive)
+## Development Local Mongo Container
 
-How to create a local postgres container for development
-Configuring postgres can be difficult and time consuming. You can avoid this by running postgres in a local docker container.
+Configuring a database can be difficult and time consuming. You can avoid this by running your database in a local docker container.
 
-NOTE: A word of warning, if your delete your postgres instance all data will be lost. Containers are ephemeral. To help mitigate this during development use `docker create` then `docker start / stop`. The container will not be destroyed until you remove it.
+NOTE: A word of warning, if your delete your container instance all data will be lost. Containers are ephemeral. To help mitigate this during development use `docker create` then `docker start / stop`. The container will not be destroyed until you remove it.
 
 Make sure to map the port so that it is available outside of the docker environment.
 
-Create the container
+```bash
+docker create \
+  --name local-mongo \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=mongo \
+  -e MONGO_INITDB_ROOT_PASSWORD=mongo_password \
+mongo
+```
 
-```
-docker create --name local-postgres -p 5432:5432 postgres
-```
+Note: If the mongo image has not previously been downloaded, the `docker create` command will pull the image for you. Alternatively you can run `docker pull mongo` to manually download the image before your run `docker create`
+
+This will create a container called `local-mongo` from the `mongo` image.
 
 Start the container
 
 ```
-docker start local-postgres
+docker start local-mongo
 ```
 
-Stop the container.=
+Once the container is running, you can exec into the container terminal (and mongo) by running the `docker exec` and run all your command line commands.
+
+```bash
+docker exec -ti local-mongo bash
+```
+
+To leave the container, just type `exit`
+
+Stop the container
 
 ```
-docker stop local-postgres
+docker stop local-mongo
 ```
 
-Once the container is running, you can exec into the container (and postgres) by running `docker exec`
+Read more about Mongo and Docker and how to configure it [here](https://hub.docker.com/_/mongo)
+
+## Development Local Postgres Container (Archived)
+
+Create the container
+
+```bash
+docker create \
+  --name local-postgres \
+  -p 5432:5432 \
+postgres
+```
+
+exec into the running container
 
 ```
 docker exec -ti local-postgres bash
@@ -112,21 +139,6 @@ psql -U postgres
 The username is **postgres** because we did not specify a **POSTGRES_USER** environment variable when the container was created.
 
 Read more about Postgres and Docker and how to configure it [here](https://hub.docker.com/_/postgres/).
-
-Note: If the postgres image has not previously been downloaded, the `docker create` command will pull the image for you. Alternatively you can run `docker pull postgres` or `docker pull postgres:alpine` to manually download the image before your run `docker create`
-
-## Development Local Mongo Container
-
-TODO -> Document the MongoDB setup
-
-docker create \
- --name local-mongo \
- -p 27017:27017 \
- -e MONGO_INITDB_ROOT_USERNAME=mongo \
- -e MONGO_INITDB_ROOT_PASSWORD=mongo_password \
-mongo
-
-Read more about Mongo and Docker and how to configure it [here](https://hub.docker.com/_/mongo).
 
 ## Local Redis Server
 

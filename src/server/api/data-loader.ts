@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import * as DataLoader from 'dataloader';
 import * as keyBy from 'lodash.keyby';
 import { User } from './users';
@@ -8,8 +10,8 @@ import { ITodoDocument } from './todos/todo.model';
 const createUsersLoader = () => {
   return new DataLoader<string, IUserDocument>(async usersIds => {
     const users = await User.find({
-      id: { $in: usersIds }
-    });
+      _id: { $in: usersIds }
+    }).exec();
     const usersByIds = keyBy(users, 'id');
     return usersIds.map((id: string) => usersByIds[id]);
   });
@@ -18,8 +20,8 @@ const createUsersLoader = () => {
 const createTodoLoader = () => {
   return new DataLoader<string, ITodoDocument>(async todosIds => {
     const todos = await Todo.find({
-      id: { $in: todosIds }
-    });
+      _id: { $in: todosIds }
+    }).exec();
     const todosById = keyBy(todos, 'id');
     return todosIds.map((id: string) => todosById[id]);
   });

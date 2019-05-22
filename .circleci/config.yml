@@ -1,0 +1,59 @@
+version: 2
+
+references:
+
+  setup: &setup
+    working_directory: ~/demo-api
+    docker:
+      - image: circleci/node:10
+
+  deps-restore: &deps-restore
+    restore_cache:
+      key: demo-api-cache-{{ checksum "package-lock.json" }}
+
+  deps-cache: &deps-cache
+    save_cache:
+      key: demo-api-cache-{{ checksum "package-lock.json" }}
+      paths:
+        - ./node_modules
+
+jobs:
+  checkout-and-install:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run: npm install
+      - <<: *deps-cache
+
+  # build:
+  #   <<: *setup
+  #   steps:
+  #     - checkout
+  #     - <<: *deps-restore
+  #     - run:
+  #         name: Build Application
+  #         command: npm run build:prod
+
+  build-and-test:
+    <<: *setup
+    steps:
+      - checkout
+      - <<: *deps-restore
+      - run: 
+          name: Build Application
+          command: npm run build:prod
+      - run:
+          name: Test Application
+          command: npm run test:ci
+
+# Note: Because part of the build process requires copying .graphql files into the distribution
+# directory, this needs to happen as part of the test command. Hence
+# there is no reason to have a separate build workflow
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - checkout-and-install
+      - build-and-test

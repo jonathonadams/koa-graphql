@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import * as mongoose from 'mongoose';
 
 export const defaultSchemaOptions: mongoose.SchemaOptions = {

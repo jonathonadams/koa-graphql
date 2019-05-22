@@ -16,7 +16,12 @@ const app = new ApiServer(new Koa(), new Router());
 /**
  * Create and export a http server
  */
-export const server = http.createServer(app.start()).listen(config.port, () => {
+export const server = http.createServer(app.start());
+
+/**
+ * Listen on the desired port
+ */
+server.listen({ port: config.port }, () => {
   console.log(`Server listening on port ${config.port}.`);
 });
 

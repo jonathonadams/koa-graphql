@@ -44,7 +44,7 @@ describe(`Authentication Controllers`, () => {
     await mongoServer.stop();
   });
 
-  describe('registerController', () => {
+  describe('register', () => {
     it('should register a new user', async () => {
       const anotherUserToCreate = ({
         username: 'anotherUniqueUsername',
@@ -120,7 +120,7 @@ describe(`Authentication Controllers`, () => {
     });
   });
 
-  describe('loginController', () => {
+  describe('login', () => {
     it('should return an access token if correct credentials are provided', async () => {
       await registerController(userToCreate);
 
@@ -161,7 +161,7 @@ describe(`Authentication Controllers`, () => {
     });
   });
 
-  describe('authorizeController', () => {
+  describe('authorize', () => {
     it('should return an accessToken and refreshToken if the credentials correct', async () => {
       await registerController(userToCreate);
       const token = await authorizeController(
@@ -208,7 +208,7 @@ describe(`Authentication Controllers`, () => {
     });
   });
 
-  describe('refreshAccessTokenController', () => {
+  describe('refreshAccessToken', () => {
     it('should return a new access token when the a valid refresh token is provided', async () => {
       await registerController(userToCreate);
       const { refreshToken } = await authorizeController(
@@ -242,7 +242,7 @@ describe(`Authentication Controllers`, () => {
     });
   });
 
-  describe('revokeRefreshTokenController', () => {
+  describe('revokeRefreshToken', () => {
     it('should revoke the refresh token provide', async () => {
       await registerController(userToCreate);
 

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import * as merge from 'lodash.merge';
 import devConfig from './development';
 import prodConfig from './production';

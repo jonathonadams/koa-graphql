@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { randomBytes } from 'crypto';
 import { EnvironnementConfig } from './config';
 

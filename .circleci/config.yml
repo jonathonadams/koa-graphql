@@ -58,5 +58,5 @@ workflows:
       - checkout-and-install
       - build-and-test:
           requires:
-            - checkout-and-instal
+            - checkout-and-install
         

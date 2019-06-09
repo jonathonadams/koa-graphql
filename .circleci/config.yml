@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - <<: *deps-restore
-      - run: npm i --no-save
+      - run: npm install --no-save --silent
       - <<: *deps-cache
 
   # build:

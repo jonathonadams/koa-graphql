@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - <<: *deps-restore
-      - run: npm install
+      - run: npm install --no-save --silent
       - <<: *deps-cache
 
   # build:
@@ -56,4 +56,7 @@ workflows:
   build-and-test:
     jobs:
       - checkout-and-install
-      - build-and-test
+      - build-and-test:
+          requires:
+            - checkout-and-install
+        

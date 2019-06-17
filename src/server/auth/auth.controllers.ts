@@ -3,7 +3,7 @@ import Boom from '@hapi/boom';
 import bcryptjs from 'bcryptjs';
 import config from '../config';
 import { RefreshToken } from './tokens.model';
-import { IUserDocument, User, UserClass } from '../api/users/user.model';
+import { IUserDocument, User } from '../api/users/user.model';
 import {
   signAccessToken,
   signRefreshToken,
@@ -45,11 +45,11 @@ export const loginController = async (
 ): Promise<{ token: string }> => {
   const user = await User.findByUsername(username);
 
-  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized1');
+  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized');
 
   const valid = await compare(password, user.hashedPassword);
 
-  if (!valid) throw Boom.unauthorized('Unauthorized2');
+  if (!valid) throw Boom.unauthorized('Unauthorized');
 
   const token = signAccessToken(user);
 

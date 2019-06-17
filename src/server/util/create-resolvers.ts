@@ -1,7 +1,7 @@
 import { createControllers } from './create-controllers';
 import { authenticateRequest, verifyToken } from '../auth/authGuardGraphQL';
 import { GraphQLFieldResolver } from 'graphql';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 // const resolver = async (rootValue, args, context, info) => {

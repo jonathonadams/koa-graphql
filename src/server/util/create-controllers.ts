@@ -1,5 +1,5 @@
-import * as Boom from '@hapi/boom';
-import * as mongoose from 'mongoose';
+import Boom from '@hapi/boom';
+import mongoose from 'mongoose';
 import { Utils } from '../util/utils';
 import { ObjectId } from 'mongodb';
 

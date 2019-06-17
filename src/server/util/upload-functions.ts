@@ -2,9 +2,9 @@
 // Helper functions for file uploading.
 // -----------------------------------
 
-import * as fs from 'fs';
-import * as path from 'path';
-import * as crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
 
 const fsPromise = fs.promises;
 

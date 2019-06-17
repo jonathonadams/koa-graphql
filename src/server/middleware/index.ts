@@ -1,10 +1,10 @@
-import * as Koa from 'koa';
-import * as helmet from 'koa-helmet';
-import * as morgan from 'koa-morgan';
-import * as bearerToken from 'koa-bearer-token';
-import * as compress from 'koa-compress';
-import * as bodyParser from 'koa-bodyparser';
-import * as cors from 'kcors';
+import Koa from 'koa';
+import helmet from 'koa-helmet';
+import morgan from 'koa-morgan';
+import bearerToken from 'koa-bearer-token';
+import compress from 'koa-compress';
+import bodyParser from 'koa-bodyparser';
+import cors from 'kcors';
 import config from '../config';
 import { errorHandler, errorLogger } from './err';
 

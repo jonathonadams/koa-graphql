@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import config from '../config';
 
 const uri = `mongodb://${config.database.host}:${config.database.port}`;

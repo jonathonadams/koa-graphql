@@ -1,6 +1,6 @@
-import * as koa from 'koa';
-import * as Boom from '@hapi/boom';
-import * as jsonwebtoken from 'jsonwebtoken';
+import koa from 'koa';
+import Boom from '@hapi/boom';
+import jsonwebtoken from 'jsonwebtoken';
 import config from '../config';
 import { User } from '../api/users';
 

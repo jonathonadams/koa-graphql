@@ -1,4 +1,4 @@
-import * as merge from 'lodash.merge';
+import merge from 'lodash.merge';
 import { createTypeResolver } from '../util/create-resolvers';
 import { userResolvers } from './users/index';
 import { Todo } from './todos/index';

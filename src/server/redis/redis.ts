@@ -1,5 +1,5 @@
 /* 
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 
 const redisOptions: Redis.RedisOptions = {
   port: 6379,

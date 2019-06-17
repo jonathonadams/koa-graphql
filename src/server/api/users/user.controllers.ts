@@ -1,5 +1,5 @@
 import { ParameterizedContext } from 'koa';
-import * as Boom from '@hapi/boom';
+import Boom from '@hapi/boom';
 import { Utils } from '../../util/utils';
 import { User } from './user.model';
 

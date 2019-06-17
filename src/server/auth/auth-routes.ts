@@ -1,6 +1,6 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
-import * as Boom from '@hapi/boom';
+import Koa from 'koa';
+import Router from 'koa-router';
+import Boom from '@hapi/boom';
 import {
   loginController,
   registerController,

@@ -1,17 +1,13 @@
 /* istanbul ignore file */
 
-import * as apolloServerKoa from 'apollo-server-koa';
-import * as graphqlTools from 'graphql-tools';
-import * as graphqlIsoData from 'graphql-iso-date';
+import { ApolloServer } from 'apollo-server-koa';
+import { makeExecutableSchema } from 'graphql-tools';
+import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
 import config from '../config';
 import typeDefs from './typeDefs';
 import resolvers from './resolvers';
 import { loaders } from './data-loader';
 import { User } from './users';
-
-const { ApolloServer } = apolloServerKoa;
-const { GraphQLDate, GraphQLTime, GraphQLDateTime } = graphqlIsoData;
-const { makeExecutableSchema } = graphqlTools;
 
 // A function to add additional Scalar types.
 const resolveFunctions = {

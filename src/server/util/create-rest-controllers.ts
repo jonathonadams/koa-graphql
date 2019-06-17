@@ -1,7 +1,7 @@
 import { createControllers } from './create-controllers';
 import { ParameterizedContext } from 'koa';
-import * as Router from 'koa-router';
-import * as mongoose from 'mongoose';
+import Router from 'koa-router';
+import mongoose from 'mongoose';
 
 export function generateRestEndpoints(
   model: mongoose.Model<mongoose.Document>

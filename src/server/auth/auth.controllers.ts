@@ -1,6 +1,6 @@
-import * as jsonwebtoken from 'jsonwebtoken';
-import * as Boom from '@hapi/boom';
-import * as bcryptjs from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
+import Boom from '@hapi/boom';
+import bcryptjs from 'bcryptjs';
 import config from '../config';
 import { RefreshToken } from './tokens.model';
 import { IUserDocument, User, UserClass } from '../api/users/user.model';
@@ -45,11 +45,11 @@ export const loginController = async (
 ): Promise<{ token: string }> => {
   const user = await User.findByUsername(username);
 
-  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized');
+  if (!user || user.active === false) throw Boom.unauthorized('Unauthorized1');
 
   const valid = await compare(password, user.hashedPassword);
 
-  if (!valid) throw Boom.unauthorized('Unauthorized');
+  if (!valid) throw Boom.unauthorized('Unauthorized2');
 
   const token = signAccessToken(user);
 

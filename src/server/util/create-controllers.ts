@@ -13,7 +13,9 @@ import { ObjectId } from 'mongodb';
  * This means we have to manually deal with the swapping of ._id and .id
  * This is manually done with a Utils helper method
  */
-export function createControllers(model: mongoose.Model<mongoose.Document>) {
+export function createControllers<T extends mongoose.Document>(
+  model: mongoose.Model<T>
+) {
   return {
     // Get All
     getAll: async () => {

@@ -3,11 +3,11 @@ import { ParameterizedContext } from 'koa';
 import Router from 'koa-router';
 import mongoose from 'mongoose';
 
-export function generateRestEndpoints(
-  model: mongoose.Model<mongoose.Document>
+export function generateRestEndpoints<T extends mongoose.Document>(
+  model: mongoose.Model<T>
 ) {
   const router = new Router();
-  const controllers = generateRestControllers(model);
+  const controllers = generateRestControllers<T>(model);
 
   router.param('id', controllers.params);
 
@@ -21,8 +21,8 @@ export function generateRestEndpoints(
   return router.routes();
 }
 
-export function generateRestControllers(
-  model: mongoose.Model<mongoose.Document>
+export function generateRestControllers<T extends mongoose.Document>(
+  model: mongoose.Model<T>
 ) {
   const controllers = createControllers(model);
 

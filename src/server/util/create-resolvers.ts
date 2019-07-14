@@ -17,7 +17,7 @@ type Resolver<T> = GraphQLFieldResolver<any, any, T>;
 export function generateResolvers<T extends mongoose.Document>(
   model: mongoose.Model<T>
 ) {
-  const controllers = createControllers(model);
+  const controllers = createControllers<T>(model);
 
   const getAll: Resolver<any> = async (root, args, ctx, info) => {
     return await controllers.getAll();

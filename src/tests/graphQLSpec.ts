@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import 'jest-extended';
 import mongoose from 'mongoose';
 import { runQuery, setupTestDB } from './helpers';

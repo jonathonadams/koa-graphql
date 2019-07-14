@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import Boom from '@hapi/boom';
 import { Middleware, ParameterizedContext } from 'koa';
 

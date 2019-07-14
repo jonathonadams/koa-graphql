@@ -15,6 +15,7 @@ import { GlobalConfig, EnvironnementConfig, ServerConfig } from './config';
  *
  */
 const config: GlobalConfig = {
+  env: process.env.NODE_ENV || 'prod',
   /**
    * The port the server will listen on
    */

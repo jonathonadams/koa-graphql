@@ -4,6 +4,29 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { graphql } from 'graphql';
 import { schema } from '../server/api/graphql';
 
+export interface RESTTestResource<T> {
+  model: any;
+  resourceName: string;
+  urlString: string;
+  resourceToCreate: any;
+  resourceToUpdate: any;
+  testDependents?: TestDependents[];
+}
+
+export interface GraphQLTestResource<T> {
+  model: any;
+  resourceName: string;
+  queryName: string;
+  resourceToCreate: any;
+  resourceToUpdate: any;
+  testDependents?: TestDependents[];
+}
+
+export interface TestDependents {
+  model: any;
+  resource: any;
+}
+
 /**
  * Helper function to generate ObjectID, note it returns the hex string of the ObjectId
  */
@@ -13,7 +36,7 @@ export const newId = () => {
 
 export const runQuery = async (
   query: string,
-  variables: { [prop: string]: any },
+  variables: { [prop: string]: any | undefined },
   token: string
 ) => {
   return graphql(
@@ -27,6 +50,20 @@ export const runQuery = async (
     variables
   );
 };
+
+/**
+ * Helper function  if using SQL
+ */
+// export const syncDb = async () => {
+//   try {
+//     await db.authenticate();
+//     await db.drop({ cascade: true });
+//     await db.sync();
+//     return db;
+//   } catch (err) {
+//     throw new Error('Unable to connect to the database:');
+//   }
+// };
 
 /**
  * Helper function to setup Mongo Memory server

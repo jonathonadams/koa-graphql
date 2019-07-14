@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import Koa from 'koa';
 import helmet from 'koa-helmet';
 import morgan from 'koa-morgan';

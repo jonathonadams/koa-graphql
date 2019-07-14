@@ -6,6 +6,7 @@ import { ConnectionOptions } from 'mongoose';
  */
 
 export interface GlobalConfig {
+  env: string;
   port: number;
   databaseOptions: ConnectionOptions;
 }

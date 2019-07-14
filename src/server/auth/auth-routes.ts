@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import Koa from 'koa';
 import Router from 'koa-router';
 import Boom from '@hapi/boom';

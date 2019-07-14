@@ -61,7 +61,7 @@ export function generateRestControllers(
     },
     removeOne: async (ctx: ParameterizedContext, next: () => Promise<any>) => {
       try {
-        ctx.status = 200;
+        ctx.status = 204;
         ctx.body = await controllers.removeOne(ctx.state.id);
       } catch (err) {
         throw err;

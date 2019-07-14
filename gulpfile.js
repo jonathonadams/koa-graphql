@@ -16,12 +16,12 @@ const paths = {
 // Output destination folder
 const dest = 'dist';
 
-// Function the deletes all files in the destingation folder
+// Function the deletes all files in the destination folder
 gulp.task('clean', function() {
   return del([`${dest}`]);
 });
 
-// Copy all graphQL files accross
+// Copy all graphQL files across
 gulp.task('graphql', function() {
   return gulp.src(paths.graphQl).pipe(gulp.dest(`${dest}/`));
 });
@@ -62,14 +62,22 @@ gulp.task('watch', function() {
 // Build task & Watch
 gulp.task(
   'dev',
-  gulp.series('clean', gulp.parallel('graphql', 'dev-ts', 'json'), gulp.series('watch'))
+  gulp.series(
+    'clean',
+    gulp.parallel('graphql', 'dev-ts', 'json'),
+    gulp.series('watch')
+  )
 );
 
 // Distribution task, also removes all spec files.
 // Removes test
 gulp.task(
   'prod',
-  gulp.series('clean', gulp.parallel('graphql', 'prod-ts', 'json'), gulp.series('rmv-tests'))
+  gulp.series(
+    'clean',
+    gulp.parallel('graphql', 'prod-ts', 'json'),
+    gulp.series('rmv-tests')
+  )
 );
 
 // Default task is to run the build

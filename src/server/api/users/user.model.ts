@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { AuthenticationRoles } from '../../auth/roles';
 import { defaultSchemaOptions } from '../../db/schema-options';
 

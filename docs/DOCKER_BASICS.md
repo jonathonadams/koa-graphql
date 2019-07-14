@@ -147,7 +147,10 @@ Redis can be used in many ways, but the easiest way to get up and running locall
 ```
 docker pull redis
 
-docker create --name redis -p 6379:6379 reds
+docker create --name redis -p 6379:6379 redis
 
 docker start redis
+
+// To access the CLI
+$: redis-cli
 ```

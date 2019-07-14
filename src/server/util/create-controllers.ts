@@ -1,5 +1,5 @@
-import * as Boom from '@hapi/boom';
-import * as mongoose from 'mongoose';
+import Boom from '@hapi/boom';
+import mongoose from 'mongoose';
 import { Utils } from '../util/utils';
 import { ObjectId } from 'mongodb';
 
@@ -13,7 +13,9 @@ import { ObjectId } from 'mongodb';
  * This means we have to manually deal with the swapping of ._id and .id
  * This is manually done with a Utils helper method
  */
-export function createControllers(model: mongoose.Model<mongoose.Document>) {
+export function createControllers<T extends mongoose.Document>(
+  model: mongoose.Model<T>
+) {
   return {
     // Get All
     getAll: async () => {

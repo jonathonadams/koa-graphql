@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export class Utils {
   static swapId(object: any): any {
     if (object._id) {

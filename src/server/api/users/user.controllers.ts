@@ -1,5 +1,5 @@
 import { ParameterizedContext } from 'koa';
-import * as Boom from '@hapi/boom';
+import Boom from '@hapi/boom';
 import { Utils } from '../../util/utils';
 import { User } from './user.model';
 
@@ -67,6 +67,6 @@ export async function removeOne(ctx: ParameterizedContext): Promise<void> {
   if (!removedUser)
     throw Boom.notFound('Cannot find a user with the supplied parameters.');
 
-  ctx.status = 200;
+  ctx.status = 204;
   ctx.body = Utils.swapId(removedUser);
 }

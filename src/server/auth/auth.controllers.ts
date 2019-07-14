@@ -1,9 +1,9 @@
-import * as jsonwebtoken from 'jsonwebtoken';
-import * as Boom from '@hapi/boom';
-import * as bcryptjs from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
+import Boom from '@hapi/boom';
+import bcryptjs from 'bcryptjs';
 import config from '../config';
 import { RefreshToken } from './tokens.model';
-import { IUserDocument, User, UserClass } from '../api/users/user.model';
+import { IUserDocument, User } from '../api/users/user.model';
 import {
   signAccessToken,
   signRefreshToken,

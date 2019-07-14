@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
-import * as DataLoader from 'dataloader';
-import * as keyBy from 'lodash.keyby';
+import DataLoader from 'dataloader';
+import keyBy from 'lodash.keyby';
 import { User } from './users';
 import { Todo } from './todos';
 import { IUserDocument } from './users/user.model';

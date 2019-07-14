@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import * as merge from 'lodash.merge';
+import merge from 'lodash.merge';
 import devConfig from './development';
 import prodConfig from './production';
 import testConfig from './test';
@@ -15,6 +15,7 @@ import { GlobalConfig, EnvironnementConfig, ServerConfig } from './config';
  *
  */
 const config: GlobalConfig = {
+  env: process.env.NODE_ENV || 'prod',
   /**
    * The port the server will listen on
    */

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { User, IUserDocument } from './user.model';
 import { runQuery, setupTestDB } from '../../../tests/helpers';

@@ -1,8 +1,8 @@
-import * as http from 'http';
+import http from 'http';
 import config from './server/config';
 import ApiServer from './server/server';
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
+import Koa from 'koa';
+import Router from 'koa-router';
 import { apolloServer } from './server/api/graphql';
 
 /**

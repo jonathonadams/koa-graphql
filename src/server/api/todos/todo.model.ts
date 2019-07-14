@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { defaultSchemaOptions } from '../../db/schema-options';
 
 export class TodoClass extends mongoose.Model {

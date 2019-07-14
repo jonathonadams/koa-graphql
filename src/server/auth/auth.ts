@@ -1,5 +1,5 @@
-import * as jsonwebtoken from 'jsonwebtoken';
-import * as omit from 'lodash.omit';
+import jsonwebtoken from 'jsonwebtoken';
+import omit from 'lodash.omit';
 import config from '../config';
 import { IUserDocument } from '../api/users/user.model';
 

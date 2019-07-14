@@ -1,5 +1,5 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
+import Koa from 'koa';
+import Router from 'koa-router';
 import { setupMiddleware } from './middleware';
 import { applyApiEndpoints } from './api';
 import { applyAuthorizationRoutes } from './auth/auth-routes';

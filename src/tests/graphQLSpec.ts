@@ -1,5 +1,7 @@
+/* istanbul ignore file */
+
 import 'jest-extended';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { runQuery, setupTestDB } from './helpers';
 import { signAccessToken } from '../server/auth/auth';
 import { ExecutionResultDataDefault } from 'graphql/execution/execute';

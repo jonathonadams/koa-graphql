@@ -1,4 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
+// @ts-ignore
 import omit from 'lodash.omit';
 import config from '../config';
 import { IUserDocument } from '../api/users/user.model';

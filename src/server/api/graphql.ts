@@ -2,6 +2,7 @@
 
 import { ApolloServer } from 'apollo-server-koa';
 import { makeExecutableSchema } from 'graphql-tools';
+// @ts-ignore
 import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
 import config from '../config';
 import typeDefs from './typeDefs';

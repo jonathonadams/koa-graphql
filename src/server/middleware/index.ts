@@ -1,11 +1,16 @@
 /* istanbul ignore file */
 
 import Koa from 'koa';
+// @ts-ignore
 import helmet from 'koa-helmet';
+// @ts-ignore
 import morgan from 'koa-morgan';
+// @ts-ignore
 import bearerToken from 'koa-bearer-token';
+// @ts-ignore
 import compress from 'koa-compress';
 import bodyParser from 'koa-bodyparser';
+// @ts-ignore
 import cors from 'kcors';
 import config from '../config';
 import { errorHandler, errorLogger } from './err';

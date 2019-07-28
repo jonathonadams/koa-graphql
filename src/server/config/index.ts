@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-
+//@ts-ignore
 import merge from 'lodash.merge';
 import devConfig from './development';
 import prodConfig from './production';

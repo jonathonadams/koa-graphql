@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 
 import DataLoader from 'dataloader';
+// @ts-ignore
 import keyBy from 'lodash.keyby';
 import { User } from './users';
 import { Todo } from './todos';

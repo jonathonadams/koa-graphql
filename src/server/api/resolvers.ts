@@ -1,3 +1,4 @@
+// @ts-ignore
 import merge from 'lodash.merge';
 import { createTypeResolver } from '../util/create-resolvers';
 import { userResolvers } from './users/index';

@@ -56,10 +56,7 @@ describe('Rest Auth Guards', () => {
         .mockResolvedValue({ id: `${id}` } as IUserDocument);
 
       await expect(
-        verifyUser(
-          { state: { token: { sub: id } } } as ParameterizedContext,
-          nextSpy
-        )
+        verifyUser({ state: { token: { sub: id } } } as any, nextSpy)
       ).resolves.not.toThrowError();
 
       expect(spy).toHaveBeenCalled();
@@ -74,10 +71,7 @@ describe('Rest Auth Guards', () => {
       const spy = jest.spyOn(User, 'findById').mockResolvedValue(null);
 
       await expect(
-        verifyUser(
-          { state: { token: { sub: id } } } as ParameterizedContext,
-          nextSpy
-        )
+        verifyUser({ state: { token: { sub: id } } } as any, nextSpy)
       ).rejects.toThrowError('Unauthorized');
 
       expect(spy).toHaveBeenCalled();

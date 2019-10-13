@@ -10,7 +10,7 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest'
   },
   testRegex: '(/__tests__/.*|(\\.|/)(e2e|spec))\\.(jsx?|tsx?)$',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleFileExtensions: ['ts', 'js'],
   verbose: true,
   coverageThreshold: {
     global: {
@@ -20,5 +20,5 @@ module.exports = {
       statements: 20
     }
   },
-  coverageReporters: ['html', 'lcovonly', 'text', 'text-summary']
+  coverageReporters: ['html', 'text-summary']
 };

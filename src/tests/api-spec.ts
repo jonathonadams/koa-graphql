@@ -45,8 +45,6 @@ export default function createApiSpec<T>(resource: RESTTestResource<T>) {
       jwt = signAccessToken({ id: '1', role: 0 } as IUserDocument);
     });
 
-    afterEach(async () => {});
-
     afterAll(async () => {
       await db.disconnect();
       await mongoServer.stop();

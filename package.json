@@ -20,10 +20,10 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "cross-env NODE_ENV=dev nodemon  -r dotenv/config dist/index.js",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
-    "test:e2e": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
-    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests --detectOpenHandles --findRelatedTests",
+    "test:e2e": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
+    "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests  --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",
     "test:ci": "jest --detectOpenHandles --coverage --maxWorkers 4",

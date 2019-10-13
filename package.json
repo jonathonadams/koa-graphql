@@ -22,7 +22,7 @@
     "dev": "cross-env NODE_ENV=dev nodemon  -r dotenv/config dist/index.js",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:unit": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.spec\\.tsx?'",
-    "test:e2e": "cross-env NODE_ENV=test jest --coverage --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
+    "test:e2e": "cross-env NODE_ENV=test jest --coverage --runInBand --passWithNoTests --testPathPattern='\\w+\\.e2e\\.tsx?'",
     "test:staged": "cross-env NODE_ENV=test jest --passWithNoTests  --findRelatedTests",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --watchAll",
     "test:snapshot:update": "jest --updateSnapshot --testPathPattern",

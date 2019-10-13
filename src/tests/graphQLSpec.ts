@@ -55,8 +55,7 @@ export default function createGraphQLSpec<T>(
     });
 
     afterAll(async () => {
-      await db.disconnect();
-      await mongoServer.stop();
+      await Promise.all([db.disconnect(), mongoServer.stop()]);
     });
 
     describe(`new${upperResourceName}($input: New${upperResourceName}Input!)`, () => {

@@ -46,9 +46,7 @@ export default function createApiSpec<T>(resource: RESTTestResource<T>) {
     });
 
     afterAll(async () => {
-      await db.disconnect();
-      await mongoServer.stop();
-      await server.close();
+      await Promise.all([db.disconnect(), mongoServer.stop(), server.close()]);
     });
 
     describe(`POST /api/${resource.urlString}`, () => {

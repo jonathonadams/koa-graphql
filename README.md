@@ -1,3 +1,9 @@
+---
+# **ARCHIVED**
+# This repo is no longer maintained.
+# Please see [zero-to-production.dev](https://zero-to-production.dev) for an up to date node server.
+---
+
 # A starter API build with TypeScript, Koa, GraphQL and MongoDB
 
 ## Build the Server
